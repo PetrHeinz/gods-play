@@ -20,13 +20,42 @@
 		for (var cellId in this.board.cells) {
 			var cell = this.board.cells[cellId];
 			
-			// @todo
+			var side = Math.ceil(cell.clockwise / cell.rimwards);
+			var sideClockwise = (cell.clockwise - 1) % cell.rimwards + 1;
+			
 			var xc = 0;
 			var yc = 0;
 			
+			switch (side) {
+				case 1:
+					xc = - cell.rimwards + sideClockwise - 1;
+					yc = - cell.rimwards                    ;
+					break;
+				case 2:
+					xc =                 + sideClockwise - 1;
+					yc = - cell.rimwards + sideClockwise - 1;
+					break;
+				case 3:
+					xc = + cell.rimwards - sideClockwise + 1;
+					yc =                 + sideClockwise - 1;
+					break;
+				case 4:
+					xc = - cell.rimwards + sideClockwise    ;
+					yc = + cell.rimwards                    ;
+					break;
+				case 5:
+					xc = - cell.rimwards                    ;
+					yc = + cell.rimwards - sideClockwise + 1;
+					break;
+				case 6:
+					xc = - cell.rimwards                    ;
+					yc =                 - sideClockwise + 1;
+					break;
+			}
+			
 			var x = xc + this.board.size;
 			var y = yc + this.board.size;
-				
+			
 			var backgroundColor = this.backgroundColors[cell.rimwards % this.backgroundColors.length];
 			
 			var $cell = createCell(this.width, this.height, cellId, backgroundColor);
@@ -37,22 +66,6 @@
 			this.$board.append($cell);
 			
 		}
-		
-		/* At least this renders a hexagon
-		var cellId = 0;
-		for (var y = 0; y < 2 * this.board.size + 1; y++) {
-			for (var x = 0; x < 2 * this.board.size - Math.abs(y - this.board.size) + 1; x++) {
-				
-				var $cell = createCell(this.width, this.height, cellId++);
-				$cell.css({
-					left: (x + Math.abs(y - this.board.size) / 2) * (this.width + this.marginX) + this.border,
-					top: y * (this.height + this.marginY) + this.border
-				});
-				this.$board.append($cell);
-				
-			}
-		}
-		*/
 		
 		this.updateBoard();
 	};
