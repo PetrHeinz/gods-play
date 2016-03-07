@@ -4,7 +4,7 @@
 	var BORDER_RATIO = 0.2;
 	var MARGIN_RATIO = 0.05;
 	
-	Renderer = function(board, $board, size) {
+	Renderer = function(board, $board, size, backgroundColors) {
 		this.board = board;
 		this.$board = $board;
 		this.width = size;
@@ -12,6 +12,7 @@
 		this.border = BORDER_RATIO * size;
 		this.marginX = MARGIN_RATIO * size;
 		this.marginY = MARGIN_RATIO * VERTICAL_RATIO * size;
+		this.backgroundColors = backgroundColors;
 	};
 	
 	Renderer.prototype.createBoard = function() {
@@ -26,7 +27,9 @@
 			var x = xc + this.board.size;
 			var y = yc + this.board.size;
 				
-			var $cell = createCell(this.width, this.height, cellId++);
+			var backgroundColor = this.backgroundColors[cell.rimwards % this.backgroundColors.length];
+			
+			var $cell = createCell(this.width, this.height, cellId, backgroundColor);
 			$cell.css({
 				left: (x + Math.abs(y - this.board.size) / 2) * (this.width + this.marginX) + this.border,
 				top: y * (this.height + this.marginY) + this.border
@@ -68,7 +71,7 @@
 		
 	};
 		
-	function createCell(width, height, cellId) {
+	function createCell(width, height, cellId, backgroundColor) {
 		
 		return $('<div>')
 			.addClass('cell')
@@ -76,6 +79,7 @@
 			.css({
 				width: width,
 				height: height,
+				backgroundColor: backgroundColor
 			});
 			
 	}
