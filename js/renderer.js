@@ -40,7 +40,7 @@
 					yc =                 + sideClockwise - 1;
 					break;
 				case 4:
-					xc = - cell.rimwards + sideClockwise    ;
+					xc =                 - sideClockwise + 1;
 					yc = + cell.rimwards                    ;
 					break;
 				case 5:
