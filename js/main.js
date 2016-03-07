@@ -8,7 +8,7 @@
 		var board = boardGenerator.generateBoard(boardSize);
 		console.log(board);
 		
-		var renderer = new Renderer(board, $('#game-board'), 80);
+		var renderer = new Renderer(board, $('#game-board'), 80, randomColor({luminosity: 'light', count: 8}));
 		renderer.createBoard();
 		
 		$('#game-board').on('click', '.cell', function() {
