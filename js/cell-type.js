@@ -1,5 +1,7 @@
-(function() {
-	
-	CellType = function() {};
-	
+(function () {
+
+    CellType = function () {
+
+    };
+
 })();
