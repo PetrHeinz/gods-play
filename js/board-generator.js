@@ -5,17 +5,14 @@
     };
 
     BoardGenerator.prototype.generateBoard = function (boardSize) {
-        var cells = [new Cell(0, 0)];
+        var centerCubeCoordinate = new CubeCoordinate(0, 0, 0);
+        var cells = [new Cell(centerCubeCoordinate)];
 
-        for (var rimwards = 1; rimwards <= boardSize; rimwards++) {
-            for (var clockwise = 1; clockwise <= 6 * rimwards; clockwise++) {
-                cells.push(new Cell(rimwards, clockwise));
+        for (var radius = 1; radius <= boardSize; radius++) {
+            var ring = centerCubeCoordinate.getRing(radius);
+            for (var i in ring) {
+                cells.push(new Cell(ring[i]));
             }
-        }
-
-        for (var cellId in cells) {
-            var cell = cells[cellId];
-            cell.neighbours;
         }
 
         return new Board(boardSize, cells);

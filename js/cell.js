@@ -1,8 +1,11 @@
 (function () {
 
-    Cell = function (rimwards, clockwise) {
-        this.rimwards = rimwards;
-        this.clockwise = clockwise;
+    /**
+     * @param {CubeCoordinate} cubeCoordinate
+     * @constructor
+     */
+    Cell = function (cubeCoordinate) {
+        this.cubeCoordinate = cubeCoordinate;
         this.neighbours = [];
     };
 

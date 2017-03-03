@@ -16,55 +16,22 @@
     };
 
     Renderer.prototype.createBoard = function () {
-
         for (var cellId in this.board.cells) {
             var cell = this.board.cells[cellId];
+            var cubeCoordinate = cell.cubeCoordinate;
 
-            var side = Math.ceil(cell.clockwise / cell.rimwards);
-            var sideClockwise = (cell.clockwise - 1) % cell.rimwards + 1;
+            var x = cubeCoordinate.x;
+            var y = cubeCoordinate.z + cubeCoordinate.x / 2;
 
-            var xc = 0;
-            var yc = 0;
-
-            switch (side) {
-                case 1:
-                    xc = -cell.rimwards + sideClockwise - 1;
-                    yc = -cell.rimwards;
-                    break;
-                case 2:
-                    xc = +sideClockwise - 1;
-                    yc = -cell.rimwards + sideClockwise - 1;
-                    break;
-                case 3:
-                    xc = +cell.rimwards - sideClockwise + 1;
-                    yc = +sideClockwise - 1;
-                    break;
-                case 4:
-                    xc = -sideClockwise + 1;
-                    yc = +cell.rimwards;
-                    break;
-                case 5:
-                    xc = -cell.rimwards;
-                    yc = +cell.rimwards - sideClockwise + 1;
-                    break;
-                case 6:
-                    xc = -cell.rimwards;
-                    yc = -sideClockwise + 1;
-                    break;
-            }
-
-            var x = xc + this.board.size;
-            var y = yc + this.board.size;
-
-            var backgroundColor = this.backgroundColors[cell.rimwards % this.backgroundColors.length];
+            var radius = (Math.abs(cubeCoordinate.x) + Math.abs(cubeCoordinate.y) + Math.abs(cubeCoordinate.z)) / 2;
+            var backgroundColor = this.backgroundColors[radius % this.backgroundColors.length];
 
             var $cell = createCell(this.width, this.height, cellId, backgroundColor);
             $cell.css({
-                left: (x + Math.abs(y - this.board.size) / 2) * (this.width + this.marginX) + this.border,
-                top: y * (this.height + this.marginY) + this.border
+                left: (x + this.board.size) * (this.width + this.marginX) + this.border,
+                top: (y + this.board.size) * (this.height + this.marginY) + this.border
             });
             this.$board.append($cell);
-
         }
 
         this.updateBoard();
@@ -98,8 +65,8 @@
     }
 
     function updateCell(cell, $cell) {
-        var content = (cell.text !== undefined ? cell.text : '') + '<br/>' + 'CW: ' + cell.clockwise + '<br/>' +
-            'RW: ' + cell.rimwards;
+        var content = (cell.text !== undefined ? cell.text : '') + '<br/>'
+            + 'X' + cell.cubeCoordinate.x + ' Y' + cell.cubeCoordinate.y + ' Z' + cell.cubeCoordinate.z;
 
         $cell.html(content);
 
