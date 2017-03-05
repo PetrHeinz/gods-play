@@ -10,7 +10,7 @@
 
         var $gameBoard = $('#game-board');
 
-        var renderer = new Renderer(board, $gameBoard, 80, randomColor({luminosity: 'light', count: 8}));
+        var renderer = new Renderer(board, $gameBoard, 80);
         renderer.createBoard();
 
         $gameBoard.on('click', '.cell', function () {
