@@ -31,7 +31,7 @@
 
     Renderer.prototype.createBoard = function () {
         var self = this;
-        PIXI.loader.add('hexGrass', 'assets/ryanshenk.hex.grass.jpg').load(function(loader, resources) {
+        PIXI.loader.add('hexGrass', 'assets/ryanshenk.hex.grass.png').load(function(loader, resources) {
             for (var i in self.board.cells) {
                 var cell = self.board.cells[i];
                 var hex = self.createHex(cell, resources);
