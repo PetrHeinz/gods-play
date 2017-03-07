@@ -8,9 +8,10 @@
      * @param {Board} board
      * @param {jQuery} $board
      * @param {number} size
+     * @param {Game} game
      * @constructor
      */
-    Renderer = function (board, $board, size) {
+    Renderer = function (board, $board, size, game) {
         this.board = board;
         this.$board = $board;
         this.width = size;
@@ -18,6 +19,7 @@
         this.border = BORDER_RATIO * size;
         this.marginX = MARGIN_RATIO * size;
         this.marginY = MARGIN_RATIO * VERTICAL_RATIO * size;
+        this.game = game;
     };
 
     Renderer.prototype.createBoard = function () {
@@ -31,6 +33,14 @@
             var $cell = this.createCell(x, y, cellId);
             this.$board.append($cell);
         }
+
+        var self = this;
+        this.$board.on('click', '.cell', function () {
+            var cellId = $(this).data('cellId');
+            var cell = self.board.cells[cellId];
+            self.game.cellClick(cell);
+            self.updateBoard();
+        });
 
         this.updateBoard();
     };
