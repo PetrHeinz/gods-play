@@ -11,7 +11,10 @@
         var $gameBoard = $('#game-board');
 
         var game = new Game(board);
-        var renderer = new Renderer(board, $gameBoard, 80, game);
+        var renderer = new Renderer(board, 80, game);
+
+        $gameBoard.append(renderer.getView());
+
         renderer.createBoard();
 
     });

@@ -6,80 +6,74 @@
 
     /**
      * @param {Board} board
-     * @param {jQuery} $board
      * @param {number} size
      * @param {Game} game
      * @constructor
      */
-    Renderer = function (board, $board, size, game) {
+    Renderer = function (board, size, game) {
+        this.pixiApp = new PIXI.Application();
         this.board = board;
-        this.$board = $board;
         this.width = size;
         this.height = VERTICAL_RATIO * size;
         this.border = BORDER_RATIO * size;
         this.marginX = MARGIN_RATIO * size;
         this.marginY = MARGIN_RATIO * VERTICAL_RATIO * size;
         this.game = game;
-    };
-
-    Renderer.prototype.createBoard = function () {
-        for (var cellId in this.board.cells) {
-            var cell = this.board.cells[cellId];
-            var cubeCoordinate = cell.cubeCoordinate;
-
-            var x = cubeCoordinate.x;
-            var y = cubeCoordinate.z + cubeCoordinate.x / 2;
-
-            var $cell = this.createCell(x, y, cellId);
-            this.$board.append($cell);
-        }
-
-        var self = this;
-        this.$board.on('click', '.cell', function () {
-            var cellId = $(this).data('cellId');
-            var cell = self.board.cells[cellId];
-            self.game.cellClick(cell);
-            self.updateBoard();
-        });
-
-        this.updateBoard();
-    };
-
-    Renderer.prototype.updateBoard = function () {
-        var $cells = this.$board.children();
-        for (var cellId in this.board.cells) {
-            var cell = this.board.cells[cellId];
-            var $cell = $cells.eq(cellId);
-            this.updateCell(cell, $cell);
-        }
+        this.hexes = [];
     };
 
     /**
-     * @param {number} x
-     * @param {number} y
-     * @param {number} cellId
-     * @return {jQuery}
+     * @return {HTMLCanvasElement|WindowProxy|null}
      */
-    Renderer.prototype.createCell = function (x, y, cellId) {
-        return $('<div>')
-            .addClass('cell')
-            .data('cellId', cellId)
-            .css({
-                left: (x + this.board.size) * (this.width + this.marginX) + this.border,
-                top: (y + this.board.size) * (this.height + this.marginY) + this.border,
-                width: this.width,
-                height: this.height
-            });
+    Renderer.prototype.getView = function () {
+        return this.pixiApp.view;
+    };
+
+    Renderer.prototype.createBoard = function () {
+        var self = this;
+        PIXI.loader.add('hexGrass', 'assets/ryanshenk.hex.grass.jpg').load(function(loader, resources) {
+            for (var i in self.board.cells) {
+                var cell = self.board.cells[i];
+                var hex = self.createHex(cell, resources);
+
+                self.pixiApp.stage.addChild(hex);
+                self.hexes.push(hex);
+            }
+        });
+        this.pixiApp.ticker.add(function() {
+            for (var i in self.hexes) {
+                var hex = self.hexes[i];
+                hex.text.text = hex.cell.text;
+            }
+        });
     };
 
     /**
      * @param {Cell} cell
-     * @param {jQuery} $cell
+     * @param {Resource[]} resources
+     * @return {PIXI.Sprite}
      */
-    Renderer.prototype.updateCell = function (cell, $cell) {
-        var content = (cell.text !== undefined ? cell.text : '') + '<br/>'
-            + 'X' + cell.cubeCoordinate.x + ' Y' + cell.cubeCoordinate.y + ' Z' + cell.cubeCoordinate.z;
-        $cell.html(content);
-    }
+    Renderer.prototype.createHex = function (cell, resources) {
+        var hex = new PIXI.Sprite(resources.hexGrass.texture);
+
+        hex.cell = cell;
+        hex.text = new PIXI.Text(cell.text);
+        hex.addChild(hex.text);
+
+        var cubeCoordinate = cell.cubeCoordinate;
+        hex.x = (cubeCoordinate.x + this.board.size) * (this.width + this.marginX) + this.border;
+        hex.y = (cubeCoordinate.z + cubeCoordinate.x / 2 + this.board.size) * (this.height + this.marginY) + this.border;
+
+        hex.height = this.height;
+        hex.width = this.width;
+
+        hex.interactive = true;
+        var self = this;
+        hex.on('mouseup', function () {
+            self.game.cellClick(this.cell);
+        });
+
+        return hex;
+    };
 
 })();
