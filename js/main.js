@@ -1,21 +1,17 @@
-(function ($) {
+(function () {
 
-    $(document).ready(function () {
+    var boardSize = 5;
+    var boardGenerator = new BoardGenerator();
 
-        var boardSize = 5;
-        var boardGenerator = new BoardGenerator();
+    var board = boardGenerator.generateBoard(boardSize);
 
-        var board = boardGenerator.generateBoard(boardSize);
+    var renderElement = document.getElementById('game-board');
 
-        var $gameBoard = $('#game-board');
+    var game = new Game(board);
+    var renderer = new Renderer(board, game);
 
-        var game = new Game(board);
-        var renderer = new Renderer(board, game);
+    renderElement.appendChild(renderer.getView());
 
-        $gameBoard.append(renderer.getView());
+    renderer.createBoard();
 
-        renderer.createBoard();
-
-    });
-
-})(jQuery);
+})();
