@@ -16,7 +16,7 @@
      * @param {Cell} cell
      */
     Game.prototype.cellClick = function (cell) {
-        if ($.inArray(cell, this.board.cells)) {
+        if (this.board.cells.indexOf(cell) > -1) {
             cell.text = 'clicked!!!';
         }
     };
