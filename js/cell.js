@@ -5,7 +5,16 @@
      * @constructor
      */
     Cell = function (cubeCoordinate) {
+
+        /**
+         * @member {CubeCoordinate}
+         */
         this.cubeCoordinate = cubeCoordinate;
+
+        /**
+         * @member {string}
+         */
+        this.text = '';
     };
 
 })();

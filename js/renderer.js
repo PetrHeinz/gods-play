@@ -11,9 +11,25 @@
      * @constructor
      */
     Renderer = function (board, game) {
+
+        /**
+         * @member {PIXI.Application}
+         */
         this.pixiApp = new PIXI.Application();
+
+        /**
+         * @member {Board}
+         */
         this.board = board;
+
+        /**
+         * @member {Game}
+         */
         this.game = game;
+
+        /**
+         * @member {PIXI.Sprite[]}
+         */
         this.hexes = [];
     };
 

@@ -5,11 +5,15 @@
      * @constructor
      */
     Game = function (board) {
+
+        /**
+         * @member {Board}
+         */
         this.board = board;
     };
 
     /**
-     * @param {number} cell
+     * @param {Cell} cell
      */
     Game.prototype.cellClick = function (cell) {
         if ($.inArray(cell, this.board.cells)) {

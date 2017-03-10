@@ -7,8 +7,20 @@
      * @constructor
      */
     CubeCoordinate = function (x, y, z) {
+
+        /**
+         * @member {number}
+         */
         this.x = x;
+
+        /**
+         * @member {number}
+         */
         this.y = y;
+
+        /**
+         * @member {number}
+         */
         this.z = z;
     };
 
