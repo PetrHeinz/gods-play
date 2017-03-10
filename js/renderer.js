@@ -1,8 +1,9 @@
 (function () {
 
-    var VERTICAL_RATIO = 0.8;
-    var BORDER_RATIO = 0.2;
-    var MARGIN_RATIO = 0.05;
+    var HEX_WIDTH = 148;
+    var HEX_HEIGHT = 130;
+    var HEX_OFFSET_X = 115;
+    var HEX_OFFSET_Y = 132;
 
     /**
      * @param {Board} board
@@ -13,11 +14,6 @@
     Renderer = function (board, size, game) {
         this.pixiApp = new PIXI.Application();
         this.board = board;
-        this.width = size;
-        this.height = VERTICAL_RATIO * size;
-        this.border = BORDER_RATIO * size;
-        this.marginX = MARGIN_RATIO * size;
-        this.marginY = MARGIN_RATIO * VERTICAL_RATIO * size;
         this.game = game;
         this.hexes = [];
     };
@@ -60,12 +56,15 @@
         hex.text = new PIXI.Text(cell.text);
         hex.addChild(hex.text);
 
-        var cubeCoordinate = cell.cubeCoordinate;
-        hex.x = (cubeCoordinate.x + this.board.size) * (this.width + this.marginX) + this.border;
-        hex.y = (cubeCoordinate.z + cubeCoordinate.x / 2 + this.board.size) * (this.height + this.marginY) + this.border;
+        hex.pivot.x = HEX_WIDTH / 2;
+        hex.pivot.y = HEX_HEIGHT / 2;
 
-        hex.height = this.height;
-        hex.width = this.width;
+        hex.width = HEX_WIDTH;
+        hex.height = HEX_HEIGHT;
+
+        var cubeCoordinate = cell.cubeCoordinate;
+        hex.x = HEX_OFFSET_X * cubeCoordinate.x + this.pixiApp.renderer.width / 2;
+        hex.y = HEX_OFFSET_Y * (cubeCoordinate.z + cubeCoordinate.x / 2) + this.pixiApp.renderer.height / 2;
 
         hex.interactive = true;
         var self = this;
