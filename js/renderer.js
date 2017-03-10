@@ -74,12 +74,14 @@
         hex.pivot.x = HEX_WIDTH / 2;
         hex.pivot.y = HEX_HEIGHT / 2;
 
-        hex.width = HEX_WIDTH;
-        hex.height = HEX_HEIGHT;
+        var size = this.calculateSize();
+
+        hex.width = size * HEX_WIDTH;
+        hex.height = size * HEX_HEIGHT;
 
         var cubeCoordinate = cell.cubeCoordinate;
-        hex.x = HEX_OFFSET_X * cubeCoordinate.x + this.pixiApp.renderer.width / 2;
-        hex.y = HEX_OFFSET_Y * (cubeCoordinate.z + cubeCoordinate.x / 2) + this.pixiApp.renderer.height / 2;
+        hex.x = size * HEX_OFFSET_X * cubeCoordinate.x + this.pixiApp.renderer.width / 2;
+        hex.y = size * HEX_OFFSET_Y * (cubeCoordinate.z + cubeCoordinate.x / 2) + this.pixiApp.renderer.height / 2;
 
         hex.interactive = true;
         var self = this;
@@ -88,6 +90,16 @@
         });
 
         return hex;
+    };
+
+    /**
+     * @return {number}
+     */
+    Renderer.prototype.calculateSize = function () {
+        var xSize = this.pixiApp.renderer.width / HEX_OFFSET_X / (this.board.size * 2 + 1);
+        var ySize = this.pixiApp.renderer.height / HEX_OFFSET_Y / (this.board.size * 2 + 1);
+
+        return Math.min(xSize, ySize);
     };
 
 })();
