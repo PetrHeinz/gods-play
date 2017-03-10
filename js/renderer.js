@@ -7,11 +7,10 @@
 
     /**
      * @param {Board} board
-     * @param {number} size
      * @param {Game} game
      * @constructor
      */
-    Renderer = function (board, size, game) {
+    Renderer = function (board, game) {
         this.pixiApp = new PIXI.Application();
         this.board = board;
         this.game = game;

@@ -59,14 +59,6 @@
     };
 
     /**
-     * @param {number} directionIndex
-     * @return {CubeCoordinate}
-     */
-    CubeCoordinate.prototype.getNeighbour = function (directionIndex) {
-        return this.add(this.directions[directionIndex]);
-    };
-
-    /**
      * @param {number} radius
      * @return {[CubeCoordinate]}
      */

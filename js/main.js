@@ -6,12 +6,11 @@
         var boardGenerator = new BoardGenerator();
 
         var board = boardGenerator.generateBoard(boardSize);
-        console.log(board);
 
         var $gameBoard = $('#game-board');
 
         var game = new Game(board);
-        var renderer = new Renderer(board, 80, game);
+        var renderer = new Renderer(board, game);
 
         $gameBoard.append(renderer.getView());
 

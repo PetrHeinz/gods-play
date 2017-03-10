@@ -6,7 +6,6 @@
      */
     Cell = function (cubeCoordinate) {
         this.cubeCoordinate = cubeCoordinate;
-        this.neighbours = [];
     };
 
 })();
