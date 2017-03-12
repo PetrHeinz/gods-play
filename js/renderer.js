@@ -82,6 +82,7 @@
         var cubeCoordinate = cell.cubeCoordinate;
         hex.x = size * HEX_OFFSET_X * cubeCoordinate.x + this.pixiApp.renderer.width / 2;
         hex.y = size * HEX_OFFSET_Y * (cubeCoordinate.z + cubeCoordinate.x / 2) + this.pixiApp.renderer.height / 2;
+        addCoordinateAsText(hex, cubeCoordinate);
 
         hex.interactive = true;
         var self = this;
@@ -90,6 +91,27 @@
         });
 
         return hex;
+    };
+
+    /**
+     * @param {PIXI.Sprite} hex
+     * @param {CubeCoordinate} cubeCoordinate
+     */
+    var addCoordinateAsText = function (hex, cubeCoordinate) {
+        var xText = new PIXI.Text(cubeCoordinate.x, {fontWeight: 900, fill: 'red'});
+        xText.x = HEX_WIDTH - 50;
+        xText.y = HEX_HEIGHT / 2 - 10;
+        hex.addChild(xText);
+
+        var yText = new PIXI.Text(cubeCoordinate.y, {fontWeight: 900, fill: 'green'});
+        yText.x = 35;
+        yText.y = 10;
+        hex.addChild(yText);
+
+        var zText = new PIXI.Text(cubeCoordinate.z, {fontWeight: 900, fill: 'blue'});
+        zText.x = 35;
+        zText.y = HEX_HEIGHT - 35;
+        hex.addChild(zText);
     };
 
     /**
