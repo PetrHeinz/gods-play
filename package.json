@@ -1,0 +1,28 @@
+{
+  "name": "gods-play",
+  "version": "0.1.0",
+  "description": "Browser single-machine multiplayer turn-base game built in JS played on a hexagonal grid. Basically about fighting wizards.",
+  "keywords": [
+    "game",
+    "javascript",
+    "hexagons",
+    "wizards",
+    "magic",
+    "turn-base",
+    "multi-player"
+  ],
+  "author": "Petr Heinz <noobos@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/PetrHeinz/gods-play#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-env": "^1.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PetrHeinz/gods-play.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PetrHeinz/gods-play/issues"
+  }
+}
