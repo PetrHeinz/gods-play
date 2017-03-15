@@ -1,3 +1,5 @@
+var CubeCoordinate;
+
 (function () {
 
     /**

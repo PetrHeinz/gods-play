@@ -1,3 +1,5 @@
+var Renderer;
+
 (function () {
 
     var HEX_WIDTH = 148;

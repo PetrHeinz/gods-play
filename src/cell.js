@@ -1,3 +1,5 @@
+var Cell;
+
 (function () {
 
     /**

@@ -1,3 +1,5 @@
+var BoardGenerator;
+
 (function () {
 
     BoardGenerator = function () {
