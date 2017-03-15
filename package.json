@@ -16,6 +16,7 @@
   "homepage": "https://github.com/PetrHeinz/gods-play#readme",
   "dependencies": {},
   "devDependencies": {
+    "babel-cli": "^6.24.0",
     "babel-preset-env": "^1.2.1"
   },
   "repository": {
@@ -24,5 +25,8 @@
   },
   "bugs": {
     "url": "https://github.com/PetrHeinz/gods-play/issues"
+  },
+  "scripts": {
+    "build": "babel src -d js"
   }
 }
