@@ -1,23 +1,12 @@
-var Board;
-
-(function () {
+class Board {
 
     /**
      * @param {number} size
      * @param {Cell[]} cells
-     * @constructor
      */
-    Board = function (size, cells) {
+    constructor(size, cells) {
+        this.size = size
+        this.cells = cells
+    }
 
-        /**
-         * @member {number}
-         */
-        this.size = size;
-
-        /**
-         * @member {Cell[]}
-         */
-        this.cells = cells;
-    };
-
-})();
+}

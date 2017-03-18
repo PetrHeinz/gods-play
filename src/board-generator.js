@@ -1,23 +1,21 @@
-var BoardGenerator;
+class BoardGenerator {
 
-(function () {
+    /**
+     * @param {number} boardSize
+     * @return {Board}
+     */
+    generateBoard(boardSize) {
+        let centerCubeCoordinate = new CubeCoordinate(0, 0, 0)
+        let cells = [new Cell(centerCubeCoordinate)]
 
-    BoardGenerator = function () {
-
-    };
-
-    BoardGenerator.prototype.generateBoard = function (boardSize) {
-        var centerCubeCoordinate = new CubeCoordinate(0, 0, 0);
-        var cells = [new Cell(centerCubeCoordinate)];
-
-        for (var radius = 1; radius <= boardSize; radius++) {
-            var ring = centerCubeCoordinate.getRing(radius);
-            for (var i in ring) {
-                cells.push(new Cell(ring[i]));
-            }
+        for (let radius = 1; radius <= boardSize; radius++) {
+            let ring = centerCubeCoordinate.getRing(radius)
+            ring.forEach(function (cubeCoordinate) {
+                cells.push(new Cell(cubeCoordinate))
+            })
         }
 
-        return new Board(boardSize, cells);
-    };
+        return new Board(boardSize, cells)
+    }
 
-})();
+}

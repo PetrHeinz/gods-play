@@ -1,22 +1,11 @@
-var Cell;
-
-(function () {
+class Cell {
 
     /**
-     * @param {CubeCoordinate} cubeCoordinate
-     * @constructor
+     * @param {cubeCoordinate} cubeCoordinate
      */
-    Cell = function (cubeCoordinate) {
+    constructor(cubeCoordinate) {
+        this.cubeCoordinate = cubeCoordinate
+        this.text = ''
+    }
 
-        /**
-         * @member {CubeCoordinate}
-         */
-        this.cubeCoordinate = cubeCoordinate;
-
-        /**
-         * @member {string}
-         */
-        this.text = '';
-    };
-
-})();
+}
