@@ -10,9 +10,16 @@ class Renderer {
      * @param {Game} game
      */
     constructor(board, game) {
+        /** @type {PIXI.Application} */
         this.pixiApp = new PIXI.Application()
+
+        /** @type {Board} */
         this.board = board
+
+        /** @type {Game} */
         this.game = game
+
+        /** @type {PIXI.Sprite[]} */
         this.hexes = []
     }
 

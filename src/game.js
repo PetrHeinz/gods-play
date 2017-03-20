@@ -4,7 +4,10 @@ class Game {
      * @param {Board} board
      */
     constructor(board) {
+        /** @type {Board} */
         this.board = board
+
+        /** @type {GameState} */
         this.gameState = new GameStateStandby()
     }
 

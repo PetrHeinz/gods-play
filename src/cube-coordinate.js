@@ -20,8 +20,13 @@ class CubeCoordinate {
      * @param {number} z
      */
     constructor(x, y, z) {
+        /** @type {number} */
         this.x = x
+
+        /** @type {number} */
         this.y = y
+
+        /** @type {number} */
         this.z = z
     }
 

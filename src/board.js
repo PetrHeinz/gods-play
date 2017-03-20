@@ -5,7 +5,10 @@ class Board {
      * @param {Cell[]} cells
      */
     constructor(size, cells) {
+        /** @type {number} */
         this.size = size
+
+        /** @type {Cell[]} */
         this.cells = cells
     }
 
