@@ -41,7 +41,7 @@ class Renderer {
         });
         this.pixiApp.ticker.add(function() {
             self.hexes.forEach(function (hex) {
-                hex.text.text = hex.cell.text
+                hex.text.text = hex.cell.unit !== null ? 'UNIT' : ''
             })
         });
     }

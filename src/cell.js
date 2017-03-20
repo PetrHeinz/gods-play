@@ -7,8 +7,8 @@ class Cell {
         /** @type {cubeCoordinate} */
         this.cubeCoordinate = cubeCoordinate
 
-        /** @type {string} */
-        this.text = ''
+        /** @type {Unit|null} */
+        this.unit = null
     }
 
 }

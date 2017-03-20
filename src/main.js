@@ -10,4 +10,6 @@
 
     renderer.createBoard()
 
+    Unit.createOn(board.cells[0])
+
 })();

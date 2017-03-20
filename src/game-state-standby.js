@@ -5,9 +5,9 @@ class GameStateStandby extends GameState {
      * @return {GameState}
      */
     cellClick(cell) {
-        cell.text = 'clicked'
+        let unit = cell.unit;
 
-        return this
+        return unit !== null ? new GameStateUnitSelected(unit) : this
     }
 
 }
