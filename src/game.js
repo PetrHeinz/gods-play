@@ -5,6 +5,7 @@ class Game {
      */
     constructor(board) {
         this.board = board
+        this.gameState = new GameStateStandby()
     }
 
     /**
@@ -12,7 +13,7 @@ class Game {
      */
     cellClick(cell) {
         if (this.board.cells.indexOf(cell) > -1) {
-            cell.text = 'clicked!!!'
+            this.gameState = this.gameState.cellClick(cell)
         }
     }
 
