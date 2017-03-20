@@ -12,7 +12,7 @@ class Game {
      * @param {Cell} cell
      */
     cellClick(cell) {
-        if (this.board.cells.indexOf(cell) > -1) {
+        if (this.board.hasCell(cell)) {
             this.gameState = this.gameState.cellClick(cell)
         }
     }

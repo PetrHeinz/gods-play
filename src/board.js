@@ -9,4 +9,11 @@ class Board {
         this.cells = cells
     }
 
+    /**
+     * @param {Cell} cell
+     */
+    hasCell(cell) {
+        return this.cells.indexOf(cell) > -1;
+    }
+
 }
