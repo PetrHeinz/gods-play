@@ -83,20 +83,33 @@ class Renderer {
         return hex;
 
         function addCoordinateAsText(hex, cubeCoordinate) {
-            let xText = new PIXI.Text(cubeCoordinate.x, {fontWeight: 900, fill: 'red'});
+            let xText = new PIXI.Text(cubeCoordinate.x, getTextStyle('#FF0000'));
             xText.x = HEX_WIDTH - 50;
             xText.y = HEX_HEIGHT / 2 - 10;
             hex.addChild(xText);
 
-            let yText = new PIXI.Text(cubeCoordinate.y, {fontWeight: 900, fill: 'green'});
+            let yText = new PIXI.Text(cubeCoordinate.y, getTextStyle('#00FF00'));
             yText.x = 35;
             yText.y = 10;
             hex.addChild(yText);
 
-            let zText = new PIXI.Text(cubeCoordinate.z, {fontWeight: 900, fill: 'blue'});
+            let zText = new PIXI.Text(cubeCoordinate.z, getTextStyle('#0000FF'));
             zText.x = 35;
             zText.y = HEX_HEIGHT - 35;
             hex.addChild(zText);
+        }
+
+        /**
+         * @param {string} color
+         * @return {PIXI.TextStyle}
+         */
+        function getTextStyle(color) {
+            return new PIXI.TextStyle({
+                fontWeight: 900,
+                fill: color,
+                dropShadow: true,
+                dropShadowBlur: 15
+            })
         }
     };
 
