@@ -32,7 +32,10 @@ class Renderer {
 
     createBoard() {
         let self = this;
-        PIXI.loader.add('hexGrass', 'assets/ryanshenk.hex.grass.png').load(function(loader, resources) {
+        Cell.getTypes().forEach(function (cellType) {
+            PIXI.loader.add('hex.' + cellType, 'assets/ryanshenk.hex.' + cellType + '.png')
+        })
+        PIXI.loader.load(function(loader, resources) {
             self.board.cells.forEach(function (cell) {
                 let hex = self.createHex(cell, resources)
                 self.pixiApp.stage.addChild(hex)
@@ -52,7 +55,7 @@ class Renderer {
      * @return {PIXI.Sprite}
      */
     createHex(cell, resources) {
-        let hex = new PIXI.Sprite(resources.hexGrass.texture)
+        let hex = new PIXI.Sprite(resources['hex.' + cell.type].texture)
 
         hex.cell = cell
         hex.text = new PIXI.Text(cell.text)
