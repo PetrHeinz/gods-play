@@ -28,6 +28,6 @@
     "url": "https://github.com/PetrHeinz/gods-play/issues"
   },
   "scripts": {
-    "build": "babel src -d js && browserify -e js/main.js -o js/gods-play.js"
+    "start": "babel src -d js && browserify -e js/main.js -o js/gods-play.js"
   }
 }
