@@ -1,4 +1,4 @@
-class GameState {
+export default class GameState {
 
     /**
      * @param {Cell} cell

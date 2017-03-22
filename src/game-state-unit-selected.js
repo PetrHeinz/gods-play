@@ -1,4 +1,7 @@
-class GameStateUnitSelected extends GameState {
+import GameState from "./game-state"
+import GameStateStandby from "./game-state-standby"
+
+export default class GameStateUnitSelected extends GameState {
 
     /**
      * @param {Unit} unit

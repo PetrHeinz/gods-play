@@ -1,4 +1,6 @@
-class Game {
+import GameStateStandby from "./game-state-standby"
+
+export default class Game {
 
     /**
      * @param {Board} board

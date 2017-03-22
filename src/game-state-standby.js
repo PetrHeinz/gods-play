@@ -1,4 +1,7 @@
-class GameStateStandby extends GameState {
+import GameState from "./game-state"
+import GameStateUnitSelected from "./game-state-unit-selected"
+
+export default class GameStateStandby extends GameState {
 
     /**
      * @param {Cell} cell

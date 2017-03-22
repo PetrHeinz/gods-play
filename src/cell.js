@@ -1,4 +1,4 @@
-class Cell {
+export default class Cell {
 
     /**
      * @return {string[]}

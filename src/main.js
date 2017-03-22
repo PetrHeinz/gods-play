@@ -1,3 +1,8 @@
+import BoardGenerator from "./board-generator"
+import Game from "./game"
+import Renderer from "./renderer"
+import Unit from "./unit"
+
 (function () {
 
     let boardSize = 5

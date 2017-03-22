@@ -1,9 +1,11 @@
+import Cell from "./cell"
+
 const HEX_WIDTH = 148;
 const HEX_HEIGHT = 130;
 const HEX_OFFSET_X = 115;
 const HEX_OFFSET_Y = 132;
 
-class Renderer {
+export default class Renderer {
 
     /**
      * @param {Board} board

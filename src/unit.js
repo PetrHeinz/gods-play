@@ -1,4 +1,4 @@
-class Unit {
+export default class Unit {
 
     /**
      * @param {Cell} cell

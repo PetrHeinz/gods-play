@@ -1,4 +1,8 @@
-class BoardGenerator {
+import Board from "./board"
+import Cell from "./cell"
+import CubeCoordinate from "./cube-coordinate"
+
+export default class BoardGenerator {
 
     /**
      * @param {number} boardSize

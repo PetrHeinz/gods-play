@@ -1,4 +1,4 @@
-class CubeCoordinate {
+export default class CubeCoordinate {
 
     /**
      * @return {CubeCoordinate[]}
