@@ -18,7 +18,8 @@
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-preset-env": "^1.2.1",
-    "browserify": "^14.1.0"
+    "browserify": "^14.1.0",
+    "exorcist": "^0.4.0"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,6 @@
     "url": "https://github.com/PetrHeinz/gods-play/issues"
   },
   "scripts": {
-    "start": "babel src -d js -s true && browserify -e js/main.js -o js/gods-play.js --debug"
+    "start": "babel src -d js -s true && browserify -e js/main.js --debug | exorcist js/gods-play.js.map > js/gods-play.js -b ./js"
   }
 }
