@@ -19,6 +19,7 @@
     "babel-preset-env": "^1.2.1",
     "babelify": "^7.3.0",
     "browserify": "^14.1.0",
+    "download-cli": "^1.0.1",
     "exorcist": "^0.4.0"
   },
   "repository": {
@@ -29,7 +30,8 @@
     "url": "https://github.com/PetrHeinz/gods-play/issues"
   },
   "scripts": {
-    "start": "browserify -e src/main.js --debug | exorcist js/gods-play.js.map > js/gods-play.js -b ./js"
+    "start": "browserify -e src/main.js --debug | exorcist js/gods-play.js.map > js/gods-play.js -b ./js",
+    "libs-update": "download https://pixijs.download/release/pixi.js https://pixijs.download/release/pixi.js.map --out ./js/libs"
   },
   "browserify": {
     "transform": [
