@@ -8,7 +8,7 @@ export default class Cell {
     }
 
     /**
-     * @param {cubeCoordinate} cubeCoordinate
+     * @param {CubeCoordinate} cubeCoordinate
      * @param {string} type
      */
     constructor(cubeCoordinate, type) {
@@ -16,7 +16,7 @@ export default class Cell {
             throw 'Error: Cell cannot be created with invalid type "' + type + '"'
         }
 
-        /** @type {cubeCoordinate} */
+        /** @type {CubeCoordinate} */
         this.cubeCoordinate = cubeCoordinate
 
         /** @type {string} */
