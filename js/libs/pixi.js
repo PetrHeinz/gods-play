@@ -1,6 +1,6 @@
 /*!
- * pixi.js - v4.4.1
- * Compiled Tue, 28 Feb 2017 12:35:07 UTC
+ * pixi.js - v4.4.3
+ * Compiled Thu, 23 Mar 2017 12:32:58 UTC
  *
  * pixi.js is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -184,13 +184,13 @@ exports.interleave3 = function(x, y, z) {
   y  = (y | (y<<4))  & 3272356035;
   y  = (y | (y<<2))  & 1227133513;
   x |= (y << 1);
-
+  
   z &= 0x3FF;
   z  = (z | (z<<16)) & 4278190335;
   z  = (z | (z<<8))  & 251719695;
   z  = (z | (z<<4))  & 3272356035;
   z  = (z | (z<<2))  & 1227133513;
-
+  
   return x | (z << 2);
 }
 
@@ -1429,7 +1429,7 @@ var Buffer = function(gl, type, data, drawType)
      *
      * @member {WebGLBuffer}
      */
-	this.buffer = gl.createBuffer();
+	this.buffer = gl.createBuffer(); 
 
 	/**
      * The type of the buffer
@@ -2418,7 +2418,7 @@ VertexArrayObject.prototype.destroy = function()
  */
 var createContext = function(canvas, options)
 {
-    var gl = canvas.getContext('webgl', options) ||
+    var gl = canvas.getContext('webgl', options) || 
          canvas.getContext('experimental-webgl', options);
 
     if (!gl)
@@ -2593,36 +2593,36 @@ module.exports = compileProgram;
  * @param type {String} Type of value
  * @param size {Number}
  */
-var defaultValue = function(type, size)
+var defaultValue = function(type, size) 
 {
     switch (type)
     {
         case 'float':
             return 0;
 
-        case 'vec2':
+        case 'vec2': 
             return new Float32Array(2 * size);
 
         case 'vec3':
             return new Float32Array(3 * size);
 
-        case 'vec4':
+        case 'vec4':     
             return new Float32Array(4 * size);
-
+            
         case 'int':
         case 'sampler2D':
             return 0;
 
-        case 'ivec2':
+        case 'ivec2':   
             return new Int32Array(2 * size);
 
         case 'ivec3':
             return new Int32Array(3 * size);
 
-        case 'ivec4':
+        case 'ivec4': 
             return new Int32Array(4 * size);
 
-        case 'bool':
+        case 'bool':     
             return false;
 
         case 'bvec2':
@@ -2639,7 +2639,7 @@ var defaultValue = function(type, size)
             return new Float32Array([1, 0,
                                      0, 1]);
 
-        case 'mat3':
+        case 'mat3': 
             return new Float32Array([1, 0, 0,
                                      0, 1, 0,
                                      0, 0, 1]);
@@ -2656,7 +2656,7 @@ var booleanArray = function(size)
 {
     var array = new Array(size);
 
-    for (var i = 0; i < array.length; i++)
+    for (var i = 0; i < array.length; i++) 
     {
         array[i] = false;
     }
@@ -2896,7 +2896,7 @@ module.exports = {
     extractUniforms: require('./extractUniforms'),
     generateUniformAccessObject: require('./generateUniformAccessObject'),
     mapSize: require('./mapSize'),
-    mapType: require('./mapType')
+    mapType: require('./mapType')  
 };
 },{"./compileProgram":14,"./defaultValue":15,"./extractAttributes":16,"./extractUniforms":17,"./generateUniformAccessObject":18,"./mapSize":20,"./mapType":21}],20:[function(require,module,exports){
 /**
@@ -2905,8 +2905,8 @@ module.exports = {
  * @param type {String}
  * @return {Number}
  */
-var mapSize = function(type)
-{
+var mapSize = function(type) 
+{ 
     return GLSL_TO_SIZE[type];
 };
 
@@ -2939,15 +2939,15 @@ module.exports = mapSize;
 },{}],21:[function(require,module,exports){
 
 
-var mapSize = function(gl, type)
+var mapSize = function(gl, type) 
 {
-    if(!GL_TABLE)
+    if(!GL_TABLE) 
     {
         var typeNames = Object.keys(GL_TO_GLSL_TYPES);
 
         GL_TABLE = {};
 
-        for(var i = 0; i < typeNames.length; ++i)
+        for(var i = 0; i < typeNames.length; ++i) 
         {
             var tn = typeNames[i];
             GL_TABLE[ gl[tn] ] = GL_TO_GLSL_TYPES[tn];
@@ -2969,17 +2969,17 @@ var GL_TO_GLSL_TYPES = {
   'INT_VEC2':    'ivec2',
   'INT_VEC3':    'ivec3',
   'INT_VEC4':    'ivec4',
-
+  
   'BOOL':        'bool',
   'BOOL_VEC2':   'bvec2',
   'BOOL_VEC3':   'bvec3',
   'BOOL_VEC4':   'bvec4',
-
+  
   'FLOAT_MAT2':  'mat2',
   'FLOAT_MAT3':  'mat3',
   'FLOAT_MAT4':  'mat4',
-
-  'SAMPLER_2D':  'sampler2D'
+  
+  'SAMPLER_2D':  'sampler2D'  
 };
 
 module.exports = mapSize;
@@ -8089,7 +8089,7 @@ exports.__esModule = true;
  * @name VERSION
  * @type {string}
  */
-var VERSION = exports.VERSION = '4.4.1';
+var VERSION = exports.VERSION = '4.4.3';
 
 /**
  * Two Pi.
@@ -9502,6 +9502,15 @@ var DisplayObject = function (_EventEmitter) {
          * @private
          */
         _this._mask = null;
+
+        /**
+         * If the object has been destroyed via destroy(). If true, it should not be used.
+         *
+         * @member {boolean}
+         * @private
+         * @readonly
+         */
+        _this._destroyed = false;
         return _this;
     }
 
@@ -9785,6 +9794,8 @@ var DisplayObject = function (_EventEmitter) {
 
         this.interactive = false;
         this.interactiveChildren = false;
+
+        this._destroyed = true;
     };
 
     /**
@@ -22538,7 +22549,7 @@ var Text = function (_Sprite) {
 
         context.font = fontStyle;
 
-        var width = Math.ceil(context.measureText('|MÃ‰q').width);
+        var width = Math.ceil(context.measureText('|MÉq').width);
         var baseline = Math.ceil(context.measureText('M').width);
         var height = 2 * baseline;
 
@@ -22554,7 +22565,7 @@ var Text = function (_Sprite) {
 
         context.textBaseline = 'alphabetic';
         context.fillStyle = '#000';
-        context.fillText('|MÃ‰q', 0, baseline);
+        context.fillText('|MÉq', 0, baseline);
 
         var imagedata = context.getImageData(0, 0, width, height).data;
         var pixels = imagedata.length;
@@ -23599,6 +23610,15 @@ var BaseTexture = function (_EventEmitter) {
         }
 
         /**
+         * If the object has been destroyed via destroy(). If true, it should not be used.
+         *
+         * @member {boolean}
+         * @private
+         * @readonly
+         */
+        _this._destroyed = false;
+
+        /**
          * Fired when a not-immediately-available source finishes loading.
          *
          * @protected
@@ -23976,6 +23996,8 @@ var BaseTexture = function (_EventEmitter) {
         this.source = null;
 
         this.dispose();
+
+        this._destroyed = true;
     };
 
     /**
@@ -25674,7 +25696,7 @@ var Ticker = function () {
          * Opposed to what the scalar {@link PIXI.ticker.Ticker#deltaTime}
          * is based, this value is neither capped nor scaled.
          * If the platform supports DOMHighResTimeStamp,
-         * this value will have a precision of 1 Âµs.
+         * this value will have a precision of 1 µs.
          * Defaults to target frame time
          *
          * @member {number}
@@ -25687,7 +25709,7 @@ var Ticker = function () {
          * This value is also reset internally outside of invoking
          * update, but only when a new animation frame is requested.
          * If the platform supports DOMHighResTimeStamp,
-         * this value will have a precision of 1 Âµs.
+         * this value will have a precision of 1 µs.
          *
          * @member {number}
          * @default 0
@@ -30040,10 +30062,13 @@ DisplayObject.prototype._destroyCachedDisplayObject = function _destroyCachedDis
  * Destroys the cached object.
  *
  * @private
+ * @param {object|boolean} [options] - Options parameter. A boolean will act as if all options
+ *  have been set to that value.
+ *  Used when destroying containers, see the Container.destroy method.
  */
-DisplayObject.prototype._cacheAsBitmapDestroy = function _cacheAsBitmapDestroy() {
+DisplayObject.prototype._cacheAsBitmapDestroy = function _cacheAsBitmapDestroy(options) {
     this.cacheAsBitmap = false;
-    this.destroy();
+    this.destroy(options);
 };
 
 },{"../core":63}],134:[function(require,module,exports){
@@ -30968,7 +30993,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *  container.filters = [colorMatrix];
  *  colorMatrix.contrast(2);
  * ```
- * @author ClÃ©ment Chenebault <clement@goodboydigital.com>
+ * @author Clément Chenebault <clement@goodboydigital.com>
  * @class
  * @extends PIXI.Filter
  * @memberof PIXI.filters
@@ -31948,7 +31973,7 @@ var InteractionEvent = function () {
     this.target = null;
 
     /**
-     * The object whose event listenerâ€™s callback is currently being invoked.
+     * The object whose event listener’s callback is currently being invoked.
      *
      * @member {PIXI.DisplayObject}
      */
@@ -32042,6 +32067,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 core.utils.mixins.delayMixin(core.DisplayObject.prototype, _interactiveTarget2.default);
 
 var MOUSE_POINTER_ID = 'MOUSE';
+
+// private constants for use in processInteractive - tracks whether we hit anything at all, or an
+// actual interactive child, so that we can keep that state going back up the display tree
+var HIT_NONE = 0;
+var HIT_ANY = 1;
+var HIT_INTERACTIVE = 2;
 
 /**
  * The interaction manager deals with mouse, touch and pointer events. Any DisplayObject can be interactive
@@ -32764,7 +32795,7 @@ var InteractionManager = function (_EventEmitter) {
      *  interactionEvent, displayObject and hit will be passed to the function
      * @param {boolean} [hitTest] - this indicates if the objects inside should be hit test against the point
      * @param {boolean} [interactive] - Whether the displayObject is interactive
-     * @return {boolean} returns true if the displayObject hit the point
+     * @return {number} returns 1 or 2 if the displayObject hit the point, 0 if not
      */
 
 
@@ -32790,7 +32821,7 @@ var InteractionManager = function (_EventEmitter) {
 
         interactive = displayObject.interactive || interactive;
 
-        var hit = false;
+        var hit = HIT_NONE;
         var interactiveParent = interactive;
 
         // if the displayobject has a hitArea, then it does not need to hitTest children.
@@ -32804,8 +32835,6 @@ var InteractionManager = function (_EventEmitter) {
                 }
             }
 
-        var keepHitTestingAfterChildren = hitTest;
-
         // ** FREE TIP **! If an object is not interactive or has no buttons in it
         // (such as a game scene!) set interactiveChildren to false for that displayObject.
         // This will allow pixi to completely ignore and bypass checking the displayObjects children.
@@ -32816,14 +32845,14 @@ var InteractionManager = function (_EventEmitter) {
                 var child = children[i];
 
                 // time to get recursive.. if this function will return if something is hit..
-                if (this.processInteractive(interactionEvent, child, func, hitTest, interactiveParent)) {
+                var childHit = this.processInteractive(interactionEvent, child, func, hitTest, interactiveParent);
+
+                if (childHit) {
                     // its a good idea to check if a child has lost its parent.
                     // this means it has been removed whilst looping so its best
                     if (!child.parent) {
                         continue;
                     }
-
-                    hit = true;
 
                     // we no longer need to hit test any more objects in this container as we we
                     // now know the parent has been hit
@@ -32834,30 +32863,32 @@ var InteractionManager = function (_EventEmitter) {
                     // This means we no longer need to hit test anything else. We still need to run
                     // through all objects, but we don't need to perform any hit tests.
 
-                    keepHitTestingAfterChildren = false;
-
-                    if (child.interactive) {
+                    if (childHit === HIT_INTERACTIVE) {
                         hitTest = false;
+                        hit = HIT_INTERACTIVE;
+                    } else if (hit === HIT_NONE) {
+                        hit = HIT_ANY;
                     }
-
-                    // we can break now as we have hit an object.
                 }
             }
         }
-
-        hitTest = keepHitTestingAfterChildren;
 
         // no point running this if the item is not interactive or does not have an interactive parent.
         if (interactive) {
             // if we are hit testing (as in we have no hit any objects yet)
             // We also don't need to worry about hit testing if once of the displayObjects children
-            // has already been hit!
-            if (hitTest && !hit) {
+            // has already been hit - but only if it was interactive, otherwise we need to keep
+            // looking for an interactive child, just in case we hit one
+            if (hitTest && hit !== HIT_INTERACTIVE) {
                 if (displayObject.hitArea) {
                     displayObject.worldTransform.applyInverse(point, this._tempPoint);
-                    hit = displayObject.hitArea.contains(this._tempPoint.x, this._tempPoint.y);
+                    if (displayObject.hitArea.contains(this._tempPoint.x, this._tempPoint.y)) {
+                        hit = displayObject.interactive ? HIT_INTERACTIVE : HIT_ANY;
+                    }
                 } else if (displayObject.containsPoint) {
-                    hit = displayObject.containsPoint(point);
+                    if (displayObject.containsPoint(point)) {
+                        hit = displayObject.interactive ? HIT_INTERACTIVE : HIT_ANY;
+                    }
                 }
             }
 
@@ -32866,7 +32897,7 @@ var InteractionManager = function (_EventEmitter) {
                     interactionEvent.target = displayObject;
                 }
 
-                func(interactionEvent, displayObject, hit);
+                func(interactionEvent, displayObject, !!hit);
             }
         }
 
@@ -33087,9 +33118,9 @@ var InteractionManager = function (_EventEmitter) {
             // update the down state of the tracking data
             if (trackingData) {
                 if (isRightButton) {
-                    trackingData.rightDown = hit;
+                    trackingData.rightDown = false;
                 } else {
-                    trackingData.leftDown = hit;
+                    trackingData.leftDown = false;
                 }
             }
         }
@@ -33219,6 +33250,10 @@ var InteractionManager = function (_EventEmitter) {
         this.emit('pointerout', interactionEvent);
         if (event.pointerType === 'mouse') {
             this.emit('mouseout', interactionEvent);
+        } else {
+            // we can get touchleave events after touchend, so we want to make sure we don't
+            // introduce memory leaks
+            this.releaseInteractionDataForPointerId(interactionData.identifier);
         }
     };
 
@@ -37141,11 +37176,13 @@ var BasePrepare = function () {
             var item = this.queue[0];
             var uploaded = false;
 
-            for (var i = 0, len = this.uploadHooks.length; i < len; i++) {
-                if (this.uploadHooks[i](this.uploadHookHelper, item)) {
-                    this.queue.shift();
-                    uploaded = true;
-                    break;
+            if (item && !item._destroyed) {
+                for (var i = 0, len = this.uploadHooks.length; i < len; i++) {
+                    if (this.uploadHooks[i](this.uploadHookHelper, item)) {
+                        this.queue.shift();
+                        uploaded = true;
+                        break;
+                    }
                 }
             }
 
