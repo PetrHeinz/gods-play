@@ -71,4 +71,11 @@ export default class CubeCoordinate {
         return ring;
     }
 
+    /**
+     * @return {string}
+     */
+    toString() {
+        return [this.x, this.y, this.z].join(',')
+    }
+
 }
