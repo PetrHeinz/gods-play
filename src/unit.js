@@ -26,6 +26,9 @@ export default class Unit {
         if (cell.unit !== null) {
             throw 'Error: Unit cannot be moved on Cell with assigned Unit'
         }
+        if (!this.cell.hasNeighbor(cell)) {
+            throw 'Error: Unit cannot be moved on non-neighboring Cell'
+        }
         this.cell.unit = null
         this.cell = cell
 

@@ -28,6 +28,17 @@ export default class Board {
 
         this.cells.push(cell)
         this.cellsByCoordinate[cell.coordinate] = cell
+
+        let self = this
+        let neighborCoordinates = cell.coordinate.getRing(1)
+        neighborCoordinates.forEach(function (neighborCoordinate) {
+            if (self.cellsByCoordinate.hasOwnProperty(neighborCoordinate)) {
+                let neighbor = self.cellsByCoordinate[neighborCoordinate]
+
+                cell.addNeighbor(neighbor)
+                neighbor.addNeighbor(cell)
+            }
+        })
     }
 
     /**

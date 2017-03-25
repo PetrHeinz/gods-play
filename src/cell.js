@@ -27,6 +27,24 @@ export default class Cell {
 
         /** @type {Unit|null} */
         this.unit = null
+
+        /** @type {Cell[]} */
+        this.neighbors = []
+    }
+
+    /**
+     * @param {Cell} cell
+     */
+    addNeighbor(cell) {
+        this.neighbors.push(cell)
+    }
+
+    /**
+     * @param {Cell} cell
+     * @return bool
+     */
+    hasNeighbor(cell) {
+        return this.neighbors.indexOf(cell) > -1
     }
 
 }
