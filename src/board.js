@@ -2,14 +2,20 @@ export default class Board {
 
     /**
      * @param {number} size
-     * @param {Cell[]} cells
      */
-    constructor(size, cells) {
+    constructor(size) {
         /** @type {number} */
         this.size = size
 
         /** @type {Cell[]} */
-        this.cells = cells
+        this.cells = []
+    }
+
+    /**
+     * @param {Cell} cell
+     */
+    addCell(cell) {
+        this.cells.push(cell)
     }
 
     /**
