@@ -71,10 +71,10 @@ export default class Renderer {
         hex.width = size * HEX_WIDTH
         hex.height = size * HEX_HEIGHT
 
-        let cubeCoordinate = cell.cubeCoordinate
-        hex.x = size * HEX_OFFSET_X * cubeCoordinate.x + this.pixiApp.renderer.width / 2
-        hex.y = size * HEX_OFFSET_Y * (cubeCoordinate.z + cubeCoordinate.x / 2) + this.pixiApp.renderer.height / 2
-        addCoordinateAsText(hex, cubeCoordinate)
+        let coordinate = cell.coordinate
+        hex.x = size * HEX_OFFSET_X * coordinate.x + this.pixiApp.renderer.width / 2
+        hex.y = size * HEX_OFFSET_Y * (coordinate.z + coordinate.x / 2) + this.pixiApp.renderer.height / 2
+        addCoordinateAsText(hex, coordinate)
 
         hex.interactive = true
         let self = this
@@ -84,18 +84,18 @@ export default class Renderer {
 
         return hex;
 
-        function addCoordinateAsText(hex, cubeCoordinate) {
-            let xText = new PIXI.Text(cubeCoordinate.x, getTextStyle('#FF0000'));
+        function addCoordinateAsText(hex, coordinate) {
+            let xText = new PIXI.Text(coordinate.x, getTextStyle('#FF0000'));
             xText.x = HEX_WIDTH - 50;
             xText.y = HEX_HEIGHT / 2 - 10;
             hex.addChild(xText);
 
-            let yText = new PIXI.Text(cubeCoordinate.y, getTextStyle('#00FF00'));
+            let yText = new PIXI.Text(coordinate.y, getTextStyle('#00FF00'));
             yText.x = 35;
             yText.y = 10;
             hex.addChild(yText);
 
-            let zText = new PIXI.Text(cubeCoordinate.z, getTextStyle('#0000FF'));
+            let zText = new PIXI.Text(coordinate.z, getTextStyle('#0000FF'));
             zText.x = 35;
             zText.y = HEX_HEIGHT - 35;
             hex.addChild(zText);

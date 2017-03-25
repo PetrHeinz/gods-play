@@ -11,13 +11,13 @@ export default class BoardGenerator {
     generateBoard(boardSize) {
         let board = new Board(boardSize)
 
-        let centerCubeCoordinate = new CubeCoordinate(0, 0, 0)
-        board.addCell(new Cell(centerCubeCoordinate, getRandomCellType()))
+        let centerCoordinate = new CubeCoordinate(0, 0, 0)
+        board.addCell(new Cell(centerCoordinate, getRandomCellType()))
 
         for (let radius = 1; radius <= boardSize; radius++) {
-            let ring = centerCubeCoordinate.getRing(radius)
-            ring.forEach(function (cubeCoordinate) {
-                board.addCell(new Cell(cubeCoordinate, getRandomCellType()))
+            let ring = centerCoordinate.getRing(radius)
+            ring.forEach(function (coordinate) {
+                board.addCell(new Cell(coordinate, getRandomCellType()))
             })
         }
 

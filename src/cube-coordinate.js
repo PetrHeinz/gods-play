@@ -31,14 +31,14 @@ export default class CubeCoordinate {
     }
 
     /**
-     * @param {CubeCoordinate} cubeCoordinate
+     * @param {CubeCoordinate} coordinate
      * @return {CubeCoordinate}
      */
-    add(cubeCoordinate) {
+    add(coordinate) {
         return new CubeCoordinate(
-            this.x + cubeCoordinate.x,
-            this.y + cubeCoordinate.y,
-            this.z + cubeCoordinate.z
+            this.x + coordinate.x,
+            this.y + coordinate.y,
+            this.z + coordinate.z
         )
     }
 
@@ -60,11 +60,11 @@ export default class CubeCoordinate {
      */
     getRing(radius) {
         let ring = []
-        let cubeCoordinate = this.add(CubeCoordinate.directions[4].scale(radius))
-        CubeCoordinate.directions.forEach(function (directionCubeCoordinate) {
+        let coordinate = this.add(CubeCoordinate.directions[4].scale(radius))
+        CubeCoordinate.directions.forEach(function (directionCoordinate) {
             for (let j = 0; j < radius; j++) {
-                ring.push(cubeCoordinate)
-                cubeCoordinate = cubeCoordinate.add(directionCubeCoordinate)
+                ring.push(coordinate)
+                coordinate = coordinate.add(directionCoordinate)
             }
         })
 

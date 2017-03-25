@@ -8,16 +8,16 @@ export default class Cell {
     }
 
     /**
-     * @param {CubeCoordinate} cubeCoordinate
+     * @param {CubeCoordinate} coordinate
      * @param {string} type
      */
-    constructor(cubeCoordinate, type) {
+    constructor(coordinate, type) {
         if (Cell.getTypes().indexOf(type) === -1) {
             throw 'Error: Cell cannot be created with invalid type "' + type + '"'
         }
 
         /** @type {CubeCoordinate} */
-        this.cubeCoordinate = cubeCoordinate
+        this.coordinate = coordinate
 
         /** @type {string} */
         this.type = type
