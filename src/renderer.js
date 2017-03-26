@@ -1,9 +1,9 @@
 import Cell from "./cell"
 
-const HEX_WIDTH = 148;
-const HEX_HEIGHT = 130;
-const HEX_OFFSET_X = 115;
-const HEX_OFFSET_Y = 132;
+const HEX_WIDTH = 148
+const HEX_HEIGHT = 130
+const HEX_OFFSET_X = 115
+const HEX_OFFSET_Y = 132
 
 export default class Renderer {
 
@@ -33,7 +33,7 @@ export default class Renderer {
     }
 
     createBoard() {
-        let self = this;
+        let self = this
         Cell.getTypes().forEach(function (cellType) {
             PIXI.loader.add('hex.' + cellType, 'assets/ryanshenk.hex.' + cellType + '.png')
         })
@@ -43,12 +43,12 @@ export default class Renderer {
                 self.pixiApp.stage.addChild(hex)
                 self.hexes.push(hex)
             })
-        });
+        })
         this.pixiApp.ticker.add(function() {
             self.hexes.forEach(function (hex) {
                 hex.text.text = hex.cell.unit !== null ? 'UNIT' : ''
             })
-        });
+        })
     }
 
     /**
@@ -80,25 +80,25 @@ export default class Renderer {
         let self = this
         hex.on('mouseup', function () {
             self.game.cellClick(this.cell)
-        });
+        })
 
-        return hex;
+        return hex
 
         function addCoordinateAsText(hex, coordinate) {
-            let xText = new PIXI.Text(coordinate.x, getTextStyle('#FF0000'));
-            xText.x = HEX_WIDTH - 50;
-            xText.y = HEX_HEIGHT / 2 - 10;
-            hex.addChild(xText);
+            let xText = new PIXI.Text(coordinate.x, getTextStyle('#FF0000'))
+            xText.x = HEX_WIDTH - 50
+            xText.y = HEX_HEIGHT / 2 - 10
+            hex.addChild(xText)
 
-            let yText = new PIXI.Text(coordinate.y, getTextStyle('#00FF00'));
-            yText.x = 35;
-            yText.y = 10;
-            hex.addChild(yText);
+            let yText = new PIXI.Text(coordinate.y, getTextStyle('#00FF00'))
+            yText.x = 35
+            yText.y = 10
+            hex.addChild(yText)
 
-            let zText = new PIXI.Text(coordinate.z, getTextStyle('#0000FF'));
-            zText.x = 35;
-            zText.y = HEX_HEIGHT - 35;
-            hex.addChild(zText);
+            let zText = new PIXI.Text(coordinate.z, getTextStyle('#0000FF'))
+            zText.x = 35
+            zText.y = HEX_HEIGHT - 35
+            hex.addChild(zText)
         }
 
         /**
@@ -113,7 +113,7 @@ export default class Renderer {
                 dropShadowBlur: 15
             })
         }
-    };
+    }
 
     /**
      * @return {number}
@@ -123,6 +123,6 @@ export default class Renderer {
         let ySize = this.pixiApp.renderer.height / HEX_OFFSET_Y / (this.board.size * 2 + 1)
 
         return Math.min(xSize, ySize)
-    };
+    }
 
 }

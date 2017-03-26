@@ -45,7 +45,7 @@ export default class Board {
      * @param {Cell} cell
      */
     hasCell(cell) {
-        return this.cells.indexOf(cell) > -1;
+        return this.cells.indexOf(cell) > -1
     }
 
 }

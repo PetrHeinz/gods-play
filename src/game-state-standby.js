@@ -8,7 +8,7 @@ export default class GameStateStandby extends GameState {
      * @return {GameState}
      */
     cellClick(cell) {
-        let unit = cell.unit;
+        let unit = cell.unit
 
         return unit !== null ? new GameStateUnitSelected(unit) : this
     }

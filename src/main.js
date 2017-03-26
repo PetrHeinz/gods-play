@@ -17,4 +17,4 @@ import Unit from "./unit"
 
     Unit.createOn(board.cells[0])
 
-})();
+})()

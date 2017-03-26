@@ -68,7 +68,7 @@ export default class CubeCoordinate {
             }
         })
 
-        return ring;
+        return ring
     }
 
     /**
