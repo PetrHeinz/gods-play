@@ -17,7 +17,7 @@ export default class Game {
      * @param {Cell} cell
      */
     cellClick(cell) {
-        if (this.board.hasCell(cell)) {
+        if (this.board.hasChild(cell)) {
             this.gameState = this.gameState.cellClick(cell)
         }
     }

@@ -53,6 +53,22 @@ export default class Cell extends GameObject {
     }
 
     /**
+     * @param {Cell} neighbor
+     */
+    removeNeighbor(neighbor) {
+        if (!this.hasNeighbor(neighbor)) {
+            throw 'Error: Neighbor not found'
+        }
+
+        let index = this.neighbors.indexOf(neighbor)
+        this.neighbors.splice(index, 1)
+
+        if (neighbor.hasNeighbor(this)) {
+            neighbor.removeNeighbor(this)
+        }
+    }
+
+    /**
      * @return {Unit}
      */
     createUnit() {
@@ -60,7 +76,7 @@ export default class Cell extends GameObject {
             throw 'Error: Unit cannot be created on Cell with assigned Unit'
         }
 
-        return this.unit = this.factory.create(Unit, this)
+        return this.unit = this.createChild(Unit, this)
     }
 
 }

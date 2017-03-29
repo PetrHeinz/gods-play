@@ -12,9 +12,6 @@ export default class Board extends GameObject {
         /** @type {number} */
         this.size = size
 
-        /** @type {Cell[]} */
-        this.cells = []
-
         /** @type {Object.<string, Cell>} */
         this.cellsByCoordinate = {}
     }
@@ -24,7 +21,7 @@ export default class Board extends GameObject {
      * @param {string} type
      * @return {Cell}
      */
-    createCell(coordinate, type) {
+    createChild(coordinate, type) {
         if (this.cellsByCoordinate.hasOwnProperty(coordinate)) {
             throw 'Error: Cell cannot be added to Board already having Cell on the same coordinate'
         }
@@ -33,8 +30,7 @@ export default class Board extends GameObject {
             throw 'Error: Cell cannot be added to Board of insufficient size ' + this.size + ' (' + distance + ' needed)'
         }
 
-        let cell = this.factory.create(Cell, coordinate, type)
-        this.cells.push(cell)
+        let cell = super.createChild(Cell, coordinate, type)
         this.cellsByCoordinate[cell.coordinate] = cell
 
         let self = this
@@ -55,8 +51,11 @@ export default class Board extends GameObject {
      * @param {Cell} cell
      * @return bool
      */
-    hasCell(cell) {
-        return this.cells.indexOf(cell) > -1
+    removeChild(cell) {
+        super.removeChild(cell)
+        cell.neighbors.forEach(function (neighbor) {
+            cell.removeNeighbor(neighbor)
+        })
     }
 
 }

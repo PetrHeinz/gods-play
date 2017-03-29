@@ -38,7 +38,7 @@ export default class Renderer {
             PIXI.loader.add('hex.' + cellType, 'assets/ryanshenk.hex.' + cellType + '.png')
         })
         PIXI.loader.load(function(loader, resources) {
-            self.board.cells.forEach(function (cell) {
+            self.board.children.forEach(function (cell) {
                 let hex = self.createHex(cell, resources)
                 self.pixiApp.stage.addChild(hex)
                 self.hexes.push(hex)

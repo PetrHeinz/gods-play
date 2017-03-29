@@ -20,12 +20,12 @@ export default class BoardGenerator {
         let board = this.gameObjectFactory.create(Board, boardSize)
 
         let centerCoordinate = new CubeCoordinate(0, 0, 0)
-        board.createCell(centerCoordinate, getRandomCellType())
+        board.createChild(centerCoordinate, getRandomCellType())
 
         for (let radius = 1; radius <= boardSize; radius++) {
             let ring = centerCoordinate.getRing(radius)
             ring.forEach(function (coordinate) {
-                board.createCell(coordinate, getRandomCellType())
+                board.createChild(coordinate, getRandomCellType())
             })
         }
 
