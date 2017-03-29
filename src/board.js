@@ -10,7 +10,7 @@ export default class Board {
         /** @type {Cell[]} */
         this.cells = []
 
-        /** @type {Object} */
+        /** @type {Object.<string, Cell>} */
         this.cellsByCoordinate = {}
     }
 
@@ -43,6 +43,7 @@ export default class Board {
 
     /**
      * @param {Cell} cell
+     * @return bool
      */
     hasCell(cell) {
         return this.cells.indexOf(cell) > -1
