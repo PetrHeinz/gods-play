@@ -46,7 +46,7 @@ export default class Renderer {
         })
         this.pixiApp.ticker.add(function() {
             self.hexes.forEach(function (hex) {
-                hex.text.text = hex.cell.unit !== null ? 'UNIT' : ''
+                hex.text.text = hex.cell.unit !== null ? '♟' : ''
             })
         })
     }
@@ -60,8 +60,6 @@ export default class Renderer {
         let hex = new PIXI.Sprite(resources['hex.' + cell.type].texture)
 
         hex.cell = cell
-        hex.text = new PIXI.Text(cell.text)
-        hex.addChild(hex.text)
 
         hex.pivot.x = HEX_WIDTH / 2
         hex.pivot.y = HEX_HEIGHT / 2
@@ -75,6 +73,19 @@ export default class Renderer {
         hex.x = size * HEX_OFFSET_X * coordinate.x + this.pixiApp.renderer.width / 2
         hex.y = size * HEX_OFFSET_Y * (coordinate.z + coordinate.x / 2) + this.pixiApp.renderer.height / 2
         addCoordinateAsText(hex, coordinate)
+
+        hex.text = new PIXI.Text(cell.text, {
+            fill: '#FFFFFF',
+            stroke: '#AA0000',
+            strokeThickness: 10,
+            fontSize: 80,
+            //fontWeight: 900,
+            dropShadow: true,
+            dropShadowBlur: 30
+        })
+        hex.text.x = HEX_WIDTH / 2 - 50
+        hex.text.y = HEX_HEIGHT / 2 - 50
+        hex.addChild(hex.text)
 
         hex.interactive = true
         let self = this
