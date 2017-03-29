@@ -5,19 +5,27 @@ import CubeCoordinate from "./cube-coordinate"
 export default class BoardGenerator {
 
     /**
+     * @param {GameObjectFactory} gameObjectFactory
+     */
+    constructor(gameObjectFactory) {
+        /** @type {GameObjectFactory} */
+        this.gameObjectFactory = gameObjectFactory
+    }
+
+    /**
      * @param {number} boardSize
      * @return {Board}
      */
     generateBoard(boardSize) {
-        let board = new Board(boardSize)
+        let board = this.gameObjectFactory.create(Board, boardSize)
 
         let centerCoordinate = new CubeCoordinate(0, 0, 0)
-        board.addCell(new Cell(centerCoordinate, getRandomCellType()))
+        board.createCell(centerCoordinate, getRandomCellType())
 
         for (let radius = 1; radius <= boardSize; radius++) {
             let ring = centerCoordinate.getRing(radius)
             ring.forEach(function (coordinate) {
-                board.addCell(new Cell(coordinate, getRandomCellType()))
+                board.createCell(coordinate, getRandomCellType())
             })
         }
 

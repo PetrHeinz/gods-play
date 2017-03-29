@@ -1,4 +1,7 @@
-export default class Cell {
+import GameObject from "./game-object"
+import Unit from "./unit";
+
+export default class Cell extends GameObject {
 
     /**
      * @return {string[]}
@@ -12,6 +15,8 @@ export default class Cell {
      * @param {string} type
      */
     constructor(coordinate, type) {
+        super()
+
         if (Cell.getTypes().indexOf(type) === -1) {
             throw 'Error: Cell cannot be created with invalid type "' + type + '"'
         }
@@ -45,6 +50,17 @@ export default class Cell {
      */
     hasNeighbor(cell) {
         return this.neighbors.indexOf(cell) > -1
+    }
+
+    /**
+     * @return {Unit}
+     */
+    createUnit() {
+        if (this.unit !== null) {
+            throw 'Error: Unit cannot be created on Cell with assigned Unit'
+        }
+
+        return this.unit = this.factory.create(Unit, this)
     }
 
 }

@@ -1,22 +1,15 @@
-export default class Unit {
+import GameObject from "./game-object"
+
+export default class Unit extends GameObject {
 
     /**
      * @param {Cell} cell
      */
     constructor(cell) {
+        super()
+
         /** @type {Cell} */
         this.cell = cell
-    }
-
-    /**
-     * @param {Cell} cell
-     */
-    static createOn(cell) {
-        if (cell.unit !== null) {
-            throw 'Error: Unit cannot be created on Cell with assigned Unit'
-        }
-
-        return cell.unit = new Unit(cell)
     }
 
     /**
