@@ -29,12 +29,24 @@ export default class BoardGenerator {
             })
         }
 
+        Math.floor(Math.random() * board.children.length)
+        for (let i = 0; i < boardSize; i++) {
+            board.removeChild(getRandomCell())
+        }
+        getRandomCell().createUnit()
+
         return board
 
         function getRandomCellType() {
             let randomIndex = Math.floor(Math.random() * Cell.getTypes().length)
 
             return Cell.getTypes()[randomIndex]
+        }
+
+        function getRandomCell() {
+            let randomIndex = Math.floor(Math.random() * board.children.length)
+
+            return board.children[randomIndex]
         }
     }
 

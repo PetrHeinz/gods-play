@@ -41,8 +41,6 @@ export default class GodsPlay {
         this.document.body.appendChild(this.renderer.getView())
 
         this.renderer.createBoard()
-
-        board.cells[0].createUnit()
     }
 
 }
