@@ -30,8 +30,8 @@
     "url": "https://github.com/PetrHeinz/gods-play/issues"
   },
   "scripts": {
-    "build": "browserify -e src/main.js --debug -o js/gods-play.js",
-    "watch": "watchify -e src/main.js --debug -o js/gods-play.js",
+    "build": "browserify --debug -r ./src/gods-play.js:gods-play -o js/gods-play.js",
+    "watch": "watchify --debug -r ./src/gods-play.js:gods-play -o js/gods-play.js",
     "libs-update": "download https://pixijs.download/release/pixi.js https://pixijs.download/release/pixi.js.map --out ./js/libs"
   },
   "browserify": {

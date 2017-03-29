@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>God's Play</title>
-		<meta charset="UTF-8">
-		<script type="text/javascript" src="js/libs/pixi.js"></script>
-	</head>
-	<body>
-		<script type="text/javascript" src="js/gods-play.js"></script>
-	</body>
+    <head>
+        <title>God's Play</title>
+        <meta charset="UTF-8">
+        <script type="text/javascript" src="js/libs/pixi.js"></script>
+        <script type="text/javascript" src="js/gods-play.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            GodsPlay = require('gods-play').default
+
+            godsPlay = new GodsPlay(document)
+            godsPlay.initialize()
+        </script>
+    </body>
 </html>
