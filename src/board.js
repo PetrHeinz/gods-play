@@ -58,4 +58,19 @@ export default class Board extends GameObject {
         })
     }
 
+    /**
+     * @return {Cell[]}
+     */
+    getShuffledChildren() {
+        let children = this.children
+        for (let i = children.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1))
+            let child = children[i]
+            children[i] = children[j]
+            children[j] = child
+        }
+
+        return children
+    }
+
 }

@@ -39,6 +39,12 @@ export default class GodsPlay {
     initialize() {
         let board = this.boardGenerator.generateBoard(this.boardSize)
 
+        let shuffledCells = board.getShuffledChildren().slice()
+        shuffledCells.splice(0, this.boardSize).forEach(function (cell) {
+            board.removeChild(cell)
+        })
+        shuffledCells.pop().createUnit()
+
         let players = []
         for (let i = 0; i < this.playerCount; i++) {
             players.push(new Player('Player #' + (i + 1)))
