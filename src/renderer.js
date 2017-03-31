@@ -34,6 +34,7 @@ export default class Renderer {
 
     createBoard() {
         let self = this
+
         Cell.getTypes().forEach(function (cellType) {
             PIXI.loader.add('hex.' + cellType, 'assets/ryanshenk.hex.' + cellType + '.png')
         })
@@ -48,6 +49,17 @@ export default class Renderer {
             self.hexes.forEach(function (hex) {
                 hex.text.text = hex.cell.unit !== null ? '♟' : ''
             })
+        })
+
+        let playerText = new PIXI.Text('', {fill: '#FFFFFF'})
+        playerText.interactive = true
+        playerText.on('mouseup', function () {
+            self.game.endTurn()
+        })
+        self.pixiApp.stage.addChild(playerText)
+        this.pixiApp.ticker.add(function() {
+            let playerOnTurn = self.game.getPlayerOnTurn();
+            playerText.text = 'On turn: ' + playerOnTurn.name + '\n[click to end turn]'
         })
     }
 
