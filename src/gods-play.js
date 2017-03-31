@@ -20,6 +20,9 @@ export default class GodsPlay {
         /** @type {number} */
         this.playerCount = 2
 
+        /** @type {string[]} */
+        this.playerColors = ['#AA0000', '#0000AA', '#00AA00', '#AAAA00', '#00AAAA', '#AA00AA']
+
         /** @type {Events} */
         this.events = new Events()
 
@@ -43,11 +46,13 @@ export default class GodsPlay {
         shuffledCells.splice(0, this.boardSize).forEach(function (cell) {
             board.removeChild(cell)
         })
-        shuffledCells.pop().createUnit()
 
         let players = []
         for (let i = 0; i < this.playerCount; i++) {
-            players.push(new Player('Player #' + (i + 1)))
+            let player = new Player('Player #' + (i + 1), this.playerColors[i]);
+
+            shuffledCells.pop().createUnit(player)
+            players.push(player)
         }
 
         this.game = new Game(board, players)

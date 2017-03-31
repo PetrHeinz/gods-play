@@ -3,6 +3,17 @@ import GameObject from "./game-object"
 export default class Unit extends GameObject {
 
     /**
+     * @param {Player} owner
+     */
+    constructor(owner) {
+        super()
+
+        /** @type {Player} */
+        this.owner = owner
+    }
+
+
+    /**
      * @param {Cell} cell
      */
     moveTo(cell) {

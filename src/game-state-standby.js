@@ -10,7 +10,11 @@ export default class GameStateStandby extends GameState {
     cellClick(cell) {
         let unit = cell.unit
 
-        return unit !== null ? this.factory.create(GameStateUnitSelected, unit) : this
+        if (unit !== null && unit.owner === this.game.getPlayerOnTurn()) {
+            return this.factory.create(GameStateUnitSelected, unit)
+        }
+
+        return super.cellClick()
     }
 
 }

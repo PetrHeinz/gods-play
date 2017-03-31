@@ -69,14 +69,15 @@ export default class Cell extends GameObject {
     }
 
     /**
+     * @param {Player} owner
      * @return {Unit}
      */
-    createUnit() {
+    createUnit(owner) {
         if (this.unit !== null) {
             throw 'Error: Unit cannot be created on Cell with assigned Unit'
         }
 
-        return this.unit = this.createChild(Unit, this)
+        return this.unit = this.createChild(Unit, owner)
     }
 
 }

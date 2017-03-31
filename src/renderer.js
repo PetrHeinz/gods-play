@@ -47,7 +47,12 @@ export default class Renderer {
         })
         this.pixiApp.ticker.add(function() {
             self.hexes.forEach(function (hex) {
-                hex.text.text = hex.cell.unit !== null ? '♟' : ''
+                if (hex.cell.unit !== null) {
+                    hex.text.text = '♟'
+                    hex.text.style.stroke = hex.cell.unit.owner.color
+                } else {
+                    hex.text.text = ''
+                }
             })
         })
 

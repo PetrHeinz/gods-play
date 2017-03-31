@@ -33,6 +33,8 @@ export default class Game {
 
     endTurn() {
         this.playerTurn = (this.playerTurn + 1) % this.players.length
+
+        this.gameState = this.gameStateFactory.create(GameStateStandby)
     }
 
     /**
