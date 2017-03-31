@@ -1,4 +1,5 @@
-import GameStateStandby from "./game-state-standby"
+import GameStateFactory from "./game-state-factory"
+import GameStateStandby from "./game-state-standby";
 
 export default class Game {
 
@@ -9,8 +10,11 @@ export default class Game {
         /** @type {Board} */
         this.board = board
 
+        /** @type {GameStateFactory} */
+        this.gameStateFactory = new GameStateFactory(this)
+
         /** @type {GameState} */
-        this.gameState = new GameStateStandby()
+        this.gameState = this.gameStateFactory.create(GameStateStandby)
     }
 
     /**

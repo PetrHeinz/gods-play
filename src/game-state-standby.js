@@ -1,5 +1,5 @@
 import GameState from "./game-state"
-import GameStateUnitSelected from "./game-state-unit-selected"
+import GameStateUnitSelected from "./game-state-unit-selected";
 
 export default class GameStateStandby extends GameState {
 
@@ -10,7 +10,7 @@ export default class GameStateStandby extends GameState {
     cellClick(cell) {
         let unit = cell.unit
 
-        return unit !== null ? new GameStateUnitSelected(unit) : this
+        return unit !== null ? this.factory.create(GameStateUnitSelected, unit) : this
     }
 
 }

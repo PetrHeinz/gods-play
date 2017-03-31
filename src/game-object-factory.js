@@ -13,6 +13,7 @@ export default class GameObjectFactory {
     /**
      * @param {Class} gameObjectClass
      * @param {...*} parameters
+     * @return {GameObject}
      */
     create(gameObjectClass, ...parameters) {
         let gameObject = new gameObjectClass(...parameters)
