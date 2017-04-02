@@ -56,16 +56,26 @@ export default class Renderer {
             })
         })
 
-        let playerText = new PIXI.Text('', {fill: '#FFFFFF'})
+        let playerText = new PIXI.Text(
+            getPlayerText(this.game.getPlayerOnTurn()),
+            {fill: '#FFFFFF'}
+        )
         playerText.interactive = true
         playerText.on('mouseup', function () {
             self.game.endTurn()
         })
         self.pixiApp.stage.addChild(playerText)
-        this.pixiApp.ticker.add(function() {
-            let playerOnTurn = self.game.getPlayerOnTurn();
-            playerText.text = 'On turn: ' + playerOnTurn.name + '\n[click to end turn]'
+        this.game.events.listen('endTurn', function (data) {
+            playerText.text = getPlayerText(data.playerOnTurn)
         })
+
+        /**
+         * @param {Player} player
+         * @return {string}
+         */
+        function getPlayerText(player) {
+            return 'On turn: ' + player.name + '\n[click to end turn]'
+        }
     }
 
     /**

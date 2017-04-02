@@ -55,7 +55,7 @@ export default class GodsPlay {
             players.push(player)
         }
 
-        this.game = new Game(board, players)
+        this.game = new Game(board, players, this.events)
         this.renderer = new Renderer(board, this.game)
 
         this.document.body.appendChild(this.renderer.getView())

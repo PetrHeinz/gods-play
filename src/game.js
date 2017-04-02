@@ -6,13 +6,17 @@ export default class Game {
     /**
      * @param {Board} board
      * @param {Player[]} players
+     * @param {Events} events
      */
-    constructor(board, players) {
+    constructor(board, players, events) {
         /** @type {Board} */
         this.board = board
 
         /** @type {Player[]} */
         this.players = players
+
+        /** @type {Events} */
+        this.events = events
 
         /** @type {number} */
         this.playerTurn = 0
@@ -35,6 +39,10 @@ export default class Game {
         this.playerTurn = (this.playerTurn + 1) % this.players.length
 
         this.gameState = this.gameStateFactory.create(GameStateStandby)
+
+        this.events.trigger('endTurn', {
+            playerOnTurn: this.getPlayerOnTurn()
+        })
     }
 
     /**
