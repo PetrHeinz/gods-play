@@ -1,4 +1,5 @@
 import Cell from "./cell"
+import HashMap from "hashmap"
 
 const HEX_WIDTH = 148
 const HEX_HEIGHT = 130
@@ -21,8 +22,8 @@ export default class Renderer {
         /** @type {Game} */
         this.game = game
 
-        /** @type {Object.<string, PIXI.Sprite>} */
-        this.hexesByCells = {}
+        /** @type {HashMap} */
+        this.hexesByCells = new HashMap()
     }
 
     /**
@@ -42,13 +43,13 @@ export default class Renderer {
             self.board.children.forEach(function (cell) {
                 let hex = self.createHex(cell, resources)
                 self.pixiApp.stage.addChild(hex)
-                self.hexesByCells[cell] = hex
+                self.hexesByCells.set(cell, hex)
             })
         })
         this.game.events.listen('unitMove', function (data) {
-            self.hexesByCells[data.unit.parent].text.text = '♟'
-            self.hexesByCells[data.unit.parent].text.style.stroke = data.unit.owner.color
-            self.hexesByCells[data.fromCell].text.text = ''
+            self.hexesByCells.get(data.unit.parent).text.text = '♟'
+            self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
+            self.hexesByCells.get(data.fromCell).text.text = ''
         })
 
 

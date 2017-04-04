@@ -1,5 +1,6 @@
 import GameObject from "./game-object"
-import Cell from "./cell";
+import Cell from "./cell"
+import HashMap from "hashmap"
 
 export default class Board extends GameObject {
 
@@ -12,8 +13,8 @@ export default class Board extends GameObject {
         /** @type {number} */
         this.size = size
 
-        /** @type {Object.<string, Cell>} */
-        this.cellsByCoordinate = {}
+        /** @type {HashMap} */
+        this.cellsByCoordinate = new HashMap()
     }
 
     /**
@@ -22,7 +23,7 @@ export default class Board extends GameObject {
      * @return {Cell}
      */
     createChild(coordinate, type) {
-        if (this.cellsByCoordinate.hasOwnProperty(coordinate)) {
+        if (this.cellsByCoordinate.has(coordinate)) {
             throw 'Error: Cell cannot be added to Board already having Cell on the same coordinate'
         }
         let distance = Math.max(Math.abs(coordinate.x), Math.abs(coordinate.y), Math.abs(coordinate.z))
@@ -31,13 +32,13 @@ export default class Board extends GameObject {
         }
 
         let cell = super.createChild(Cell, coordinate, type)
-        this.cellsByCoordinate[cell.coordinate] = cell
+        this.cellsByCoordinate.set(cell.coordinate, cell)
 
         let self = this
         let neighborCoordinates = cell.coordinate.getRing(1)
         neighborCoordinates.forEach(function (neighborCoordinate) {
-            if (self.cellsByCoordinate.hasOwnProperty(neighborCoordinate)) {
-                let neighbor = self.cellsByCoordinate[neighborCoordinate]
+            if (self.cellsByCoordinate.has(neighborCoordinate)) {
+                let neighbor = self.cellsByCoordinate.get(neighborCoordinate)
 
                 cell.addNeighbor(neighbor)
                 neighbor.addNeighbor(cell)

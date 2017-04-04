@@ -1,6 +1,6 @@
 import Board from "./board"
 import Cell from "./cell"
-import CubeCoordinate from "./cube-coordinate"
+import CubeCoordinateMap from "./cube-coordinate-map"
 
 export default class BoardGenerator {
 
@@ -19,11 +19,11 @@ export default class BoardGenerator {
     generateBoard(boardSize) {
         let board = this.gameObjectFactory.create(Board, boardSize)
 
-        let centerCoordinate = new CubeCoordinate(0, 0, 0)
-        board.createChild(centerCoordinate, getRandomCellType())
+        let map = new CubeCoordinateMap()
+        board.createChild(map.origin, getRandomCellType())
 
         for (let radius = 1; radius <= boardSize; radius++) {
-            let ring = centerCoordinate.getRing(radius)
+            let ring = map.origin.getRing(radius)
             ring.forEach(function (coordinate) {
                 board.createChild(coordinate, getRandomCellType())
             })

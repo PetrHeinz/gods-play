@@ -14,7 +14,9 @@
   "author": "Petr Heinz <noobos@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/PetrHeinz/gods-play#readme",
-  "dependencies": {},
+  "dependencies": {
+    "hashmap": "^2.0.6"
+  },
   "devDependencies": {
     "babel-preset-env": "^1.2.1",
     "babelify": "^7.3.0",

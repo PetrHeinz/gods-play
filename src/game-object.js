@@ -1,14 +1,6 @@
-let ids = {}
-
 export default class GameObject {
 
     constructor() {
-        if (ids[this.constructor.name] === undefined) {
-            ids[this.constructor.name] = 1
-        }
-        /** @type {string} */
-        this.id = this.constructor.name + '#' + ids[this.constructor.name]++
-
         /** @type {GameObjectFactory|null} */
         this.factory = null
 
@@ -77,13 +69,6 @@ export default class GameObject {
         this.parent = parent
 
         parent.children.push(this)
-    }
-
-    /**
-     * @return {string}
-     */
-    toString() {
-        return this.id
     }
 
 }
