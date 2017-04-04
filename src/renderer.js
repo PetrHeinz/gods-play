@@ -21,8 +21,8 @@ export default class Renderer {
         /** @type {Game} */
         this.game = game
 
-        /** @type {PIXI.Sprite[]} */
-        this.hexes = []
+        /** @type {Object.<string, PIXI.Sprite>} */
+        this.hexesByCells = {}
     }
 
     /**
@@ -42,19 +42,15 @@ export default class Renderer {
             self.board.children.forEach(function (cell) {
                 let hex = self.createHex(cell, resources)
                 self.pixiApp.stage.addChild(hex)
-                self.hexes.push(hex)
+                self.hexesByCells[cell] = hex
             })
         })
-        this.pixiApp.ticker.add(function() {
-            self.hexes.forEach(function (hex) {
-                if (hex.cell.unit !== null) {
-                    hex.text.text = '♟'
-                    hex.text.style.stroke = hex.cell.unit.owner.color
-                } else {
-                    hex.text.text = ''
-                }
-            })
+        this.game.events.listen('unitMove', function (data) {
+            self.hexesByCells[data.unit.parent].text.text = '♟'
+            self.hexesByCells[data.unit.parent].text.style.stroke = data.unit.owner.color
+            self.hexesByCells[data.fromCell].text.text = ''
         })
+
 
         let playerText = new PIXI.Text(
             getPlayerText(this.game.getPlayerOnTurn()),
@@ -101,12 +97,11 @@ export default class Renderer {
         hex.y = size * HEX_OFFSET_Y * (coordinate.z + coordinate.x / 2) + this.pixiApp.renderer.height / 2
         addCoordinateAsText(hex, coordinate)
 
-        hex.text = new PIXI.Text(cell.text, {
+        hex.text = new PIXI.Text(cell.unit !== null ? '♟' : '', {
             fill: '#FFFFFF',
-            stroke: '#AA0000',
+            stroke: cell.unit !== null ? cell.unit.owner.color : '#FFFFFF',
             strokeThickness: 10,
             fontSize: 80,
-            //fontWeight: 900,
             dropShadow: true,
             dropShadowBlur: 30
         })

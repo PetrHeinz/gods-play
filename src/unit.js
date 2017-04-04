@@ -23,7 +23,10 @@ export default class Unit extends GameObject {
         if (!this.parent.hasNeighbor(cell)) {
             throw 'Error: Unit cannot be moved on non-neighboring Cell'
         }
+        let previousParent = this.parent
         this.setParent(cell)
+
+        this.events.trigger('unitMove', {unit: this, fromCell: previousParent})
     }
 
     /**
