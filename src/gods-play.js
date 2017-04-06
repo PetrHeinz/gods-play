@@ -4,6 +4,7 @@ import Renderer from "./renderer"
 import Events from "./events";
 import GameObjectFactory from "./game-object-factory";
 import Player from "./player";
+import GameConfig from "./game-config";
 
 export default class GodsPlay {
 
@@ -13,15 +14,6 @@ export default class GodsPlay {
     constructor(document) {
         /** @type {HTMLDocument} */
         this.document = document
-
-        /** @type {number} */
-        this.boardSize = 5
-
-        /** @type {number} */
-        this.playerCount = 2
-
-        /** @type {string[]} */
-        this.playerColors = ['#AA0000', '#0000AA', '#00AA00', '#AAAA00', '#00AAAA', '#AA00AA']
 
         /** @type {Events} */
         this.events = new Events()
@@ -39,8 +31,14 @@ export default class GodsPlay {
         this.renderer = null
     }
 
-    initialize() {
-        let board = this.boardGenerator.generateBoard(this.boardSize)
+    /**
+     * @param {GameConfig} [config]
+     */
+    initialize(config) {
+        if (config === undefined) {
+            config = new GameConfig()
+        }
+        let board = this.boardGenerator.generateBoard(config.boardSize)
 
         let shuffledCells = board.getShuffledChildren().slice()
         shuffledCells.splice(0, this.boardSize).forEach(function (cell) {
@@ -48,8 +46,8 @@ export default class GodsPlay {
         })
 
         let players = []
-        for (let i = 0; i < this.playerCount; i++) {
-            let player = new Player('Player #' + (i + 1), this.playerColors[i]);
+        for (let i = 0; i < config.playerCount; i++) {
+            let player = new Player('Player #' + (i + 1), config.playerColors[i]);
 
             shuffledCells.pop().createUnit(player)
             players.push(player)
