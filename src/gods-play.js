@@ -41,7 +41,7 @@ export default class GodsPlay {
         let board = this.boardGenerator.generateBoard(config.boardSize)
 
         let shuffledCells = board.getShuffledChildren().slice()
-        shuffledCells.splice(0, this.boardSize).forEach(function (cell) {
+        shuffledCells.splice(0, config.boardSize).forEach(function (cell) {
             board.removeChild(cell)
         })
 
