@@ -1,5 +1,5 @@
-import Cell from "./cell"
-import HashMap from "hashmap"
+import Cell from './cell'
+import HashMap from 'hashmap'
 
 const HEX_WIDTH = 148
 const HEX_HEIGHT = 130
@@ -7,156 +7,153 @@ const HEX_OFFSET_X = 115
 const HEX_OFFSET_Y = 132
 
 export default class Renderer {
+  /**
+   * @param {Board} board
+   * @param {Game} game
+   */
+  constructor (board, game) {
+    /** @type {PIXI.Application} */
+    this.pixiApp = new PIXI.Application()
+
+    /** @type {Board} */
+    this.board = board
+
+    /** @type {Game} */
+    this.game = game
+
+    /** @type {HashMap} */
+    this.hexesByCells = new HashMap()
+  }
+
+  /**
+   * @return {HTMLCanvasElement|WindowProxy|null}
+   */
+  getView () {
+    return this.pixiApp.view
+  }
+
+  createBoard () {
+    let self = this
+
+    Cell.getTypes().forEach(function (cellType) {
+      PIXI.loader.add('hex.' + cellType, 'assets/ryanshenk.hex.' + cellType + '.png')
+    })
+    PIXI.loader.load(function (loader, resources) {
+      self.board.children.forEach(function (cell) {
+        let hex = self.createHex(cell, resources)
+        self.pixiApp.stage.addChild(hex)
+        self.hexesByCells.set(cell, hex)
+      })
+    })
+    this.game.events.listen('unitMove', function (data) {
+      self.hexesByCells.get(data.unit.parent).text.text = '♟'
+      self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
+      self.hexesByCells.get(data.fromCell).text.text = ''
+    })
+
+    let playerText = new PIXI.Text(
+      getPlayerText(this.game.getPlayerOnTurn()),
+      {fill: '#FFFFFF'}
+    )
+    playerText.interactive = true
+    playerText.on('mouseup', function () {
+      self.game.endTurn()
+    })
+    self.pixiApp.stage.addChild(playerText)
+    this.game.events.listen('endTurn', function (data) {
+      playerText.text = getPlayerText(data.playerOnTurn)
+    })
 
     /**
-     * @param {Board} board
-     * @param {Game} game
+     * @param {Player} player
+     * @return {string}
      */
-    constructor(board, game) {
-        /** @type {PIXI.Application} */
-        this.pixiApp = new PIXI.Application()
-
-        /** @type {Board} */
-        this.board = board
-
-        /** @type {Game} */
-        this.game = game
-
-        /** @type {HashMap} */
-        this.hexesByCells = new HashMap()
+    function getPlayerText (player) {
+      return 'On turn: ' + player.name + '\n[click to end turn]'
     }
+  }
 
-    /**
-     * @return {HTMLCanvasElement|WindowProxy|null}
-     */
-    getView() {
-        return this.pixiApp.view
-    }
+  /**
+   * @param {Cell} cell
+   * @param {Resource[]} resources
+   * @return {PIXI.Sprite}
+   */
+  createHex (cell, resources) {
+    let hex = new PIXI.Sprite(resources['hex.' + cell.type].texture)
 
-    createBoard() {
-        let self = this
+    hex.cell = cell
 
-        Cell.getTypes().forEach(function (cellType) {
-            PIXI.loader.add('hex.' + cellType, 'assets/ryanshenk.hex.' + cellType + '.png')
-        })
-        PIXI.loader.load(function(loader, resources) {
-            self.board.children.forEach(function (cell) {
-                let hex = self.createHex(cell, resources)
-                self.pixiApp.stage.addChild(hex)
-                self.hexesByCells.set(cell, hex)
-            })
-        })
-        this.game.events.listen('unitMove', function (data) {
-            self.hexesByCells.get(data.unit.parent).text.text = '♟'
-            self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
-            self.hexesByCells.get(data.fromCell).text.text = ''
-        })
+    hex.pivot.x = HEX_WIDTH / 2
+    hex.pivot.y = HEX_HEIGHT / 2
 
+    let size = this.calculateSize()
 
-        let playerText = new PIXI.Text(
-            getPlayerText(this.game.getPlayerOnTurn()),
-            {fill: '#FFFFFF'}
-        )
-        playerText.interactive = true
-        playerText.on('mouseup', function () {
-            self.game.endTurn()
-        })
-        self.pixiApp.stage.addChild(playerText)
-        this.game.events.listen('endTurn', function (data) {
-            playerText.text = getPlayerText(data.playerOnTurn)
-        })
+    hex.width = size * HEX_WIDTH
+    hex.height = size * HEX_HEIGHT
 
-        /**
-         * @param {Player} player
-         * @return {string}
-         */
-        function getPlayerText(player) {
-            return 'On turn: ' + player.name + '\n[click to end turn]'
-        }
-    }
+    let coordinate = cell.coordinate
+    hex.x = size * HEX_OFFSET_X * coordinate.x + this.pixiApp.renderer.width / 2
+    hex.y = size * HEX_OFFSET_Y * (coordinate.z + coordinate.x / 2) + this.pixiApp.renderer.height / 2
+    addCoordinateAsText(hex, coordinate)
 
-    /**
-     * @param {Cell} cell
-     * @param {Resource[]} resources
-     * @return {PIXI.Sprite}
-     */
-    createHex(cell, resources) {
-        let hex = new PIXI.Sprite(resources['hex.' + cell.type].texture)
+    hex.text = new PIXI.Text(cell.unit !== null ? '♟' : '', {
+      fill: '#FFFFFF',
+      stroke: cell.unit !== null ? cell.unit.owner.color : '#FFFFFF',
+      strokeThickness: 10,
+      fontSize: 80,
+      dropShadow: true,
+      dropShadowBlur: 30
+    })
+    hex.text.x = HEX_WIDTH / 2 - 50
+    hex.text.y = HEX_HEIGHT / 2 - 50
+    hex.addChild(hex.text)
 
-        hex.cell = cell
+    hex.interactive = true
+    let self = this
+    hex.on('mouseup', function () {
+      self.game.cellClick(this.cell)
+    })
 
-        hex.pivot.x = HEX_WIDTH / 2
-        hex.pivot.y = HEX_HEIGHT / 2
+    return hex
 
-        let size = this.calculateSize()
+    function addCoordinateAsText (hex, coordinate) {
+      let xText = new PIXI.Text(coordinate.x, getTextStyle('#FF0000'))
+      xText.x = HEX_WIDTH - 50
+      xText.y = HEX_HEIGHT / 2 - 10
+      hex.addChild(xText)
 
-        hex.width = size * HEX_WIDTH
-        hex.height = size * HEX_HEIGHT
+      let yText = new PIXI.Text(coordinate.y, getTextStyle('#00FF00'))
+      yText.x = 35
+      yText.y = 10
+      hex.addChild(yText)
 
-        let coordinate = cell.coordinate
-        hex.x = size * HEX_OFFSET_X * coordinate.x + this.pixiApp.renderer.width / 2
-        hex.y = size * HEX_OFFSET_Y * (coordinate.z + coordinate.x / 2) + this.pixiApp.renderer.height / 2
-        addCoordinateAsText(hex, coordinate)
-
-        hex.text = new PIXI.Text(cell.unit !== null ? '♟' : '', {
-            fill: '#FFFFFF',
-            stroke: cell.unit !== null ? cell.unit.owner.color : '#FFFFFF',
-            strokeThickness: 10,
-            fontSize: 80,
-            dropShadow: true,
-            dropShadowBlur: 30
-        })
-        hex.text.x = HEX_WIDTH / 2 - 50
-        hex.text.y = HEX_HEIGHT / 2 - 50
-        hex.addChild(hex.text)
-
-        hex.interactive = true
-        let self = this
-        hex.on('mouseup', function () {
-            self.game.cellClick(this.cell)
-        })
-
-        return hex
-
-        function addCoordinateAsText(hex, coordinate) {
-            let xText = new PIXI.Text(coordinate.x, getTextStyle('#FF0000'))
-            xText.x = HEX_WIDTH - 50
-            xText.y = HEX_HEIGHT / 2 - 10
-            hex.addChild(xText)
-
-            let yText = new PIXI.Text(coordinate.y, getTextStyle('#00FF00'))
-            yText.x = 35
-            yText.y = 10
-            hex.addChild(yText)
-
-            let zText = new PIXI.Text(coordinate.z, getTextStyle('#0000FF'))
-            zText.x = 35
-            zText.y = HEX_HEIGHT - 35
-            hex.addChild(zText)
-        }
-
-        /**
-         * @param {string} color
-         * @return {PIXI.TextStyle}
-         */
-        function getTextStyle(color) {
-            return new PIXI.TextStyle({
-                fontWeight: 900,
-                fill: color,
-                dropShadow: true,
-                dropShadowBlur: 15
-            })
-        }
+      let zText = new PIXI.Text(coordinate.z, getTextStyle('#0000FF'))
+      zText.x = 35
+      zText.y = HEX_HEIGHT - 35
+      hex.addChild(zText)
     }
 
     /**
-     * @return {number}
+     * @param {string} color
+     * @return {PIXI.TextStyle}
      */
-    calculateSize() {
-        let xSize = this.pixiApp.renderer.width / HEX_OFFSET_X / (this.board.size * 2 + 1)
-        let ySize = this.pixiApp.renderer.height / HEX_OFFSET_Y / (this.board.size * 2 + 1)
-
-        return Math.min(xSize, ySize)
+    function getTextStyle (color) {
+      return new PIXI.TextStyle({
+        fontWeight: 900,
+        fill: color,
+        dropShadow: true,
+        dropShadowBlur: 15
+      })
     }
+  }
 
+  /**
+   * @return {number}
+   */
+  calculateSize () {
+    let xSize = this.pixiApp.renderer.width / HEX_OFFSET_X / (this.board.size * 2 + 1)
+    let ySize = this.pixiApp.renderer.height / HEX_OFFSET_Y / (this.board.size * 2 + 1)
+
+    return Math.min(xSize, ySize)
+  }
 }

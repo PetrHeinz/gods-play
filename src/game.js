@@ -1,57 +1,55 @@
-import GameStateFactory from "./game-state-factory"
-import GameStateStandby from "./game-state-standby";
+import GameStateFactory from './game-state-factory'
+import GameStateStandby from './game-state-standby'
 
 export default class Game {
+  /**
+   * @param {Board} board
+   * @param {Player[]} players
+   * @param {Events} events
+   */
+  constructor (board, players, events) {
+    /** @type {Board} */
+    this.board = board
 
-    /**
-     * @param {Board} board
-     * @param {Player[]} players
-     * @param {Events} events
-     */
-    constructor(board, players, events) {
-        /** @type {Board} */
-        this.board = board
+    /** @type {Player[]} */
+    this.players = players
 
-        /** @type {Player[]} */
-        this.players = players
+    /** @type {Events} */
+    this.events = events
 
-        /** @type {Events} */
-        this.events = events
+    /** @type {number} */
+    this.playerTurn = 0
 
-        /** @type {number} */
-        this.playerTurn = 0
+    /** @type {GameStateFactory} */
+    this.gameStateFactory = new GameStateFactory(this)
 
-        /** @type {GameStateFactory} */
-        this.gameStateFactory = new GameStateFactory(this)
+    /** @type {GameState} */
+    this.gameState = this.gameStateFactory.create(GameStateStandby)
+  }
 
-        /** @type {GameState} */
-        this.gameState = this.gameStateFactory.create(GameStateStandby)
+  /**
+   * @return {Player}
+   */
+  getPlayerOnTurn () {
+    return this.players[this.playerTurn]
+  }
+
+  endTurn () {
+    this.playerTurn = (this.playerTurn + 1) % this.players.length
+
+    this.gameState = this.gameStateFactory.create(GameStateStandby)
+
+    this.events.trigger('endTurn', {
+      playerOnTurn: this.getPlayerOnTurn()
+    })
+  }
+
+  /**
+   * @param {Cell} cell
+   */
+  cellClick (cell) {
+    if (this.board.hasChild(cell)) {
+      this.gameState = this.gameState.cellClick(cell)
     }
-
-    /**
-     * @return {Player}
-     */
-    getPlayerOnTurn() {
-        return this.players[this.playerTurn]
-    }
-
-    endTurn() {
-        this.playerTurn = (this.playerTurn + 1) % this.players.length
-
-        this.gameState = this.gameStateFactory.create(GameStateStandby)
-
-        this.events.trigger('endTurn', {
-            playerOnTurn: this.getPlayerOnTurn()
-        })
-    }
-
-    /**
-     * @param {Cell} cell
-     */
-    cellClick(cell) {
-        if (this.board.hasChild(cell)) {
-            this.gameState = this.gameState.cellClick(cell)
-        }
-    }
-
+  }
 }
