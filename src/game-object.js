@@ -1,3 +1,5 @@
+import Exception from './exception'
+
 export default class GameObject {
   constructor () {
     /** @type {GameObjectFactory|null} */
@@ -48,7 +50,7 @@ export default class GameObject {
    */
   removeChild (child) {
     if (!this.hasChild(child)) {
-      throw 'Error: Child not found'
+      throw new Exception('Child not found')
     }
 
     let index = this.children.indexOf(child)

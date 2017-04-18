@@ -1,4 +1,5 @@
 import GameObject from './game-object'
+import Exception from './exception'
 
 export default class Unit extends GameObject {
   /**
@@ -16,10 +17,10 @@ export default class Unit extends GameObject {
    */
   moveTo (cell) {
     if (cell.unit !== null) {
-      throw 'Error: Unit cannot be moved on Cell with assigned Unit'
+      throw new Exception('Unit cannot be moved on Cell with assigned Unit')
     }
     if (!this.parent.hasNeighbor(cell)) {
-      throw 'Error: Unit cannot be moved on non-neighboring Cell'
+      throw new Exception('Unit cannot be moved on non-neighboring Cell')
     }
     let previousParent = this.parent
     this.setParent(cell)

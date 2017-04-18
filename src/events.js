@@ -1,3 +1,5 @@
+import Exception from './exception'
+
 export default class Events {
   constructor () {
     /** @type {Object.<string, Function>[]} */
@@ -22,7 +24,7 @@ export default class Events {
    */
   trigger (name, data) {
     if (!this.callbacks.hasOwnProperty(name)) {
-      throw 'Notice: "' + name + '" has been called but no one listens...'
+      throw new Exception('Event "' + name + '" has been triggered but no one listens...', Exception.SEVERITY_NOTICE)
     }
 
     this.callbacks[name].forEach(function (callback) {

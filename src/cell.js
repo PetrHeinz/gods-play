@@ -1,5 +1,6 @@
 import GameObject from './game-object'
 import Unit from './unit'
+import Exception from './exception'
 
 export default class Cell extends GameObject {
   /**
@@ -17,10 +18,10 @@ export default class Cell extends GameObject {
     super()
 
     if (Cell.getTypes().indexOf(type) === -1) {
-      throw 'Error: Cell cannot be created with invalid type "' + type + '"'
+      throw new Exception('Cell cannot be created with invalid type "' + type + '"')
     }
     if (coordinate.x + coordinate.y + coordinate.z !== 0) {
-      throw 'Error: Cell cannot be created unless coordinates are on plane given by x + y + z = 0'
+      throw new Exception('Cell cannot be created unless coordinates are on plane given by x + y + z = 0')
     }
 
     /** @type {CubeCoordinate} */
@@ -56,7 +57,7 @@ export default class Cell extends GameObject {
    */
   removeNeighbor (neighbor) {
     if (!this.hasNeighbor(neighbor)) {
-      throw 'Error: Neighbor not found'
+      throw new Exception('Neighbor not found')
     }
 
     let index = this.neighbors.indexOf(neighbor)
@@ -73,7 +74,7 @@ export default class Cell extends GameObject {
    */
   createUnit (owner) {
     if (this.unit !== null) {
-      throw 'Error: Unit cannot be created on Cell with assigned Unit'
+      throw new Exception('Unit cannot be created on Cell with assigned Unit')
     }
 
     this.unit = this.createChild(Unit, owner)

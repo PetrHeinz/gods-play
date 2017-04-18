@@ -1,6 +1,7 @@
 import GameObject from './game-object'
 import Cell from './cell'
 import HashMap from 'hashmap'
+import Exception from './exception'
 
 export default class Board extends GameObject {
   /**
@@ -23,11 +24,11 @@ export default class Board extends GameObject {
    */
   createChild (coordinate, type) {
     if (this.cellsByCoordinate.has(coordinate)) {
-      throw 'Error: Cell cannot be added to Board already having Cell on the same coordinate'
+      throw new Exception('Cell cannot be added to Board already having Cell on the same coordinate')
     }
     let distance = Math.max(Math.abs(coordinate.x), Math.abs(coordinate.y), Math.abs(coordinate.z))
     if (distance > this.size) {
-      throw 'Error: Cell cannot be added to Board of insufficient size ' + this.size + ' (' + distance + ' needed)'
+      throw new Exception('Cell cannot be added to Board of insufficient size ' + this.size + ' (' + distance + ' needed)')
     }
 
     let cell = super.createChild(Cell, coordinate, type)

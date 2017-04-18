@@ -1,4 +1,5 @@
 import GameState from './game-state'
+import Exception from './exception'
 
 export default class GameStateFactory {
   /**
@@ -17,7 +18,7 @@ export default class GameStateFactory {
   create (GameStateClass, ...parameters) {
     let gameState = new GameStateClass(...parameters)
     if (!(gameState instanceof GameState)) {
-      throw 'Error: class must be descendant of GameObject, ' + typeof GameState + ' passed'
+      throw new Exception('Class must be descendant of GameObject, ' + typeof GameState + ' passed')
     }
     gameState.inject(this, this.game)
 
