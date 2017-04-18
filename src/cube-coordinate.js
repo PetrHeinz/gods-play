@@ -45,7 +45,7 @@ export default class CubeCoordinate {
 
   /**
    * @param {number} radius
-   * @return {[CubeCoordinate]}
+   * @return {CubeCoordinate[]}
    */
   getRing (radius) {
     let ring = []
