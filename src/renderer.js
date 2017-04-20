@@ -1,5 +1,6 @@
 import Cell from './cell'
 import HashMap from 'hashmap'
+import MenuUI from './menu-ui'
 
 const HEX_WIDTH = 148
 const HEX_HEIGHT = 130
@@ -20,6 +21,9 @@ export default class Renderer {
 
     /** @type {Game} */
     this.game = game
+
+    /** @type {MenuUI} */
+    this.menu = new MenuUI(this.pixiApp.stage)
 
     /** @type {HashMap} */
     this.hexesByCells = new HashMap()
@@ -55,13 +59,14 @@ export default class Renderer {
       getPlayerText(this.game.getPlayerOnTurn()),
       {fill: '#FFFFFF'}
     )
-    playerText.interactive = true
-    playerText.on('mouseup', function () {
-      self.game.endTurn()
-    })
     self.pixiApp.stage.addChild(playerText)
     this.game.events.listen('endTurn', function (data) {
       playerText.text = getPlayerText(data.playerOnTurn)
+    })
+
+    this.menu.setItems(this.game.gameState.getMenuItems())
+    this.game.events.listen('newGameState', function (data) {
+      self.menu.setItems(data.gameState.getMenuItems())
     })
 
     /**
@@ -69,7 +74,7 @@ export default class Renderer {
      * @return {string}
      */
     function getPlayerText (player) {
-      return 'On turn: ' + player.name + '\n[click to end turn]'
+      return 'On turn: ' + player.name
     }
   }
 

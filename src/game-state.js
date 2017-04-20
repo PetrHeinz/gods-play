@@ -1,3 +1,5 @@
+import MenuItem from './menu-item'
+
 export default class GameState {
   constructor () {
     /** @type {GameStateFactory|null} */
@@ -22,5 +24,18 @@ export default class GameState {
    */
   cellClick (cell) {
     return this
+  }
+
+  /**
+   * @return {MenuItem[]}
+   */
+  getMenuItems () {
+    let self = this
+
+    return [
+      new MenuItem('End turn', function () {
+        self.game.endTurn()
+      })
+    ]
   }
 }
