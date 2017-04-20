@@ -37,7 +37,7 @@ export default class Game {
   endTurn () {
     this.playerTurn = (this.playerTurn + 1) % this.players.length
 
-    this.gameState = this.gameStateFactory.create(GameStateStandby)
+    this.setGameState(this.gameStateFactory.create(GameStateStandby))
 
     this.events.trigger('endTurn', {
       playerOnTurn: this.getPlayerOnTurn()
@@ -49,7 +49,20 @@ export default class Game {
    */
   cellClick (cell) {
     if (this.board.hasChild(cell)) {
-      this.gameState = this.gameState.cellClick(cell)
+      this.setGameState(this.gameState.cellClick(cell))
+    }
+  }
+
+  /**
+   * @param {GameState} gameState
+   */
+  setGameState (gameState) {
+    if (this.gameState !== gameState) {
+      this.gameState = gameState
+
+      this.events.trigger('newGameState', {
+        gameState: this.gameState
+      })
     }
   }
 }
