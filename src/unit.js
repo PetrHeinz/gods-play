@@ -25,7 +25,10 @@ export default class Unit extends GameObject {
     let previousParent = this.parent
     this.setParent(cell)
 
-    this.events.trigger('unitMove', {unit: this, fromCell: previousParent})
+    this.events.trigger('unitMove', {
+      unit: this,
+      fromCell: previousParent
+    })
   }
 
   /**
