@@ -1,6 +1,7 @@
 import GameState from './game-state'
-import GameStateUnitSelected from './game-state-unit-selected'
 import MenuItem from './menu-item'
+import GameStateUnitSelected from './game-state-unit-selected'
+import GameStateCreateUnit from './game-state-create-unit'
 
 export default class GameStateStandby extends GameState {
   /**
@@ -22,6 +23,9 @@ export default class GameStateStandby extends GameState {
     let self = this
 
     return [
+      new MenuItem('Create unit', function () {
+        self.game.changeGameState(GameStateCreateUnit)
+      }),
       new MenuItem('End turn', function () {
         self.game.endTurn()
       })
