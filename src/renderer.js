@@ -50,6 +50,10 @@ export default class Renderer {
       self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
       self.hexesByCells.get(data.fromCell).text.text = ''
     })
+    this.game.events.listen('unitCreated', function (data) {
+      self.hexesByCells.get(data.unit.parent).text.text = '♟'
+      self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
+    })
 
     let playerText = new PIXI.Text(
       getPlayerText(this.game.getPlayerOnTurn()),

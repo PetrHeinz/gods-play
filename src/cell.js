@@ -79,6 +79,10 @@ export default class Cell extends GameObject {
 
     this.unit = this.createChild(Unit, owner)
 
+    this.events.trigger('unitCreated', {
+      unit: this.unit
+    })
+
     return this.unit
   }
 }
