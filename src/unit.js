@@ -36,11 +36,9 @@ export default class Unit extends GameObject {
    */
   setParent (cell) {
     if (this.parent !== null) {
-      this.parent.unit = null
+      this.parent.removeChild(this)
     }
 
     super.setParent(cell)
-
-    this.parent.unit = this
   }
 }

@@ -6,7 +6,7 @@ export default class GameStateCreateUnit extends GameState {
    * @return {GameState}
    */
   cellClick (cell) {
-    cell.createUnit(this.game.getPlayerOnTurn())
+    cell.createChild(this.game.getPlayerOnTurn())
 
     super.cellClick(cell)
   }

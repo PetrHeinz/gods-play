@@ -30,11 +30,18 @@ export default class Cell extends GameObject {
     /** @type {string} */
     this.type = type
 
-    /** @type {Unit|null} */
-    this.unit = null
-
     /** @type {Cell[]} */
     this.neighbors = []
+  }
+
+  /**
+   * @return {Unit|null}   */
+  get unit() {
+    if (this.children.length === 0) {
+      return null
+    }
+
+    return this.children[0]
   }
 
   /**
@@ -72,17 +79,17 @@ export default class Cell extends GameObject {
    * @param {Player} owner
    * @return {Unit}
    */
-  createUnit (owner) {
+  createChild (owner) {
     if (this.unit !== null) {
       throw new Exception('Unit cannot be created on Cell with assigned Unit')
     }
 
-    this.unit = this.createChild(Unit, owner)
+    let unit = super.createChild(Unit, owner)
 
     this.events.trigger('unitCreated', {
-      unit: this.unit
+      unit: unit
     })
 
-    return this.unit
+    return unit
   }
 }
