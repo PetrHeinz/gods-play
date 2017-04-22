@@ -9,15 +9,11 @@ const HEX_OFFSET_Y = 132
 
 export default class Renderer {
   /**
-   * @param {Board} board
    * @param {Game} game
    */
-  constructor (board, game) {
+  constructor (game) {
     /** @type {PIXI.Application} */
     this.pixiApp = new PIXI.Application()
-
-    /** @type {Board} */
-    this.board = board
 
     /** @type {Game} */
     this.game = game
@@ -43,7 +39,7 @@ export default class Renderer {
       PIXI.loader.add('hex.' + cellType, 'assets/ryanshenk.hex.' + cellType + '.png')
     })
     PIXI.loader.load(function (loader, resources) {
-      self.board.children.forEach(function (cell) {
+      self.game.board.children.forEach(function (cell) {
         let hex = self.createHex(cell, resources)
         self.pixiApp.stage.addChild(hex)
         self.hexesByCells.set(cell, hex)
@@ -156,8 +152,8 @@ export default class Renderer {
    * @return {number}
    */
   calculateSize () {
-    let xSize = this.pixiApp.renderer.width / HEX_OFFSET_X / (this.board.size * 2 + 1)
-    let ySize = this.pixiApp.renderer.height / HEX_OFFSET_Y / (this.board.size * 2 + 1)
+    let xSize = this.pixiApp.renderer.width / HEX_OFFSET_X / (this.game.board.size * 2 + 1)
+    let ySize = this.pixiApp.renderer.height / HEX_OFFSET_Y / (this.game.board.size * 2 + 1)
 
     return Math.min(xSize, ySize)
   }
