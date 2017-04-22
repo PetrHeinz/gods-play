@@ -1,5 +1,7 @@
 import GameStateFactory from './game-state-factory'
 import GameStateStandby from './game-state-standby'
+import GameState from './game-state'
+import Exception from './exception'
 
 export default class Game {
   /**
@@ -37,7 +39,7 @@ export default class Game {
   endTurn () {
     this.playerTurn = (this.playerTurn + 1) % this.players.length
 
-    this.setGameState(this.gameStateFactory.create(GameStateStandby))
+    this.changeGameState(this.gameStateFactory.create(GameStateStandby))
 
     this.events.trigger('endTurn', {
       playerOnTurn: this.getPlayerOnTurn()
@@ -48,15 +50,24 @@ export default class Game {
    * @param {Cell} cell
    */
   cellClick (cell) {
-    if (this.board.hasChild(cell)) {
-      this.setGameState(this.gameState.cellClick(cell))
+    if (!this.board.hasChild(cell)) {
+      throw new Exception('Clicked Cell is not registered in the Game')
     }
+
+    this.gameState.cellClick(cell)
   }
 
   /**
-   * @param {GameState} gameState
+   * @param {GameState|Class} [gameState]
+   * @param {...*} parameters
    */
-  setGameState (gameState) {
+  changeGameState (gameState, ...parameters) {
+    if (!(gameState instanceof GameState)) {
+      gameState = this.gameStateFactory.create(gameState, ...parameters)
+    } else if (parameters.length > 0) {
+      throw new Exception('Invalid arguments: Passing parameters is not possible when instance of GameState is passed.')
+    }
+
     if (this.gameState !== gameState) {
       this.gameState = gameState
 

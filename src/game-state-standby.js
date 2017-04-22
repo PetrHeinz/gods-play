@@ -1,5 +1,6 @@
 import GameState from './game-state'
 import GameStateUnitSelected from './game-state-unit-selected'
+import MenuItem from './menu-item'
 
 export default class GameStateStandby extends GameState {
   /**
@@ -10,9 +11,20 @@ export default class GameStateStandby extends GameState {
     let unit = cell.unit
 
     if (unit !== null && unit.owner === this.game.getPlayerOnTurn()) {
-      return this.factory.create(GameStateUnitSelected, unit)
+      this.game.changeGameState(GameStateUnitSelected, unit)
     }
+  }
 
-    return super.cellClick()
+  /**
+   * @return {MenuItem[]}
+   */
+  getMenuItems () {
+    let self = this
+
+    return [
+      new MenuItem('End turn', function () {
+        self.game.endTurn()
+      })
+    ]
   }
 }

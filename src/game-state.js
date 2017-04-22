@@ -20,10 +20,9 @@ export default class GameState {
 
   /**
    * @param {Cell} cell
-   * @return {GameState}
    */
   cellClick (cell) {
-    return this
+    this.game.changeGameState()
   }
 
   /**
@@ -33,8 +32,8 @@ export default class GameState {
     let self = this
 
     return [
-      new MenuItem('End turn', function () {
-        self.game.endTurn()
+      new MenuItem('Cancel action', function () {
+        self.game.changeGameState()
       })
     ]
   }

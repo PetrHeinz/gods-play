@@ -1,5 +1,6 @@
 import GameState from './game-state'
 import Exception from './exception'
+import GameStateStandby from './game-state-standby'
 
 export default class GameStateFactory {
   /**
@@ -11,11 +12,15 @@ export default class GameStateFactory {
   }
 
   /**
-   * @param {Class} GameStateClass
+   * @param {Class} [GameStateClass]
    * @param {...*} parameters
    * @return {GameState}
    */
   create (GameStateClass, ...parameters) {
+    if (GameStateClass === undefined) {
+      GameStateClass = GameStateStandby
+    }
+
     let gameState = new GameStateClass(...parameters)
     if (!(gameState instanceof GameState)) {
       throw new Exception('Class must be descendant of GameObject, ' + typeof GameState + ' passed')
