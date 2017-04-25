@@ -4,12 +4,16 @@ import Exception from './exception'
 export default class Unit extends GameObject {
   /**
    * @param {Player} owner
+   * @param {UnitConfig} config
    */
-  constructor (owner) {
+  constructor (owner, config) {
     super()
 
     /** @type {Player} */
     this.owner = owner
+
+    /** @type {UnitConfig} */
+    this.config = config
   }
 
   /**

@@ -4,22 +4,12 @@ import Exception from './exception'
 
 export default class Cell extends GameObject {
   /**
-   * @return {string[]}
-   */
-  static getTypes () {
-    return ['brick', 'grass', 'sand', 'stone', 'tree', 'water', 'wheat']
-  }
-
-  /**
    * @param {CubeCoordinate} coordinate
-   * @param {string} type
+   * @param {CellConfig} config
    */
-  constructor (coordinate, type) {
+  constructor (coordinate, config) {
     super()
 
-    if (Cell.getTypes().indexOf(type) === -1) {
-      throw new Exception('Cell cannot be created with invalid type "' + type + '"')
-    }
     if (coordinate.x + coordinate.y + coordinate.z !== 0) {
       throw new Exception('Cell cannot be created unless coordinates are on plane given by x + y + z = 0')
     }
@@ -27,8 +17,8 @@ export default class Cell extends GameObject {
     /** @type {CubeCoordinate} */
     this.coordinate = coordinate
 
-    /** @type {string} */
-    this.type = type
+    /** @type {CellConfig} */
+    this.config = config
 
     /** @type {Cell[]} */
     this.neighbors = []
@@ -83,8 +73,11 @@ export default class Cell extends GameObject {
     if (this.unit !== null) {
       throw new Exception('Unit cannot be created on Cell with assigned Unit')
     }
+    if (this.config.unitConfig === null) {
+      throw new Exception('Unit cannot be created on Cell without configured UnitConfig')
+    }
 
-    let unit = super.createChild(Unit, owner)
+    let unit = super.createChild(Unit, owner, this.config.unitConfig)
 
     this.events.trigger('unitCreated', {
       unit: unit

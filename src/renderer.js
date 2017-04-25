@@ -35,8 +35,10 @@ export default class Renderer {
   createBoard () {
     let self = this
 
-    Cell.getTypes().forEach(function (cellType) {
-      PIXI.loader.add('hex.' + cellType, 'assets/ryanshenk.hex.' + cellType + '.png')
+    this.game.board.children.forEach(function (cell) {
+      if (PIXI.loader.resources[('hex.' + cell.config.terrain)] === undefined) {
+        PIXI.loader.add('hex.' + cell.config.terrain, 'assets/ryanshenk.hex.' + cell.config.terrain + '.png')
+      }
     })
     PIXI.loader.load(function (loader, resources) {
       self.game.board.children.forEach(function (cell) {
@@ -46,12 +48,12 @@ export default class Renderer {
       })
     })
     this.game.events.listen('unitMove', function (data) {
-      self.hexesByCells.get(data.unit.parent).text.text = '♟'
+      self.hexesByCells.get(data.unit.parent).text.text = data.unit.config.symbol
       self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
       self.hexesByCells.get(data.fromCell).text.text = ''
     })
     this.game.events.listen('unitCreated', function (data) {
-      self.hexesByCells.get(data.unit.parent).text.text = '♟'
+      self.hexesByCells.get(data.unit.parent).text.text = data.unit.config.symbol
       self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
     })
 
@@ -84,7 +86,7 @@ export default class Renderer {
    * @return {PIXI.Sprite}
    */
   createHex (cell, resources) {
-    let hex = new PIXI.Sprite(resources['hex.' + cell.type].texture)
+    let hex = new PIXI.Sprite(resources['hex.' + cell.config.terrain].texture)
 
     hex.cell = cell
 
@@ -101,7 +103,7 @@ export default class Renderer {
     hex.y = size * HEX_OFFSET_Y * (coordinate.z + coordinate.x / 2) + this.pixiApp.renderer.height / 2
     addCoordinateAsText(hex, coordinate)
 
-    hex.text = new PIXI.Text(cell.unit !== null ? '♟' : '', {
+    hex.text = new PIXI.Text(cell.unit !== null ? cell.unit.config.symbol : '', {
       fill: '#FFFFFF',
       stroke: cell.unit !== null ? cell.unit.owner.color : '#FFFFFF',
       strokeThickness: 10,

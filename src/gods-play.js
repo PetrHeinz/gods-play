@@ -37,11 +37,15 @@ export default class GodsPlay {
     if (config === undefined) {
       config = new GameConfig()
     }
-    let board = this.boardGenerator.generateBoard(config.boardSize)
+    let board = this.boardGenerator.generateBoard(config)
 
     let shuffledCells = board.getShuffledChildren().slice()
     shuffledCells.splice(0, config.boardSize).forEach(function (cell) {
       board.removeChild(cell)
+    })
+
+    shuffledCells = shuffledCells.filter(function (cell) {
+      return cell.config.unitConfig !== null
     })
 
     let players = []
