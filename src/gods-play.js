@@ -52,7 +52,7 @@ export default class GodsPlay {
     for (let i = 0; i < config.playerCount; i++) {
       let player = new Player('Player #' + (i + 1), config.playerColors[i])
 
-      shuffledCells.pop().createChild(player)
+      shuffledCells.pop().createMageChild(player)
       players.push(player)
     }
 

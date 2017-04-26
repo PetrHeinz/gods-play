@@ -9,5 +9,8 @@ export default class Player {
 
     /** @type {string} */
     this.color = color
+
+    /** @type {Unit|null} */
+    this.mage = null
   }
 }
