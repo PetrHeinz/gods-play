@@ -26,7 +26,7 @@ export default class Cell extends GameObject {
 
   /**
    * @return {Unit|null}   */
-  get unit() {
+  get unit () {
     if (this.children.length === 0) {
       return null
     }

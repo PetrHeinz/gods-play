@@ -1,5 +1,4 @@
 import Board from './board'
-import Cell from './cell'
 import CubeCoordinateMap from './cube-coordinate-map'
 
 export default class BoardGenerator {
