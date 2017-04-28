@@ -23,7 +23,7 @@ export default class GameConfig {
       this.createCellConfig('stone', '♜'),
       this.createCellConfig('sand', '♞'),
       this.createCellConfig('wheat', '♝'),
-      this.createCellConfig('water', null)
+      this.createCellConfig('water')
     ]
   }
 
