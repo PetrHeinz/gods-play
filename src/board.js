@@ -54,9 +54,9 @@ export default class Board extends GameObject {
    */
   removeChild (cell) {
     super.removeChild(cell)
-    cell.neighbors.forEach(function (neighbor) {
-      cell.removeNeighbor(neighbor)
-    })
+    while (cell.neighbors.length > 0) {
+      cell.removeNeighbor(cell.neighbors[0])
+    }
   }
 
   /**
