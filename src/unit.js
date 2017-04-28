@@ -23,8 +23,8 @@ export default class Unit extends GameObject {
     if (cell.unit !== null) {
       throw new Exception('Unit cannot be moved on Cell with assigned Unit')
     }
-    if (!this.parent.hasNeighbor(cell)) {
-      throw new Exception('Unit cannot be moved on non-neighboring Cell')
+    if (!this.config.range.isInRange(this.parent, cell)) {
+      throw new Exception('Unit cannot be moved on Cell out of range')
     }
     let previousParent = this.parent
     this.setParent(cell)

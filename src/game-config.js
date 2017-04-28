@@ -1,5 +1,6 @@
 import CellConfig from './cell-config'
 import UnitConfig from './unit-config'
+import CellRange from './cell-range'
 
 export default class GameConfig {
   constructor () {
@@ -13,16 +14,16 @@ export default class GameConfig {
     this.playerColors = ['#AA0000', '#0000AA', '#00AA00', '#AAAA00', '#00AAAA', '#AA00AA']
 
     /** @type {UnitConfig} */
-    this.mageConfig = new UnitConfig('♕')
+    this.mageConfig = new UnitConfig('♕', new CellRange(1))
 
     /** @type {CellConfig[]} */
     this.cellConfigs = [
-      this.createCellConfig('brick', '♖'),
-      this.createCellConfig('grass', '♘'),
-      this.createCellConfig('tree', '♗'),
-      this.createCellConfig('stone', '♜'),
-      this.createCellConfig('sand', '♞'),
-      this.createCellConfig('wheat', '♝'),
+      this.createCellConfig('brick', '♖', new CellRange(0)),
+      this.createCellConfig('grass', '♘', new CellRange(2)),
+      this.createCellConfig('tree', '♗', new CellRange(1)),
+      this.createCellConfig('stone', '♜', new CellRange(0)),
+      this.createCellConfig('sand', '♞', new CellRange(2)),
+      this.createCellConfig('wheat', '♝', new CellRange(1)),
       this.createCellConfig('water')
     ]
   }
@@ -30,12 +31,13 @@ export default class GameConfig {
   /**
    * @param {string} terrain
    * @param {string} [unitSymbol]
+   * @param {CellRange} [range]
    * @return {CellConfig}
    */
-  createCellConfig (terrain, unitSymbol) {
+  createCellConfig (terrain, unitSymbol, range) {
     let unitConfig = null
     if (unitSymbol !== undefined) {
-      unitConfig = new UnitConfig(unitSymbol)
+      unitConfig = new UnitConfig(unitSymbol, range)
     }
 
     return new CellConfig(terrain, unitConfig, this.mageConfig)
