@@ -15,8 +15,10 @@ export default class GameStateUnitSelected extends GameState {
    * @param {Cell} cell
    */
   cellClick (cell) {
-    this.unit.moveTo(cell)
+    if (this.unit.isInRange(cell)) {
+      this.unit.moveTo(cell)
 
-    super.cellClick(cell)
+      super.cellClick(cell)
+    }
   }
 }

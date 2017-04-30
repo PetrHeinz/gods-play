@@ -1,3 +1,5 @@
+import NoUnitCellRangeFilter from './no-unit-cell-range-filter'
+
 export default class UnitConfig {
   /**
    * @param {string} symbol
@@ -8,6 +10,6 @@ export default class UnitConfig {
     this.symbol = symbol
 
     /** @type {CellRange} */
-    this.range = range
+    this.range = new NoUnitCellRangeFilter(range)
   }
 }

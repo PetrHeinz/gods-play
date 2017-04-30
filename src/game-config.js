@@ -1,6 +1,6 @@
 import CellConfig from './cell-config'
 import UnitConfig from './unit-config'
-import CellRange from './cell-range'
+import NeighborCellRange from './neighbor-cell-range'
 
 export default class GameConfig {
   constructor () {
@@ -14,16 +14,16 @@ export default class GameConfig {
     this.playerColors = ['#AA0000', '#0000AA', '#00AA00', '#AAAA00', '#00AAAA', '#AA00AA']
 
     /** @type {UnitConfig} */
-    this.mageConfig = new UnitConfig('♕', new CellRange(1))
+    this.mageConfig = new UnitConfig('♕', new NeighborCellRange(1))
 
     /** @type {CellConfig[]} */
     this.cellConfigs = [
-      createCellConfig('brick', '♖', new CellRange(0)),
-      createCellConfig('grass', '♘', new CellRange(2)),
-      createCellConfig('tree', '♗', new CellRange(1)),
-      createCellConfig('stone', '♜', new CellRange(0)),
-      createCellConfig('sand', '♞', new CellRange(2)),
-      createCellConfig('wheat', '♝', new CellRange(1)),
+      createCellConfig('brick', '♖', new NeighborCellRange(0)),
+      createCellConfig('grass', '♘', new NeighborCellRange(2)),
+      createCellConfig('tree', '♗', new NeighborCellRange(1)),
+      createCellConfig('stone', '♜', new NeighborCellRange(0)),
+      createCellConfig('sand', '♞', new NeighborCellRange(2)),
+      createCellConfig('wheat', '♝', new NeighborCellRange(1)),
       createCellConfig('water')
     ]
 

@@ -21,15 +21,20 @@ export default class Unit extends GameObject {
 
   /**
    * @param {Cell} cell
+   * @return {bool}
+   */
+  isInRange (cell) {
+    return this.config.range.isInRange(this.parent, cell)
+  }
+
+  /**
+   * @param {Cell} cell
    */
   moveTo (cell) {
     if (this.tired) {
       throw new Exception('Tired Unit cannot move')
     }
-    if (cell.unit !== null) {
-      throw new Exception('Unit cannot be moved on Cell with assigned Unit')
-    }
-    if (!this.config.range.isInRange(this.parent, cell)) {
+    if (!this.isInRange(cell)) {
       throw new Exception('Unit cannot be moved on Cell out of range')
     }
     let previousParent = this.parent
