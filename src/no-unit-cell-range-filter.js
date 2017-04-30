@@ -1,22 +1,10 @@
-import CellRange from './cell-range'
+import CellRangeFilter from './cell-range-filter'
 
-export default class NoUnitCellRangeFilter extends CellRange {
+export default class NoUnitCellRangeFilter extends CellRangeFilter {
   /**
    * @param {CellRange} range
    */
   constructor (range) {
-    super()
-
-    /** @var {CellRange} */
-    this.range = range
-  }
-
-  /**
-   * @param {Cell} cell
-   * @return {Cell[]}
-   */
-  getCells (cell) {
-    return this.range.getCells(cell)
-      .filter(cell => cell.unit === null)
+    super(range, cell => cell.unit === null)
   }
 }

@@ -1,10 +1,10 @@
 export default class CellRange {
   /**
-   * @param {Cell} origin
    * @param {Cell} destination
+   * @param {Cell} [origin]
    * @return {Cell[]}
    */
-  isInRange (origin, destination) {
+  isInRange (destination, origin = destination) {
     let cells = this.getCells(origin)
 
     return cells.indexOf(destination) > -1

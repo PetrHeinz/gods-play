@@ -24,7 +24,7 @@ export default class Unit extends GameObject {
    * @return {bool}
    */
   isInRange (cell) {
-    return this.config.range.isInRange(this.parent, cell)
+    return this.config.range.isInRange(cell, this.parent)
   }
 
   /**
