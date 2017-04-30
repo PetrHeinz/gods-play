@@ -99,6 +99,7 @@ export default class Cell extends GameObject {
     }
 
     owner.mage = super.createChild(Unit, owner, this.parent.gameConfig.mageConfig)
+    owner.mage.refresh()
 
     this.events.trigger('unitCreated', {
       unit: owner.mage

@@ -39,6 +39,9 @@ export default class Game {
   endTurn () {
     this.playerTurn = (this.playerTurn + 1) % this.players.length
 
+    this.board.getUnitsOwnedBy(this.getPlayerOnTurn())
+      .forEach(cell => cell.refresh())
+
     this.changeGameState(this.gameStateFactory.create(GameStateStandby))
 
     this.events.trigger('endTurn', {

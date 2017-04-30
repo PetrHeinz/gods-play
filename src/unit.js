@@ -14,12 +14,18 @@ export default class Unit extends GameObject {
 
     /** @type {UnitConfig} */
     this.config = config
+
+    /** @type {bool} */
+    this.tired = true
   }
 
   /**
    * @param {Cell} cell
    */
   moveTo (cell) {
+    if (this.tired) {
+      throw new Exception('Tired Unit cannot move')
+    }
     if (cell.unit !== null) {
       throw new Exception('Unit cannot be moved on Cell with assigned Unit')
     }
@@ -29,10 +35,16 @@ export default class Unit extends GameObject {
     let previousParent = this.parent
     this.setParent(cell)
 
+    this.tired = true
+
     this.events.trigger('unitMove', {
       unit: this,
       fromCell: previousParent
     })
+  }
+
+  refresh () {
+    this.tired = false
   }
 
   /**

@@ -18,6 +18,16 @@ export default class Board extends GameObject {
   }
 
   /**
+   * @param {Player} player
+   * @return {Unit[]}
+   */
+  getUnitsOwnedBy (player) {
+    return this.children
+      .map(cell => cell.unit)
+      .filter(unit => unit !== null && unit.owner === player)
+  }
+
+  /**
    * @param {CubeCoordinate} coordinate
    * @param {string} type
    * @return {Cell}

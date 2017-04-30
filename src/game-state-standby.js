@@ -11,7 +11,7 @@ export default class GameStateStandby extends GameState {
   cellClick (cell) {
     let unit = cell.unit
 
-    if (unit !== null && unit.owner === this.game.getPlayerOnTurn()) {
+    if (unit !== null && unit.owner === this.game.getPlayerOnTurn() && !unit.tired) {
       this.game.changeGameState(GameStateUnitSelected, unit)
     }
   }
