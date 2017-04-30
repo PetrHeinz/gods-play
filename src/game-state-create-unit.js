@@ -3,7 +3,6 @@ import GameState from './game-state'
 export default class GameStateCreateUnit extends GameState {
   /**
    * @param {Cell} cell
-   * @return {GameState}
    */
   cellClick (cell) {
     cell.createChild(this.game.getPlayerOnTurn())

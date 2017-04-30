@@ -6,7 +6,6 @@ import GameStateCreateUnit from './game-state-create-unit'
 export default class GameStateStandby extends GameState {
   /**
    * @param {Cell} cell
-   * @return {GameState}
    */
   cellClick (cell) {
     let unit = cell.unit

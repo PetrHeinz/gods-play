@@ -13,7 +13,6 @@ export default class GameStateUnitSelected extends GameState {
 
   /**
    * @param {Cell} cell
-   * @return {GameState}
    */
   cellClick (cell) {
     this.unit.moveTo(cell)
