@@ -15,7 +15,7 @@ export default class BoardGenerator {
    * @return {Board}
    */
   generateBoard (config) {
-    let board = this.gameObjectFactory.create(Board, config.boardSize)
+    let board = this.gameObjectFactory.create(Board, config)
 
     let map = new CubeCoordinateMap()
     board.createChild(map.origin, getRandomCellConfig(config))

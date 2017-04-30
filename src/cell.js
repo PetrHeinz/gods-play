@@ -98,7 +98,7 @@ export default class Cell extends GameObject {
       throw new Exception('Mage cannot be created for a Player that already has a Mage')
     }
 
-    owner.mage = super.createChild(Unit, owner, this.config.mageConfig)
+    owner.mage = super.createChild(Unit, owner, this.parent.gameConfig.mageConfig)
 
     this.events.trigger('unitCreated', {
       unit: owner.mage

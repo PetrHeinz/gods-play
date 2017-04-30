@@ -40,6 +40,6 @@ export default class GameConfig {
       unitConfig = new UnitConfig(unitSymbol, range)
     }
 
-    return new CellConfig(terrain, unitConfig, this.mageConfig)
+    return new CellConfig(terrain, unitConfig)
   }
 }

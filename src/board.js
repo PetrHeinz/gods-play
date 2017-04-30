@@ -5,13 +5,13 @@ import Exception from './exception'
 
 export default class Board extends GameObject {
   /**
-   * @param {number} size
+   * @param {GameConfig} gameConfig
    */
-  constructor (size) {
+  constructor (gameConfig) {
     super()
 
-    /** @type {number} */
-    this.size = size
+    /** @type {GameConfig} */
+    this.gameConfig = gameConfig
 
     /** @type {HashMap} */
     this.cellsByCoordinate = new HashMap()
@@ -27,8 +27,8 @@ export default class Board extends GameObject {
       throw new Exception('Cell cannot be added to Board already having Cell on the same coordinate')
     }
     let distance = Math.max(Math.abs(coordinate.x), Math.abs(coordinate.y), Math.abs(coordinate.z))
-    if (distance > this.size) {
-      throw new Exception('Cell cannot be added to Board of insufficient size ' + this.size + ' (' + distance + ' needed)')
+    if (distance > this.gameConfig.boardSize) {
+      throw new Exception('Cell cannot be added to Board of insufficient size ' + this.gameConfig.boardSize + ' (' + distance + ' needed)')
     }
 
     let cell = super.createChild(Cell, coordinate, type)

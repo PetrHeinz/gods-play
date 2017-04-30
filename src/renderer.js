@@ -157,8 +157,10 @@ export default class Renderer {
    * @return {number}
    */
   calculateSize () {
-    let xSize = this.pixiApp.renderer.width / HEX_OFFSET_X / (this.game.board.size * 2 + 1)
-    let ySize = this.pixiApp.renderer.height / HEX_OFFSET_Y / (this.game.board.size * 2 + 1)
+    let boardSize = this.game.board.gameConfig.boardSize
+
+    let xSize = this.pixiApp.renderer.width / HEX_OFFSET_X / (boardSize * 2 + 1)
+    let ySize = this.pixiApp.renderer.height / HEX_OFFSET_Y / (boardSize * 2 + 1)
 
     return Math.min(xSize, ySize)
   }
