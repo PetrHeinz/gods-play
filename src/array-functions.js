@@ -26,3 +26,13 @@ export function unique (array) {
 
   return uniqueArray
 }
+
+/**
+ * @param {Array} array
+ * @return {*}
+ */
+export function random (array) {
+  let key = Math.floor(Math.random() * array.length)
+
+  return array[key]
+}

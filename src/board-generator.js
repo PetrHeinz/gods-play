@@ -1,5 +1,6 @@
 import Board from './board'
 import CubeCoordinateMap from './cube-coordinate-map'
+import { random } from './array-functions'
 
 export default class BoardGenerator {
   /**
@@ -18,25 +19,15 @@ export default class BoardGenerator {
     let board = this.gameObjectFactory.create(Board, config)
 
     let map = new CubeCoordinateMap()
-    board.createChild(map.origin, getRandomCellConfig(config))
+    board.createChild(map.origin, random(config.cellConfigs))
 
     for (let radius = 1; radius <= config.boardSize; radius++) {
       let ring = map.origin.getRing(radius)
       ring.forEach(function (coordinate) {
-        board.createChild(coordinate, getRandomCellConfig(config))
+        board.createChild(coordinate, random(config.cellConfigs))
       })
     }
 
     return board
-
-    /**
-     * @param {GameConfig} config
-     * @return {string}
-     */
-    function getRandomCellConfig (config) {
-      let randomIndex = Math.floor(Math.random() * config.cellConfigs.length)
-
-      return config.cellConfigs[randomIndex]
-    }
   }
 }
