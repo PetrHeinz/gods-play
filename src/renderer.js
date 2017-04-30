@@ -42,20 +42,26 @@ export default class Renderer {
     PIXI.loader.load(function (loader, resources) {
       self.game.board.children.forEach(function (cell) {
         let hex = self.createHex(cell, resources)
+
         self.pixiApp.stage.addChild(hex)
         self.hexesByCells.set(cell, hex)
       })
     })
     this.game.events.listen('unitMove', function (data) {
-      self.hexesByCells.get(data.unit.parent).text.text = data.unit.config.symbol
-      self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
-      self.hexesByCells.get(data.unit.parent).text.style.fill = data.unit.tired ? '#AAAAAA' : '#FFFFFF'
+      let hex = self.hexesByCells.get(data.unit.parent)
+
+      hex.text.text = data.unit.config.symbol
+      hex.text.style.stroke = data.unit.owner.color
+      hex.text.style.fill = data.unit.tired ? '#AAAAAA' : '#FFFFFF'
+
       self.hexesByCells.get(data.fromCell).text.text = ''
     })
     this.game.events.listen('unitCreated', function (data) {
-      self.hexesByCells.get(data.unit.parent).text.text = data.unit.config.symbol
-      self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
-      self.hexesByCells.get(data.unit.parent).text.style.fill = data.unit.tired ? '#AAAAAA' : '#FFFFFF'
+      let hex = self.hexesByCells.get(data.unit.parent)
+
+      hex.text.text = data.unit.config.symbol
+      hex.text.style.stroke = data.unit.owner.color
+      hex.text.style.fill = data.unit.tired ? '#AAAAAA' : '#FFFFFF'
     })
 
     let playerText = new PIXI.Text(
