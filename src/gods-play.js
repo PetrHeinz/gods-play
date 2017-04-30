@@ -5,6 +5,7 @@ import Events from './events'
 import GameObjectFactory from './game-object-factory'
 import Player from './player'
 import GameConfig from './game-config'
+import { shuffle } from './array-functions'
 
 export default class GodsPlay {
   /**
@@ -36,7 +37,7 @@ export default class GodsPlay {
   initialize (config = new GameConfig()) {
     let board = this.boardGenerator.generateBoard(config)
 
-    let shuffledCells = board.getShuffledChildren().slice()
+    let shuffledCells = shuffle(board.children)
     shuffledCells.splice(0, config.boardSize).forEach(function (cell) {
       board.removeChild(cell)
     })
