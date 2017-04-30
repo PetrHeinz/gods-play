@@ -33,10 +33,7 @@ export default class GodsPlay {
   /**
    * @param {GameConfig} [config]
    */
-  initialize (config) {
-    if (config === undefined) {
-      config = new GameConfig()
-    }
+  initialize (config = new GameConfig()) {
     let board = this.boardGenerator.generateBoard(config)
 
     let shuffledCells = board.getShuffledChildren().slice()

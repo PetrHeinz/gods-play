@@ -16,11 +16,7 @@ export default class GameStateFactory {
    * @param {...*} parameters
    * @return {GameState}
    */
-  create (GameStateClass, ...parameters) {
-    if (GameStateClass === undefined) {
-      GameStateClass = GameStateStandby
-    }
-
+  create (GameStateClass = GameStateStandby, ...parameters) {
     let gameState = new GameStateClass(...parameters)
     if (!(gameState instanceof GameState)) {
       throw new Exception('Class must be descendant of GameObject, ' + typeof GameState + ' passed')
