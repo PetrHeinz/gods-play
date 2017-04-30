@@ -49,11 +49,13 @@ export default class Renderer {
     this.game.events.listen('unitMove', function (data) {
       self.hexesByCells.get(data.unit.parent).text.text = data.unit.config.symbol
       self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
+      self.hexesByCells.get(data.unit.parent).text.style.fill = data.unit.tired ? '#AAAAAA' : '#FFFFFF'
       self.hexesByCells.get(data.fromCell).text.text = ''
     })
     this.game.events.listen('unitCreated', function (data) {
       self.hexesByCells.get(data.unit.parent).text.text = data.unit.config.symbol
       self.hexesByCells.get(data.unit.parent).text.style.stroke = data.unit.owner.color
+      self.hexesByCells.get(data.unit.parent).text.style.fill = data.unit.tired ? '#AAAAAA' : '#FFFFFF'
     })
 
     let playerText = new PIXI.Text(
@@ -63,6 +65,10 @@ export default class Renderer {
     self.pixiApp.stage.addChild(playerText)
     this.game.events.listen('endTurn', function (data) {
       playerText.text = getPlayerText(data.playerOnTurn)
+      self.game.board.getUnitsOwnedBy(data.playerOnTurn)
+        .forEach(function (unit) {
+          self.hexesByCells.get(unit.parent).text.style.fill = unit.tired ? '#AAAAAA' : '#FFFFFF'
+        })
     })
 
     this.menu.setItems(this.game.gameState.getMenuItems())
@@ -103,7 +109,7 @@ export default class Renderer {
     addCoordinateAsText(hex, coordinate)
 
     hex.text = new PIXI.Text(cell.unit !== null ? cell.unit.config.symbol : '', {
-      fill: '#FFFFFF',
+      fill: cell.unit !== null && cell.unit.tired ? '#AAAAAA' : '#FFFFFF',
       stroke: cell.unit !== null ? cell.unit.owner.color : '#FFFFFF',
       strokeThickness: 10,
       fontSize: 80,
