@@ -1,6 +1,6 @@
 import Board from './board'
 import CubeCoordinateMap from './cube-coordinate-map'
-import { random } from './array-functions'
+import { random } from './function/array'
 
 export default class BoardGenerator {
   /**

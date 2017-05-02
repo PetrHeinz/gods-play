@@ -5,7 +5,7 @@ import Events from './events'
 import GameObjectFactory from './game-object-factory'
 import Player from './player'
 import GameConfig from './game-config'
-import { shuffle } from './array-functions'
+import { shuffle } from './function/array'
 
 export default class GodsPlay {
   /**

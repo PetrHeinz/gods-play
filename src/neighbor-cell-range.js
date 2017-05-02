@@ -1,5 +1,5 @@
 import CellRange from './cell-range'
-import { difference, unique } from './array-functions'
+import { difference, unique } from './function/array'
 
 export default class NeighborCellRange extends CellRange {
   /**

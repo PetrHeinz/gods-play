@@ -7326,7 +7326,7 @@ var AccessibilityManager = function () {
         this.children = [];
 
         /**
-         * pre-bind the functions
+         * pre-bind the function
          *
          * @private
          */
@@ -10308,7 +10308,7 @@ var TransformBase = function () {
     _classCallCheck(this, TransformBase);
 
     /**
-     * The global matrix transform. It can be swapped temporarily by some functions like getLocalBounds()
+     * The global matrix transform. It can be swapped temporarily by some function like getLocalBounds()
      *
      * @member {PIXI.Matrix}
      */
@@ -16176,7 +16176,7 @@ var _const = require('../../../const');
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * A set of functions used to handle masking.
+ * A set of function used to handle masking.
  *
  * @class
  * @memberof PIXI
@@ -20823,7 +20823,7 @@ var Sprite = function (_Container) {
         this.shader = null;
     };
 
-    // some helper functions..
+    // some helper function..
 
     /**
      * Helper function that creates a new sprite based on the source you provide.
@@ -24871,7 +24871,7 @@ var Spritesheet = function () {
 
                 this.textures[i] = new _.Texture(this.baseTexture, frame, orig, trim, this._frames[i].rotated ? 2 : 0);
 
-                // lets also add the frame to pixi's global cache for fromFrame and fromImage functions
+                // lets also add the frame to pixi's global cache for fromFrame and fromImage function
                 _.Texture.addToCache(this.textures[i], i);
             }
 
@@ -33174,7 +33174,7 @@ var InteractionManager = function (_EventEmitter) {
         /**
          * Dictionary of how different cursor modes are handled. Strings are handled as CSS cursor
          * values, objects are handled as dictionaries of CSS values for interactionDOMElement,
-         * and functions are called instead of changing the CSS.
+         * and function are called instead of changing the CSS.
          * Default CSS cursor values are provided for 'default' and 'pointer' modes.
          * @member {Object.<string, (string|Function|Object.<string, string>)>}
          */
@@ -33837,7 +33837,7 @@ var InteractionManager = function (_EventEmitter) {
                     this.interactionDOMElement.style.cursor = style;
                     break;
                 case 'function':
-                    // functions are just called, and passed the cursor mode
+                    // function are just called, and passed the cursor mode
                     style(mode);
                     break;
                 case 'object':

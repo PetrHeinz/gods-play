@@ -1,6 +1,6 @@
 import GameObject from './game-object'
 import Exception from './exception'
-import { typename } from './type-functions'
+import { typename } from './function/type'
 
 export default class GameObjectFactory {
   /**
