@@ -1,4 +1,4 @@
-import CellRange from './cell-range'
+import CellRange from './CellRange'
 
 export default class CellRangeFilter extends CellRange {
   /**

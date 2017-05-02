@@ -1,5 +1,5 @@
 import HashMap from 'hashmap'
-import MenuUI from './menu-ui'
+import MenuUI from './MenuUI'
 
 const HEX_WIDTH = 148
 const HEX_HEIGHT = 130

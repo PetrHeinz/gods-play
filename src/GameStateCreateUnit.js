@@ -1,7 +1,7 @@
-import GameState from './game-state'
-import CellRange from './cell-range'
-import NoUnitCellRangeFilter from './no-unit-cell-range-filter'
-import WithUnitConfigCellRangeFilter from './with-unit-config-cell-range-filter'
+import GameState from './GameState'
+import CellRange from './CellRange'
+import NoUnitCellRangeFilter from './NoUnitCellRangeFilter'
+import WithUnitConfigCellRangeFilter from './WithUnitConfigCellRangeFilter'
 
 export default class GameStateCreateUnit extends GameState {
   constructor () {

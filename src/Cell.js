@@ -1,6 +1,6 @@
-import GameObject from './game-object'
-import Unit from './unit'
-import Exception from './exception'
+import GameObject from './GameObject'
+import Unit from './Unit'
+import Exception from './Exception'
 
 export default class Cell extends GameObject {
   /**

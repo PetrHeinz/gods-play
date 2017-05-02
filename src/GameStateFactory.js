@@ -1,6 +1,6 @@
-import GameState from './game-state'
-import Exception from './exception'
-import GameStateStandby from './game-state-standby'
+import GameState from './GameState'
+import Exception from './Exception'
+import GameStateStandby from './GameStateStandby'
 import { typename } from './function/type'
 
 export default class GameStateFactory {

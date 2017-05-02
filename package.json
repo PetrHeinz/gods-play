@@ -35,8 +35,8 @@
   "scripts": {
     "test": "standard --global PIXI src/**/*.js",
     "fix": "standard --fix --global PIXI src/**/*.js",
-    "build": "browserify --debug -r ./src/gods-play.js:gods-play -o js/gods-play.js",
-    "watch": "watchify --debug -r ./src/gods-play.js:gods-play -o js/gods-play.js",
+    "build": "browserify --debug -r ./src/GodsPlay.js:gods-play -o js/gods-play.js",
+    "watch": "watchify --debug -r ./src/GodsPlay.js:gods-play -o js/gods-play.js",
     "libs-update": "download https://pixijs.download/release/pixi.js https://pixijs.download/release/pixi.js.map --out ./js/libs"
   },
   "browserify": {

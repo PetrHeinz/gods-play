@@ -1,10 +1,10 @@
-import BoardGenerator from './board-generator'
-import Game from './game'
-import Renderer from './renderer'
-import Events from './events'
-import GameObjectFactory from './game-object-factory'
-import Player from './player'
-import GameConfig from './game-config'
+import BoardGenerator from './BoardGenerator'
+import Game from './Game'
+import Renderer from './Renderer'
+import Events from './Events'
+import GameObjectFactory from './GameObjectFactory'
+import Player from './Player'
+import GameConfig from './GameConfig'
 import { shuffle } from './function/array'
 
 export default class GodsPlay {

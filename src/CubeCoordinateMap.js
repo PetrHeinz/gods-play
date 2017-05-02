@@ -1,4 +1,4 @@
-import CubeCoordinate from './cube-coordinate'
+import CubeCoordinate from './CubeCoordinate'
 import HashMap from 'hashmap'
 
 export default class CubeCoordinateMap {

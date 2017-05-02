@@ -1,7 +1,7 @@
-import GameStateFactory from './game-state-factory'
-import GameStateStandby from './game-state-standby'
-import GameState from './game-state'
-import Exception from './exception'
+import GameStateFactory from './GameStateFactory'
+import GameStateStandby from './GameStateStandby'
+import GameState from './GameState'
+import Exception from './Exception'
 
 export default class Game {
   /**

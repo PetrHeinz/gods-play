@@ -1,6 +1,6 @@
-import CellConfig from './cell-config'
-import UnitConfig from './unit-config'
-import NeighborCellRange from './neighbor-cell-range'
+import CellConfig from './CellConfig'
+import UnitConfig from './UnitConfig'
+import NeighborCellRange from './NeighborCellRange'
 
 export default class GameConfig {
   constructor () {

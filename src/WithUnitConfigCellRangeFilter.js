@@ -1,4 +1,4 @@
-import CellRangeFilter from './cell-range-filter'
+import CellRangeFilter from './CellRangeFilter'
 
 export default class WithUnitConfigCellRangeFilter extends CellRangeFilter {
   /**

@@ -1,7 +1,7 @@
-import GameState from './game-state'
-import MenuItem from './menu-item'
-import GameStateUnitSelected from './game-state-unit-selected'
-import GameStateCreateUnit from './game-state-create-unit'
+import GameState from './GameState'
+import MenuItem from './MenuItem'
+import GameStateUnitSelected from './GameStateUnitSelected'
+import GameStateCreateUnit from './GameStateCreateUnit'
 
 export default class GameStateStandby extends GameState {
   /**

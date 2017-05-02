@@ -1,4 +1,4 @@
-import GameState from './game-state'
+import GameState from './GameState'
 
 export default class GameStateUnitSelected extends GameState {
   /**

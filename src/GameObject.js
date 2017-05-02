@@ -1,4 +1,4 @@
-import Exception from './exception'
+import Exception from './Exception'
 
 export default class GameObject {
   constructor () {
