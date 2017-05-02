@@ -1,4 +1,4 @@
-export default class MenuUI {
+export default class MenuInterface {
   /**
    * @param {PIXI.Container} stage
    */
@@ -11,9 +11,9 @@ export default class MenuUI {
   }
 
   /**
-   * @param {MenuItem[]} items
+   * @param {Action[]} actions
    */
-  setItems (items) {
+  setActions (actions) {
     let self = this
 
     this.texts.forEach(function (text) {
@@ -21,14 +21,14 @@ export default class MenuUI {
     })
 
     this.texts = []
-    items.forEach(function (item, i) {
+    actions.forEach(function (action, i) {
       let text = new PIXI.Text(
-        '▸' + item.label,
+        '▸' + action.label,
         {fill: '#FFFFFF'}
       )
 
       text.interactive = true
-      text.on('mouseup', item.callback)
+      text.on('mouseup', action.callback)
       text.y = 28 * (i + 1)
 
       self.texts.push(text)

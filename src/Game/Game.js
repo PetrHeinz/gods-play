@@ -1,6 +1,6 @@
-import GameStateFactory from './State/GameStateFactory'
-import GameStateStandby from './State/GameStateStandby'
-import GameState from './State/GameState'
+import StateFactory from './State/StateFactory'
+import StandingBy from './State/StandingBy'
+import State from './State/State'
 import Exception from '../Exception'
 
 export default class Game {
@@ -22,11 +22,11 @@ export default class Game {
     /** @type {number} */
     this.playerTurn = 0
 
-    /** @type {GameStateFactory} */
-    this.gameStateFactory = new GameStateFactory(this)
+    /** @type {StateFactory} */
+    this.stateFactory = new StateFactory(this)
 
-    /** @type {GameState} */
-    this.gameState = this.gameStateFactory.create(GameStateStandby)
+    /** @type {State} */
+    this.state = this.stateFactory.create(StandingBy)
   }
 
   /**
@@ -42,7 +42,7 @@ export default class Game {
     this.board.getUnitsOwnedBy(this.getPlayerOnTurn())
       .forEach(cell => cell.refresh())
 
-    this.changeGameState(this.gameStateFactory.create(GameStateStandby))
+    this.changeState(this.stateFactory.create(StandingBy))
 
     this.events.trigger('endTurn', {
       playerOnTurn: this.getPlayerOnTurn()
@@ -57,25 +57,25 @@ export default class Game {
       throw new Exception('Clicked Cell is not registered in the Game')
     }
 
-    this.gameState.cellClick(cell)
+    this.state.cellClick(cell)
   }
 
   /**
-   * @param {GameState|Class} [gameState]
+   * @param {State|Class} [state]
    * @param {...*} parameters
    */
-  changeGameState (gameState, ...parameters) {
-    if (!(gameState instanceof GameState)) {
-      gameState = this.gameStateFactory.create(gameState, ...parameters)
+  changeState (state, ...parameters) {
+    if (!(state instanceof State)) {
+      state = this.stateFactory.create(state, ...parameters)
     } else if (parameters.length > 0) {
       throw new Exception('Invalid arguments: Passing parameters is not possible when instance of State is passed.')
     }
 
-    if (this.gameState !== gameState) {
-      this.gameState = gameState
+    if (this.state !== state) {
+      this.state = state
 
       this.events.trigger('newGameState', {
-        gameState: this.gameState
+        state: this.state
       })
     }
   }

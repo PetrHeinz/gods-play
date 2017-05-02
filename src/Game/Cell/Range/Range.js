@@ -1,4 +1,4 @@
-export default class CellRange {
+export default class Range {
   /**
    * @param {Cell} destination
    * @param {Cell} [origin]

@@ -1,6 +1,6 @@
 export default class Events {
   constructor () {
-    /** @type {Object.<string, Function>[]} */
+    /** @type {GameObject.<string, Function>[]} */
     this.callbacks = {}
   }
 

@@ -1,8 +1,8 @@
-import CellRange from './CellRange'
+import Range from './Range'
 
-export default class CellRangeFilter extends CellRange {
+export default class Filter extends Range {
   /**
-   * @param {CellRange} range
+   * @param {Range} range
    * @param {function} filter
    */
   constructor (range, filter) {

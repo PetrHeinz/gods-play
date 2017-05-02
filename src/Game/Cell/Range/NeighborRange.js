@@ -1,7 +1,7 @@
-import CellRange from './CellRange'
+import Range from './Range'
 import { difference, unique } from '../../../function/array'
 
-export default class NeighborCellRange extends CellRange {
+export default class NeighborRange extends Range {
   /**
    * @param {number} rangeRadius
    */

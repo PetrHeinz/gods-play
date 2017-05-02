@@ -2,7 +2,7 @@ import Exception from '../Exception'
 
 export default class GameObject {
   constructor () {
-    /** @type {GameObjectFactory|null} */
+    /** @type {gameObjectFactory|null} */
     this.factory = null
 
     /** @type {Events|null} */
@@ -16,7 +16,7 @@ export default class GameObject {
   }
 
   /**
-   * @param {GameObjectFactory} gameObjectFactory
+   * @param {gameObjectFactory} gameObjectFactory
    * @param {Events} events
    */
   inject (gameObjectFactory, events) {

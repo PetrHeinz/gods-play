@@ -1,6 +1,6 @@
-import GameState from './GameState'
+import State from './State'
 
-export default class GameStateUnitSelected extends GameState {
+export default class UnitSelected extends State {
   /**
    * @param {Unit} unit
    */

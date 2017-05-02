@@ -1,4 +1,4 @@
-export default class MenuItem {
+export default class Action {
   /**
    * @param {string} label
    * @param {Function} callback

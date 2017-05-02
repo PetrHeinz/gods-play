@@ -4,10 +4,10 @@ import { random } from '../../function/array'
 
 export default class BoardGenerator {
   /**
-   * @param {GameObjectFactory} gameObjectFactory
+   * @param {gameObjectFactory} gameObjectFactory
    */
   constructor (gameObjectFactory) {
-    /** @type {GameObjectFactory} */
+    /** @type {gameObjectFactory} */
     this.gameObjectFactory = gameObjectFactory
   }
 
@@ -15,7 +15,7 @@ export default class BoardGenerator {
    * @param {GameConfig} config
    * @return {Board}
    */
-  generateBoard (config) {
+  generate (config) {
     let board = this.gameObjectFactory.create(Board, config)
 
     let map = new CubeCoordinateMap()

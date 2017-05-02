@@ -1,6 +1,6 @@
 import BoardGenerator from './Game/Board/BoardGenerator'
 import Game from './Game/Game'
-import Renderer from './Renderer/Renderer'
+import Interface from './Interface/Interface'
 import Events from './Events'
 import GameObjectFactory from './Game/GameObjectFactory'
 import Player from './Game/Player'
@@ -27,7 +27,7 @@ export default class GodsPlay {
     /** @type {Game|null} */
     this.game = null
 
-    /** @type {Renderer|null} */
+    /** @type {Interface|null} */
     this.renderer = null
   }
 
@@ -35,7 +35,7 @@ export default class GodsPlay {
    * @param {GameConfig} [config]
    */
   initialize (config = new GameConfig()) {
-    let board = this.boardGenerator.generateBoard(config)
+    let board = this.boardGenerator.generate(config)
 
     let shuffledCells = shuffle(board.children)
     shuffledCells.splice(0, config.boardSize).forEach(function (cell) {
@@ -55,7 +55,7 @@ export default class GodsPlay {
     }
 
     this.game = new Game(board, players, this.events)
-    this.renderer = new Renderer(this.game)
+    this.renderer = new Interface(this.game)
 
     this.document.body.appendChild(this.renderer.getView())
 

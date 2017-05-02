@@ -1,12 +1,12 @@
 import HashMap from 'hashmap'
-import MenuUI from './MenuUI'
+import MenuInterface from './MenuInterface'
 
 const HEX_WIDTH = 148
 const HEX_HEIGHT = 130
 const HEX_OFFSET_X = 115
 const HEX_OFFSET_Y = 132
 
-export default class Renderer {
+export default class Interface {
   /**
    * @param {Game} game
    */
@@ -17,8 +17,8 @@ export default class Renderer {
     /** @type {Game} */
     this.game = game
 
-    /** @type {MenuUI} */
-    this.menu = new MenuUI(this.pixiApp.stage)
+    /** @type {MenuInterface} */
+    this.menu = new MenuInterface(this.pixiApp.stage)
 
     /** @type {HashMap} */
     this.hexesByCells = new HashMap()
@@ -77,9 +77,9 @@ export default class Renderer {
         })
     })
 
-    this.menu.setItems(this.game.gameState.getMenuItems())
+    this.menu.setActions(this.game.state.getActions())
     this.game.events.listen('newGameState', function (data) {
-      self.menu.setItems(data.gameState.getMenuItems())
+      self.menu.setActions(data.state.getActions())
     })
 
     /**
