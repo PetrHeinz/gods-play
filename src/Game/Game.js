@@ -1,7 +1,7 @@
-import GameStateFactory from './GameStateFactory'
-import GameStateStandby from './GameStateStandby'
-import GameState from './GameState'
-import Exception from './Exception'
+import GameStateFactory from './State/GameStateFactory'
+import GameStateStandby from './State/GameStateStandby'
+import GameState from './State/GameState'
+import Exception from '../Exception'
 
 export default class Game {
   /**
@@ -68,7 +68,7 @@ export default class Game {
     if (!(gameState instanceof GameState)) {
       gameState = this.gameStateFactory.create(gameState, ...parameters)
     } else if (parameters.length > 0) {
-      throw new Exception('Invalid arguments: Passing parameters is not possible when instance of GameState is passed.')
+      throw new Exception('Invalid arguments: Passing parameters is not possible when instance of State is passed.')
     }
 
     if (this.gameState !== gameState) {

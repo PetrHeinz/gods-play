@@ -1,7 +1,7 @@
-import GameObject from './GameObject'
-import Cell from './Cell'
+import GameObject from '../GameObject'
+import Cell from '../Cell/Cell'
 import HashMap from 'hashmap'
-import Exception from './Exception'
+import Exception from '../../Exception'
 
 export default class Board extends GameObject {
   /**

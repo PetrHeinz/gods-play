@@ -1,5 +1,5 @@
-import GameObject from './GameObject'
-import Exception from './Exception'
+import GameObject from '../GameObject'
+import Exception from '../../Exception'
 
 export default class Unit extends GameObject {
   /**

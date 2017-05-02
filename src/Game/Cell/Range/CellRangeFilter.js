@@ -8,7 +8,7 @@ export default class CellRangeFilter extends CellRange {
   constructor (range, filter) {
     super()
 
-    /** @var {CellRange} */
+    /** @var {Range} */
     this.range = range
 
     /** @var {function} */

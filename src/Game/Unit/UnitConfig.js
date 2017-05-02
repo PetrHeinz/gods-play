@@ -1,4 +1,4 @@
-import NoUnitCellRangeFilter from './NoUnitCellRangeFilter'
+import NoUnitCellRangeFilter from '../Cell/Range/NoUnitCellRangeFilter'
 
 export default class UnitConfig {
   /**
