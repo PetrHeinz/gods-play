@@ -1,4 +1,4 @@
-import CellRangeFilter from './CellRangeFilter'
+import NoUnitCellRangeFilter from './NoUnitCellRangeFilter'
 
 export default class UnitConfig {
   /**
@@ -10,6 +10,6 @@ export default class UnitConfig {
     this.symbol = symbol
 
     /** @type {CellRange} */
-    this.range = new CellRangeFilter(range, cell => cell.unit === null)
+    this.range = (range instanceof NoUnitCellRangeFilter) ? range : new NoUnitCellRangeFilter(range)
   }
 }
