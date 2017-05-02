@@ -1,11 +1,11 @@
 export default class CellConfig {
   /**
-   * @param {string} terrain
+   * @param {string} color
    * @param {UnitConfig|null} unitConfig
    */
-  constructor (terrain, unitConfig = null) {
+  constructor (color, unitConfig = null) {
     /** @type {string} */
-    this.terrain = terrain
+    this.color = color
 
     /** @type {UnitConfig|null} */
     this.unitConfig = unitConfig

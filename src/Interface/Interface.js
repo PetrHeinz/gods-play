@@ -35,18 +35,12 @@ export default class Interface {
     let self = this
 
     this.game.board.children.forEach(function (cell) {
-      if (PIXI.loader.resources[('hex.' + cell.config.terrain)] === undefined) {
-        PIXI.loader.add('hex.' + cell.config.terrain, 'assets/ryanshenk.hex.' + cell.config.terrain + '.png')
-      }
-    })
-    PIXI.loader.load(function (loader, resources) {
-      self.game.board.children.forEach(function (cell) {
-        let hex = self.createHex(cell, resources)
+      let hex = self.createHex(cell)
 
-        self.pixiApp.stage.addChild(hex)
-        self.hexesByCells.set(cell, hex)
-      })
+      self.pixiApp.stage.addChild(hex)
+      self.hexesByCells.set(cell, hex)
     })
+
     this.game.events.listen('unitMove', function (data) {
       let hex = self.hexesByCells.get(data.unit.parent)
 
@@ -93,16 +87,26 @@ export default class Interface {
 
   /**
    * @param {Cell} cell
-   * @param {Resource[]} resources
    * @return {PIXI.Sprite}
    */
-  createHex (cell, resources) {
-    let hex = new PIXI.Sprite(resources['hex.' + cell.config.terrain].texture)
+  createHex (cell) {
+    let hex = new PIXI.Graphics()
+
+    hex.lineStyle(5, 0xFFFFFF, 1)
+    hex.beginFill(cell.config.color.replace('#', '0x'))
+    hex.drawPolygon(
+      new PIXI.Point(0, HEX_HEIGHT / 2),
+      new PIXI.Point(HEX_WIDTH / 4, 0),
+      new PIXI.Point(3 * HEX_WIDTH / 4, 0),
+      new PIXI.Point(HEX_WIDTH, HEX_HEIGHT / 2),
+      new PIXI.Point(3 * HEX_WIDTH / 4, HEX_HEIGHT),
+      new PIXI.Point(HEX_WIDTH / 4, HEX_HEIGHT),
+      new PIXI.Point(0, HEX_HEIGHT / 2)
+    )
+    hex.endFill()
+    hex.pivot = new PIXI.Point(HEX_WIDTH / 2, HEX_HEIGHT / 2)
 
     hex.cell = cell
-
-    hex.pivot.x = HEX_WIDTH / 2
-    hex.pivot.y = HEX_HEIGHT / 2
 
     let size = this.calculateSize()
 

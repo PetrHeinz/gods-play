@@ -18,28 +18,28 @@ export default class GameConfig {
 
     /** @type {CellConfig[]} */
     this.cellConfigs = [
-      createCellConfig('brick', '♖', new NeighborRange(0)),
-      createCellConfig('grass', '♘', new NeighborRange(2)),
-      createCellConfig('tree', '♗', new NeighborRange(1)),
-      createCellConfig('stone', '♜', new NeighborRange(0)),
-      createCellConfig('sand', '♞', new NeighborRange(2)),
-      createCellConfig('wheat', '♝', new NeighborRange(1)),
-      createCellConfig('water')
+      createCellConfig('#66EE33', '♖', new NeighborRange(0)),
+      createCellConfig('#33EE66', '♜', new NeighborRange(0)),
+      createCellConfig('#EE3366', '♗', new NeighborRange(1)),
+      createCellConfig('#EE6633', '♝', new NeighborRange(1)),
+      createCellConfig('#3366EE', '♞', new NeighborRange(2)),
+      createCellConfig('#6633EE', '♘', new NeighborRange(2)),
+      createCellConfig('#666666')
     ]
 
     /**
-     * @param {string} terrain
+     * @param {string} color
      * @param {string} [unitSymbol]
      * @param {Range} [range]
      * @return {CellConfig}
      */
-    function createCellConfig (terrain, unitSymbol, range) {
+    function createCellConfig (color, unitSymbol, range) {
       let unitConfig = null
       if (unitSymbol !== undefined) {
         unitConfig = new UnitConfig(unitSymbol, range)
       }
 
-      return new CellConfig(terrain, unitConfig)
+      return new CellConfig(color, unitConfig)
     }
   }
 }
