@@ -9,29 +9,31 @@ const HEX_OFFSET_Y = 132
 export default class Interface {
   /**
    * @param {Game} game
+   * @param {HTMLDocument} document
    */
-  constructor (game) {
-    /** @type {PIXI.Application} */
-    this.pixiApp = new PIXI.Application()
-
+  constructor (game, document) {
     /** @type {Game} */
     this.game = game
 
-    /** @type {MenuInterface} */
-    this.menu = new MenuInterface(this.pixiApp.stage)
+    /** @type {HTMLDocument} */
+    this.document = document
+
+    /** @type {PIXI.Application|null} */
+    this.pixiApp = null
+
+    /** @type {MenuInterface|null} */
+    this.menu = null
 
     /** @type {HashMap} */
     this.hexesByCells = new HashMap()
   }
 
-  /**
-   * @return {HTMLCanvasElement|WindowProxy|null}
-   */
-  getView () {
-    return this.pixiApp.view
-  }
+  initialize () {
+    this.pixiApp = new PIXI.Application(800, 600, {antialias: true})
+    this.menu = new MenuInterface(this.pixiApp.stage)
 
-  createBoard () {
+    this.document.body.appendChild(this.pixiApp.view)
+
     let self = this
 
     this.game.board.children.forEach(function (cell) {

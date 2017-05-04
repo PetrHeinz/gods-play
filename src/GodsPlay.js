@@ -28,7 +28,7 @@ export default class GodsPlay {
     this.game = null
 
     /** @type {Interface|null} */
-    this.renderer = null
+    this.interface = null
   }
 
   /**
@@ -55,10 +55,8 @@ export default class GodsPlay {
     }
 
     this.game = new Game(board, players, this.events)
-    this.renderer = new Interface(this.game)
+    this.interface = new Interface(this.game, this.document)
 
-    this.document.body.appendChild(this.renderer.getView())
-
-    this.renderer.createBoard()
+    this.interface.initialize()
   }
 }
