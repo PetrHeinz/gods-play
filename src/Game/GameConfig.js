@@ -11,20 +11,20 @@ export default class GameConfig {
     this.playerCount = 2
 
     /** @type {string[]} */
-    this.playerColors = ['#AA0000', '#0000AA', '#00AA00', '#AAAA00', '#00AAAA', '#AA00AA']
+    this.playerColors = [0xAA0000, 0x0000AA, 0x00AA00, 0xAAAA00, 0x00AAAA, 0xAA00AA]
 
     /** @type {UnitConfig} */
     this.mageConfig = new UnitConfig('♕', new NeighborRange(1))
 
     /** @type {CellConfig[]} */
     this.cellConfigs = [
-      createCellConfig('#66EE33', '♖', new NeighborRange(0)),
-      createCellConfig('#33EE66', '♜', new NeighborRange(0)),
-      createCellConfig('#EE3366', '♗', new NeighborRange(1)),
-      createCellConfig('#EE6633', '♝', new NeighborRange(1)),
-      createCellConfig('#3366EE', '♞', new NeighborRange(2)),
-      createCellConfig('#6633EE', '♘', new NeighborRange(2)),
-      createCellConfig('#666666')
+      createCellConfig(0x66EE33, '♖', new NeighborRange(0)),
+      createCellConfig(0x33EE66, '♜', new NeighborRange(0)),
+      createCellConfig(0xEE3366, '♗', new NeighborRange(1)),
+      createCellConfig(0xEE6633, '♝', new NeighborRange(1)),
+      createCellConfig(0x3366EE, '♞', new NeighborRange(2)),
+      createCellConfig(0x6633EE, '♘', new NeighborRange(2)),
+      createCellConfig(0x666666)
     ]
 
     /**

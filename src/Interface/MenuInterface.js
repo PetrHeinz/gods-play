@@ -24,7 +24,7 @@ export default class MenuInterface {
     actions.forEach(function (action, i) {
       let text = new PIXI.Text(
         '▸' + action.label,
-        {fill: '#FFFFFF'}
+        {fill: 0xFFFFFF}
       )
 
       text.interactive = true

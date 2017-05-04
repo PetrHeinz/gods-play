@@ -46,7 +46,7 @@ export default class Interface {
 
       hex.text.text = data.unit.config.symbol
       hex.text.style.stroke = data.unit.owner.color
-      hex.text.style.fill = data.unit.tired ? '#AAAAAA' : '#FFFFFF'
+      hex.text.style.fill = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
 
       self.hexesByCells.get(data.fromCell).text.text = ''
     })
@@ -55,19 +55,19 @@ export default class Interface {
 
       hex.text.text = data.unit.config.symbol
       hex.text.style.stroke = data.unit.owner.color
-      hex.text.style.fill = data.unit.tired ? '#AAAAAA' : '#FFFFFF'
+      hex.text.style.fill = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
     })
 
     let playerText = new PIXI.Text(
       getPlayerText(this.game.getPlayerOnTurn()),
-      {fill: '#FFFFFF'}
+      {fill: 0xFFFFFF}
     )
     self.pixiApp.stage.addChild(playerText)
     this.game.events.listen('endTurn', function (data) {
       playerText.text = getPlayerText(data.playerOnTurn)
       self.game.board.getUnitsOwnedBy(data.playerOnTurn)
         .forEach(function (unit) {
-          self.hexesByCells.get(unit.parent).text.style.fill = unit.tired ? '#AAAAAA' : '#FFFFFF'
+          self.hexesByCells.get(unit.parent).text.style.fill = unit.tired ? 0xAAAAAA : 0xFFFFFF
         })
     })
 
@@ -93,7 +93,7 @@ export default class Interface {
     let hex = new PIXI.Graphics()
 
     hex.lineStyle(5, 0xFFFFFF, 1)
-    hex.beginFill(cell.config.color.replace('#', '0x'))
+    hex.beginFill(cell.config.color)
     hex.drawPolygon(
       new PIXI.Point(0, HEX_HEIGHT / 2),
       new PIXI.Point(HEX_WIDTH / 4, 0),
@@ -119,8 +119,8 @@ export default class Interface {
     addCoordinateAsText(hex, coordinate)
 
     hex.text = new PIXI.Text(cell.unit !== null ? cell.unit.config.symbol : '', {
-      fill: cell.unit !== null && cell.unit.tired ? '#AAAAAA' : '#FFFFFF',
-      stroke: cell.unit !== null ? cell.unit.owner.color : '#FFFFFF',
+      fill: cell.unit !== null && cell.unit.tired ? 0xAAAAAA : 0xFFFFFF,
+      stroke: cell.unit !== null ? cell.unit.owner.color : 0xFFFFFF,
       strokeThickness: 10,
       fontSize: 80,
       dropShadow: true,
@@ -139,17 +139,17 @@ export default class Interface {
     return hex
 
     function addCoordinateAsText (hex, coordinate) {
-      let xText = new PIXI.Text(coordinate.x, getTextStyle('#FF0000'))
+      let xText = new PIXI.Text(coordinate.x, getTextStyle(0xFF0000))
       xText.x = HEX_WIDTH - 50
       xText.y = HEX_HEIGHT / 2 - 10
       hex.addChild(xText)
 
-      let yText = new PIXI.Text(coordinate.y, getTextStyle('#00FF00'))
+      let yText = new PIXI.Text(coordinate.y, getTextStyle(0x00FF00))
       yText.x = 35
       yText.y = 10
       hex.addChild(yText)
 
-      let zText = new PIXI.Text(coordinate.z, getTextStyle('#0000FF'))
+      let zText = new PIXI.Text(coordinate.z, getTextStyle(0x0000FF))
       zText.x = 35
       zText.y = HEX_HEIGHT - 35
       hex.addChild(zText)
