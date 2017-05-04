@@ -29,7 +29,11 @@ export default class Interface {
   }
 
   initialize () {
-    this.pixiApp = new PIXI.Application(800, 600, {antialias: true})
+    this.pixiApp = new PIXI.Application(
+      this.document.body.offsetWidth,
+      this.document.body.offsetHeight,
+      {antialias: true}
+    )
     this.menu = new MenuInterface(this.pixiApp.stage)
 
     this.document.body.appendChild(this.pixiApp.view)
