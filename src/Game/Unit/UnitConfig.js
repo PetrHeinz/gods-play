@@ -1,5 +1,5 @@
 import WithoutUnit from '../Cell/Range/WithoutUnit'
-import WithUnit from '../Cell/Range/WithUnit'
+import WithUnitOfOtherPlayer from '../Cell/Range/WithUnitOfOtherPlayer'
 
 export default class UnitConfig {
   /**
@@ -15,6 +15,6 @@ export default class UnitConfig {
     this.moveRange = (moveRange instanceof WithoutUnit) ? moveRange : new WithoutUnit(moveRange)
 
     /** @type {Range} */
-    this.attackRange = (attackRange instanceof WithUnit) ? attackRange : new WithUnit(attackRange)
+    this.attackRange = (attackRange instanceof WithUnitOfOtherPlayer) ? attackRange : new WithUnitOfOtherPlayer(attackRange)
   }
 }
