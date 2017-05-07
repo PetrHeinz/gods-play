@@ -61,6 +61,9 @@ export default class Interface {
 
       hex.text.style.fill = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
     })
+    this.game.events.listen('unitDied', function (data) {
+      self.hexesByCells.get(data.onCell).text.text = ''
+    })
     this.game.events.listen('unitCreated', function (data) {
       let hex = self.hexesByCells.get(data.unit.parent)
 

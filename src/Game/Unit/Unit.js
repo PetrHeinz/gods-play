@@ -66,12 +66,22 @@ export default class Unit extends GameObject {
     if (!this.isInAttackRange(cell)) {
       throw new Exception('Unit cannot attack on Cell out of range')
     }
-    console.log('CELL ATTACKED!')
+    cell.unit.die()
 
     this.tired = true
 
     this.events.trigger('unitAttack', {
       unit: this
+    })
+  }
+
+  die () {
+    let cell = this.parent
+
+    this.parent.removeChild(this)
+
+    this.events.trigger('unitDied', {
+      onCell: cell
     })
   }
 
