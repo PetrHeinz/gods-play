@@ -30,13 +30,13 @@ export default class GameConfig {
     /**
      * @param {string} color
      * @param {string} [unitSymbol]
-     * @param {Range} [range]
+     * @param {Range} [moveRange]
      * @return {CellConfig}
      */
-    function createCellConfig (color, unitSymbol, range) {
+    function createCellConfig (color, unitSymbol, moveRange) {
       let unitConfig = null
       if (unitSymbol !== undefined) {
-        unitConfig = new UnitConfig(unitSymbol, range)
+        unitConfig = new UnitConfig(unitSymbol, moveRange)
       }
 
       return new CellConfig(color, unitConfig)

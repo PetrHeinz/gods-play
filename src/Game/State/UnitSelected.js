@@ -15,7 +15,7 @@ export default class UnitSelected extends State {
    * @param {Cell} cell
    */
   cellClick (cell) {
-    if (this.unit.isInRange(cell)) {
+    if (this.unit.isInMoveRange(cell)) {
       this.unit.moveTo(cell)
 
       super.cellClick(cell)

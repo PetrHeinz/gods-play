@@ -3,13 +3,13 @@ import WithoutUnit from '../Cell/Range/WithoutUnit'
 export default class UnitConfig {
   /**
    * @param {string} symbol
-   * @param {Range} range
+   * @param {Range} moveRange
    */
-  constructor (symbol, range) {
+  constructor (symbol, moveRange) {
     /** @type {string} */
     this.symbol = symbol
 
     /** @type {Range} */
-    this.range = (range instanceof WithoutUnit) ? range : new WithoutUnit(range)
+    this.moveRange = (moveRange instanceof WithoutUnit) ? moveRange : new WithoutUnit(moveRange)
   }
 }
