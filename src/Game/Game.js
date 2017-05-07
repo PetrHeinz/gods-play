@@ -1,7 +1,7 @@
 import StateFactory from './State/StateFactory'
 import StandingBy from './State/StandingBy'
 import State from './State/State'
-import Exception from '../Exception'
+import Exception from '../exceptions/Exception'
 
 export default class Game {
   /**

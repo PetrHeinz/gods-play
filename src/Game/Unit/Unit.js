@@ -1,5 +1,5 @@
 import GameObject from '../GameObject'
-import Exception from '../../Exception'
+import Exception from '../../exceptions/Exception'
 
 export default class Unit extends GameObject {
   /**
@@ -29,6 +29,14 @@ export default class Unit extends GameObject {
 
   /**
    * @param {Cell} cell
+   * @return {bool}
+   */
+  isInAttackRange (cell) {
+    return this.config.attackRange.isInRange(cell, this.parent)
+  }
+
+  /**
+   * @param {Cell} cell
    */
   moveTo (cell) {
     if (this.tired) {
@@ -45,6 +53,25 @@ export default class Unit extends GameObject {
     this.events.trigger('unitMove', {
       unit: this,
       fromCell: previousParent
+    })
+  }
+
+  /**
+   * @param {Cell} cell
+   */
+  attackOn (cell) {
+    if (this.tired) {
+      throw new Exception('Tired Unit cannot attack')
+    }
+    if (!this.isInAttackRange(cell)) {
+      throw new Exception('Unit cannot attack on Cell out of range')
+    }
+    console.log('CELL ATTACKED!')
+
+    this.tired = true
+
+    this.events.trigger('unitAttack', {
+      unit: this
     })
   }
 

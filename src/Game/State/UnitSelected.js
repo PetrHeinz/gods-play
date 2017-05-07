@@ -19,6 +19,10 @@ export default class UnitSelected extends State {
       this.unit.moveTo(cell)
 
       super.cellClick(cell)
+    } else if (this.unit.isInAttackRange(cell)) {
+      this.unit.attackOn(cell)
+
+      super.cellClick(cell)
     }
   }
 }

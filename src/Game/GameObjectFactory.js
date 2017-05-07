@@ -1,5 +1,5 @@
 import GameObject from './GameObject'
-import Exception from '../Exception'
+import Exception from '../exceptions/Exception'
 import { typename } from '../function/type'
 
 export default class GameObjectFactory {

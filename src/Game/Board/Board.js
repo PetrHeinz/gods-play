@@ -1,7 +1,8 @@
 import GameObject from '../GameObject'
 import Cell from '../Cell/Cell'
 import HashMap from 'hashmap'
-import Exception from '../../Exception'
+import Exception from '../../exceptions/Exception'
+import CellNotFoundException from '../../exceptions/CellNotFoundException'
 
 export default class Board extends GameObject {
   /**
@@ -15,6 +16,18 @@ export default class Board extends GameObject {
 
     /** @type {HashMap} */
     this.cellsByCoordinate = new HashMap()
+  }
+
+  /**
+   * @param {CubeCoordinate} coordinate
+   * @return {Cell}
+   */
+  getCellByCoordinate (coordinate) {
+    if (!this.cellsByCoordinate.has(coordinate)) {
+      throw new CellNotFoundException()
+    }
+
+    return this.cellsByCoordinate.get(coordinate)
   }
 
   /**
@@ -67,5 +80,6 @@ export default class Board extends GameObject {
     while (cell.neighbors.length > 0) {
       cell.removeNeighbor(cell.neighbors[0])
     }
+    this.cellsByCoordinate.remove(cell.coordinate)
   }
 }

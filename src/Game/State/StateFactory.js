@@ -1,5 +1,5 @@
 import State from './State'
-import Exception from '../../Exception'
+import Exception from '../../exceptions/Exception'
 import StandingBy from './StandingBy'
 import { typename } from '../../function/type'
 
