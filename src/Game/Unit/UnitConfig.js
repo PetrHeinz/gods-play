@@ -6,8 +6,9 @@ export default class UnitConfig {
    * @param {string} symbol
    * @param {Range} moveRange
    * @param {Range} attackRange
+   * @param {bool} isAttackMelee
    */
-  constructor (symbol, moveRange, attackRange) {
+  constructor (symbol, moveRange, attackRange, isAttackMelee) {
     /** @type {string} */
     this.symbol = symbol
 
@@ -16,5 +17,8 @@ export default class UnitConfig {
 
     /** @type {Range} */
     this.attackRange = (attackRange instanceof WithUnitOfOtherPlayer) ? attackRange : new WithUnitOfOtherPlayer(attackRange)
+
+    /** @type {bool} */
+    this.isAttackMelee = isAttackMelee
   }
 }

@@ -68,6 +68,10 @@ export default class Unit extends GameObject {
     }
     cell.unit.die()
 
+    if (this.config.isAttackMelee && this.isInMoveRange(cell)) {
+      this.moveTo(cell)
+    }
+
     this.tired = true
 
     this.events.trigger('unitAttack', {
