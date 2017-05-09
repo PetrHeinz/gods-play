@@ -32,7 +32,7 @@ export default class Unit extends GameObject {
    * @return {bool}
    */
   isInAttackRange (cell) {
-    return this.config.attackRange.isInRange(cell, this.parent)
+    return this.config.attack.isCellInRange(cell, this)
   }
 
   /**
@@ -63,14 +63,8 @@ export default class Unit extends GameObject {
     if (this.tired) {
       throw new Exception('Tired Unit cannot attack')
     }
-    if (!this.isInAttackRange(cell)) {
-      throw new Exception('Unit cannot attack on Cell out of range')
-    }
-    cell.unit.die()
 
-    if (this.config.isAttackMelee && this.isInMoveRange(cell)) {
-      this.moveTo(cell)
-    }
+    this.config.attack.onCell(cell, this)
 
     this.tired = true
 
