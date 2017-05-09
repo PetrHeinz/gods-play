@@ -1,13 +1,12 @@
-import WithUnitOfOtherPlayer from '../../Cell/Range/WithUnitOfOtherPlayer'
 import CellOutOfRangeException from '../../../exceptions/CellOutOfRangeException'
 
-export default class Attack {
+export default class UnitAction {
   /**
    * @param {Range} range
    */
   constructor (range) {
     /** @type {Range} */
-    this.range = (range instanceof WithUnitOfOtherPlayer) ? range : new WithUnitOfOtherPlayer(range)
+    this.range = range
   }
 
   /**
@@ -27,7 +26,5 @@ export default class Attack {
     if (!this.isCellInRange(cell, unit)) {
       throw new CellOutOfRangeException()
     }
-
-    cell.unit.die()
   }
 }

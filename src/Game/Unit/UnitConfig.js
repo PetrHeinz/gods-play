@@ -1,17 +1,15 @@
-import WithoutUnit from '../Cell/Range/WithoutUnit'
-
 export default class UnitConfig {
   /**
    * @param {string} symbol
-   * @param {Range} moveRange
+   * @param {Movement} movement
    * @param {Attack} attack
    */
-  constructor (symbol, moveRange, attack) {
+  constructor (symbol, movement, attack) {
     /** @type {string} */
     this.symbol = symbol
 
-    /** @type {Range} */
-    this.moveRange = (moveRange instanceof WithoutUnit) ? moveRange : new WithoutUnit(moveRange)
+    /** @type {Movement} */
+    this.movement = movement
 
     /** @type {Attack} */
     this.attack = attack

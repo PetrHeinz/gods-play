@@ -24,7 +24,7 @@ export default class Unit extends GameObject {
    * @return {bool}
    */
   isInMoveRange (cell) {
-    return this.config.moveRange.isInRange(cell, this.parent)
+    return this.config.movement.isCellInRange(cell, this)
   }
 
   /**
@@ -42,11 +42,10 @@ export default class Unit extends GameObject {
     if (this.tired) {
       throw new Exception('Tired Unit cannot move')
     }
-    if (!this.isInMoveRange(cell)) {
-      throw new Exception('Unit cannot be moved on Cell out of range')
-    }
+
     let previousParent = this.parent
-    this.setParent(cell)
+
+    this.config.movement.onCell(cell, this)
 
     this.tired = true
 
