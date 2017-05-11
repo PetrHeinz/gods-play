@@ -86,8 +86,14 @@ export default class Interface {
     })
 
     this.menu.setActions(this.game.state.getActions())
+    this.hexesByCells.forEach(function (hex) {
+      hex.tint = self.game.state.canClickCell(hex.cell) ? 0xFFFFFF : 0xCCCCCC
+    })
     this.game.events.listen('newGameState', function (data) {
       self.menu.setActions(data.state.getActions())
+      self.hexesByCells.forEach(function (hex) {
+        hex.tint = data.state.canClickCell(hex.cell) ? 0xFFFFFF : 0xCCCCCC
+      })
     })
 
     /**

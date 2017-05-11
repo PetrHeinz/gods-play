@@ -14,11 +14,17 @@ export default class CreatingUnit extends State {
   /**
    * @param {Cell} cell
    */
-  cellClick (cell) {
-    if (this.range.isInRange(cell)) {
-      cell.createChild(this.game.getPlayerOnTurn())
+  cellClickAction (cell) {
+    cell.createChild(this.game.getPlayerOnTurn())
 
-      super.cellClick(cell)
-    }
+    super.cellClickAction(cell)
+  }
+
+  /**
+   * @param {Cell} cell
+   * @return {bool}
+   */
+  canClickCell (cell) {
+    return this.range.isInRange(cell)
   }
 }

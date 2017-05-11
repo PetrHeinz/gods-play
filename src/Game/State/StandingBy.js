@@ -7,12 +7,18 @@ export default class StandingBy extends State {
   /**
    * @param {Cell} cell
    */
-  cellClick (cell) {
+  cellClickAction (cell) {
+    this.game.changeState(UnitSelected, cell.unit)
+  }
+
+  /**
+   * @param {Cell} cell
+   * @return {bool}
+   */
+  canClickCell (cell) {
     let unit = cell.unit
 
-    if (unit !== null && unit.owner === this.game.getPlayerOnTurn() && !unit.tired) {
-      this.game.changeState(UnitSelected, unit)
-    }
+    return unit !== null && unit.owner === this.game.getPlayerOnTurn() && !unit.tired
   }
 
   /**

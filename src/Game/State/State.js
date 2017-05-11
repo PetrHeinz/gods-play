@@ -22,6 +22,23 @@ export default class State {
    * @param {Cell} cell
    */
   cellClick (cell) {
+    if (this.canClickCell(cell)) {
+      this.cellClickAction(cell)
+    }
+  }
+
+  /**
+   * @param {Cell} cell
+   * @return {bool}
+   */
+  canClickCell (cell) {
+    return true
+  }
+
+  /**
+   * @param {Cell} cell
+   */
+  cellClickAction (cell) {
     this.game.changeState()
   }
 
