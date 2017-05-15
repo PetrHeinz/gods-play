@@ -22,7 +22,7 @@
     "babelify": "^7.3.0",
     "browserify": "^14.1.0",
     "download-cli": "^1.0.1",
-    "es6-plato": "^1.0.14",
+    "plato": "^1.7.0",
     "standard": "^10.0.2",
     "watchify": "^3.9.0"
   },
@@ -39,7 +39,7 @@
     "build": "browserify --debug -r ./src/GodsPlay.js:gods-play -o js/gods-play.js",
     "watch": "watchify --debug -r ./src/GodsPlay.js:gods-play -o js/gods-play.js",
     "libs-update": "download https://pixijs.download/release/pixi.js https://pixijs.download/release/pixi.js.map --out ./js/libs",
-    "analyze": "es6-plato -r -d ./report ./src"
+    "analyze": "plato -r -e .eslintrc -d ./report ./src"
   },
   "browserify": {
     "transform": [
