@@ -20,12 +20,9 @@ export default class GameConfig {
 
     /** @type {CellConfig[]} */
     this.cellConfigs = [
-      new CellConfig(0x66EE33, new UnitConfig('♖', new Movement(0), new RangedAttack(2))),
-      new CellConfig(0x33EE66, new UnitConfig('♜', new Movement(0), new RangedAttack(2))),
-      new CellConfig(0xEE3366, new UnitConfig('♗', new Movement(), new MeleeAttack())),
-      new CellConfig(0xEE6633, new UnitConfig('♝', new Movement(), new MeleeAttack())),
-      new CellConfig(0x3366EE, new UnitConfig('♞', new Movement(2), new MeleeAttack(2))),
-      new CellConfig(0x6633EE, new UnitConfig('♘', new Movement(2), new MeleeAttack(2))),
+      new CellConfig(0x33EE33, new UnitConfig('♜', new Movement(0), new RangedAttack(2))),
+      new CellConfig(0xEE3333, new UnitConfig('♝', new Movement(), new MeleeAttack())),
+      new CellConfig(0x3333EE, new UnitConfig('♞', new Movement(2), new MeleeAttack(2))),
       new CellConfig(0x666666, null)
     ]
   }
