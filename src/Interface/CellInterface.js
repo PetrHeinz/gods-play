@@ -91,7 +91,6 @@ export default class CellInterface {
     let coordinate = cell.coordinate
     hex.x = size * HEX_OFFSET_X * coordinate.x + this.parent.pixiApp.renderer.width / 2
     hex.y = size * HEX_OFFSET_Y * (coordinate.z + coordinate.x / 2) + this.parent.pixiApp.renderer.height / 2
-    addCoordinateAsText(hex, coordinate)
 
     hex.text = new PIXI.Text(cell.unit !== null ? cell.unit.config.symbol : '', {
       fill: cell.unit !== null && cell.unit.tired ? 0xAAAAAA : 0xFFFFFF,
@@ -114,36 +113,6 @@ export default class CellInterface {
     hex.tint = this.parent.game.state.canClickCell(cell) ? 0xFFFFFF : 0xCCCCCC
 
     return hex
-
-    function addCoordinateAsText (hex, coordinate) {
-      let xText = new PIXI.Text(coordinate.x, getTextStyle(0xFF0000))
-      xText.x = HEX_WIDTH - 50
-      xText.y = HEX_HEIGHT / 2 - 10
-      hex.addChild(xText)
-
-      let yText = new PIXI.Text(coordinate.y, getTextStyle(0x00FF00))
-      yText.x = 35
-      yText.y = 10
-      hex.addChild(yText)
-
-      let zText = new PIXI.Text(coordinate.z, getTextStyle(0x0000FF))
-      zText.x = 35
-      zText.y = HEX_HEIGHT - 35
-      hex.addChild(zText)
-    }
-
-    /**
-     * @param {string} color
-     * @return {PIXI.TextStyle}
-     */
-    function getTextStyle (color) {
-      return new PIXI.TextStyle({
-        fontWeight: 900,
-        fill: color,
-        dropShadow: true,
-        dropShadowBlur: 15
-      })
-    }
   }
 
   /**
