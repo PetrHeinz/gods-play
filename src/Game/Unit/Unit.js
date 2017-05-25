@@ -78,6 +78,7 @@ export default class Unit extends GameObject {
     this.parent.removeChild(this)
 
     this.events.trigger('unitDied', {
+      unit: this,
       onCell: cell
     })
   }
