@@ -2,6 +2,7 @@ import State from './State'
 import Action from './Action'
 import UnitSelected from './UnitSelected'
 import CreatingUnit from './CreatingUnit'
+import DrainingStrength from './DrainingStrength'
 
 export default class StandingBy extends State {
   /**
@@ -30,6 +31,9 @@ export default class StandingBy extends State {
     return [
       new Action('Create unit', function () {
         self.game.changeState(CreatingUnit)
+      }),
+      new Action('Drain strength', function () {
+        self.game.changeState(DrainingStrength)
       }),
       new Action('End turn', function () {
         self.game.endTurn()

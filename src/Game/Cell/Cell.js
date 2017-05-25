@@ -39,6 +39,44 @@ export default class Cell extends GameObject {
   }
 
   /**
+   * @param {number} strength
+   * @return {number}
+   */
+  drainStrength (strength) {
+    let originalStrength = this.strength
+    let drainedStrength = Math.min(strength, originalStrength)
+
+    this.strength -= drainedStrength
+
+    this.events.trigger('cellDrained', {
+      cell: this,
+      drainedStrength: drainedStrength,
+      originalStrength: originalStrength
+    })
+
+    if (this.strength === 0) {
+      this.destroy()
+    }
+
+    return drainedStrength
+  }
+
+  destroy () {
+    if (this.unit !== null) {
+      this.unit.die()
+    }
+
+    let board = this.parent
+
+    this.parent.removeChild(this)
+
+    this.events.trigger('cellDestroyed', {
+      cell: this,
+      onBoard: board
+    })
+  }
+
+  /**
    * @param {Cell} cell
    */
   addNeighbor (cell) {

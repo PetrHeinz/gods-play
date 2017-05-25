@@ -28,6 +28,17 @@ export default class CellInterface {
 
     this.parent.pixiApp.stage.addChild(this.hex)
 
+    this.parent.game.events.listen('cellDrained', function (data) {
+      if (self.cell === data.cell) {
+        self.hex.strength.text = self.cell.strength
+      }
+    })
+    this.parent.game.events.listen('cellDestroyed', function (data) {
+      if (self.cell === data.cell) {
+        self.parent.pixiApp.stage.removeChild(self.hex)
+        self.parent.cellInterfacesMap.remove(self.cell)
+      }
+    })
     this.parent.game.events.listen('unitMove', function (data) {
       if (self.cell === data.unit.parent) {
         self.hex.symbol.text = data.unit.config.symbol
