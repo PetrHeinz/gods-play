@@ -5,9 +5,10 @@ import Exception from '../../exceptions/Exception'
 export default class Cell extends GameObject {
   /**
    * @param {CubeCoordinate} coordinate
+   * @param {number} strength
    * @param {CellConfig} config
    */
-  constructor (coordinate, config) {
+  constructor (coordinate, strength, config) {
     super()
 
     if (coordinate.x + coordinate.y + coordinate.z !== 0) {
@@ -16,6 +17,9 @@ export default class Cell extends GameObject {
 
     /** @type {CubeCoordinate} */
     this.coordinate = coordinate
+
+    /** @type {number} */
+    this.strength = strength
 
     /** @type {CellConfig} */
     this.config = config

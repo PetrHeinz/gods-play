@@ -61,6 +61,7 @@ export default class CellInterface {
     })
     this.parent.game.events.listen('newGameState', function (data) {
       self.hex.tint = data.state.canClickCell(self.cell) ? 0xFFFFFF : 0xCCCCCC
+      self.hex.strength.style.stroke = self.hex.tint
     })
   }
 
@@ -94,6 +95,17 @@ export default class CellInterface {
     hex.x = size * HEX_OFFSET_WIDTH * coordinate.x + this.parent.pixiApp.renderer.width / 2
     hex.y = size * HEX_OFFSET_HEIGHT * (coordinate.z + coordinate.x / 2) + this.parent.pixiApp.renderer.height / 2
 
+    hex.strength = new PIXI.Text(cell.strength, {
+      stroke: 0xFFFFFF,
+      strokeThickness: HEX_SYMBOL_SIZE / 10,
+      fontSize: HEX_SYMBOL_SIZE / 3,
+      fontWeight: 900
+    })
+    hex.strength.x = HEX_WIDTH / 4
+    hex.strength.y = 0
+    hex.strength.anchor = new PIXI.Point(0.25, 0.25)
+    hex.addChild(hex.strength)
+
     hex.symbol = new PIXI.Text(cell.unit !== null ? cell.unit.config.symbol : '', {
       fill: cell.unit !== null && cell.unit.tired ? 0xAAAAAA : 0xFFFFFF,
       stroke: cell.unit !== null ? cell.unit.owner.color : 0xFFFFFF,
@@ -114,6 +126,7 @@ export default class CellInterface {
     })
 
     hex.tint = this.parent.game.state.canClickCell(cell) ? 0xFFFFFF : 0xCCCCCC
+    hex.strength.style.stroke = hex.tint
 
     return hex
   }

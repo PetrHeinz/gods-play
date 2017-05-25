@@ -19,12 +19,16 @@ export default class BoardGenerator {
     let board = this.gameObjectFactory.create(Board, config)
 
     let map = new CubeCoordinateMap()
-    board.createChild(map.origin, random(config.cellConfigs))
+    let strength = Math.ceil(Math.random() * (config.boardSize + 3))
+    let cellConfig = random(config.cellConfigs)
+    board.createChild(map.origin, strength, cellConfig)
 
     for (let radius = 1; radius <= config.boardSize; radius++) {
       let ring = map.origin.getRing(radius)
       ring.forEach(function (coordinate) {
-        board.createChild(coordinate, random(config.cellConfigs))
+        let strength = Math.ceil(Math.random() * (config.boardSize - radius + 3))
+        let cellConfig = random(config.cellConfigs)
+        board.createChild(coordinate, strength, cellConfig)
       })
     }
 
