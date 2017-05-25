@@ -15,6 +15,6 @@ export default class Range {
    * @return {Cell[]}
    */
   getCells (cell) {
-    return cell.parent.children
+    return cell.parent !== null ? cell.parent.children : []
   }
 }
