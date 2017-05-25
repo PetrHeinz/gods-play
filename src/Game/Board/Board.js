@@ -42,10 +42,10 @@ export default class Board extends GameObject {
 
   /**
    * @param {CubeCoordinate} coordinate
-   * @param {string} type
+   * @param {CellConfig} config
    * @return {Cell}
    */
-  createChild (coordinate, type) {
+  createChild (coordinate, config) {
     if (this.cellsByCoordinate.has(coordinate)) {
       throw new Exception('Cell cannot be added to Board already having Cell on the same coordinate')
     }
@@ -54,7 +54,7 @@ export default class Board extends GameObject {
       throw new Exception('Cell cannot be added to Board of insufficient size ' + this.gameConfig.boardSize + ' (' + distance + ' needed)')
     }
 
-    let cell = super.createChild(Cell, coordinate, type)
+    let cell = super.createChild(Cell, coordinate, config)
     this.cellsByCoordinate.set(cell.coordinate, cell)
 
     let self = this
