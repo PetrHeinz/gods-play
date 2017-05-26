@@ -49,7 +49,7 @@ export default class Unit extends GameObject {
 
     this.tired = true
 
-    this.events.trigger('unitMove', {
+    this.events.trigger('unitMoved', {
       unit: this,
       fromCell: previousParent
     })
@@ -67,7 +67,7 @@ export default class Unit extends GameObject {
 
     this.tired = true
 
-    this.events.trigger('unitAttack', {
+    this.events.trigger('unitAttacked', {
       unit: this
     })
   }

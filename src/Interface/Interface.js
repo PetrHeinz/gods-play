@@ -43,11 +43,11 @@ export default class Interface {
     let playerText = new PIXI.Text('', {fill: 0xFFFFFF})
     updatePlayerText(this.game.getPlayerOnTurn())
     self.pixiApp.stage.addChild(playerText)
-    this.game.events.listen('endTurn', data => updatePlayerText(data.playerOnTurn))
-    this.game.events.listen('addMana', data => updatePlayerText(data.player))
+    this.game.events.listen('turnEnded', data => updatePlayerText(data.playerOnTurn))
+    this.game.events.listen('manaAdded', data => updatePlayerText(data.player))
 
     this.menu.setActions(this.game.state.getActions())
-    this.game.events.listen('newGameState', function (data) {
+    this.game.events.listen('gameStateChanged', function (data) {
       self.menu.setActions(data.state.getActions())
     })
 

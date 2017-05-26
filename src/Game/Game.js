@@ -44,7 +44,7 @@ export default class Game {
 
     this.changeState(this.stateFactory.create(StandingBy))
 
-    this.events.trigger('endTurn', {
+    this.events.trigger('turnEnded', {
       playerOnTurn: this.getPlayerOnTurn()
     })
   }
@@ -74,7 +74,7 @@ export default class Game {
     if (this.state !== state) {
       this.state = state
 
-      this.events.trigger('newGameState', {
+      this.events.trigger('gameStateChanged', {
         state: this.state
       })
     }

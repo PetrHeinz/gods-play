@@ -39,7 +39,7 @@ export default class CellInterface {
         self.parent.cellInterfacesMap.remove(self.cell)
       }
     })
-    this.parent.game.events.listen('unitMove', function (data) {
+    this.parent.game.events.listen('unitMoved', function (data) {
       if (self.cell === data.unit.parent) {
         self.hex.symbol.text = data.unit.config.symbol
         self.hex.symbol.style.stroke = data.unit.owner.color
@@ -48,7 +48,7 @@ export default class CellInterface {
         self.hex.symbol.text = ''
       }
     })
-    this.parent.game.events.listen('unitAttack', function (data) {
+    this.parent.game.events.listen('unitAttacked', function (data) {
       if (self.cell === data.unit.parent) {
         self.hex.symbol.style.fill = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
       }
@@ -65,12 +65,12 @@ export default class CellInterface {
         self.hex.symbol.style.fill = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
       }
     })
-    this.parent.game.events.listen('endTurn', function () {
+    this.parent.game.events.listen('turnEnded', function () {
       if (self.cell.unit !== null) {
         self.hex.symbol.style.fill = self.cell.unit.tired ? 0xAAAAAA : 0xFFFFFF
       }
     })
-    this.parent.game.events.listen('newGameState', function (data) {
+    this.parent.game.events.listen('gameStateChanged', function (data) {
       self.hex.tint = data.state.canClickCell(self.cell) ? 0xFFFFFF : 0xCCCCCC
       self.hex.strength.style.stroke = self.hex.tint
     })

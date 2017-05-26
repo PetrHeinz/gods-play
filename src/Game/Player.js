@@ -23,7 +23,7 @@ export default class Player {
   addMana (mana) {
     this.mana += mana
 
-    this.triggerMageEvent('addMana', {
+    this.triggerMageEvent('manaAdded', {
       player: this,
       addedMana: mana
     })
