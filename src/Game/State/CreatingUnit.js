@@ -19,4 +19,14 @@ export default class CreatingUnit extends Casting {
 
     super.cellClickAction(cell)
   }
+
+  /**
+   * @param {Cell} cell
+   * @return {bool}
+   */
+  canClickCell (cell) {
+    let player = this.game.getPlayerOnTurn()
+
+    return super.canClickCell(cell) && cell.config.unitConfig.manaCost <= player.mana
+  }
 }
