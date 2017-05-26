@@ -1,3 +1,5 @@
+import InsufficientManaException from '../exceptions/InsufficientManaException'
+
 export default class Player {
   /**
    * @param {string} name
@@ -26,6 +28,22 @@ export default class Player {
     this.triggerMageEvent('manaAdded', {
       player: this,
       addedMana: mana
+    })
+  }
+
+  /**
+   * @param {number} mana
+   */
+  useMana (mana) {
+    if (mana > this.mana) {
+      throw new InsufficientManaException()
+    }
+
+    this.mana -= mana
+
+    this.triggerMageEvent('manaUsed', {
+      player: this,
+      usedMana: mana
     })
   }
 

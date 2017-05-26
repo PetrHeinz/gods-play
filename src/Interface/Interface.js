@@ -45,6 +45,7 @@ export default class Interface {
     self.pixiApp.stage.addChild(playerText)
     this.game.events.listen('turnEnded', data => updatePlayerText(data.playerOnTurn))
     this.game.events.listen('manaAdded', data => updatePlayerText(data.player))
+    this.game.events.listen('manaUsed', data => updatePlayerText(data.player))
 
     this.menu.setActions(this.game.state.getActions())
     this.game.events.listen('gameStateChanged', function (data) {
