@@ -40,14 +40,11 @@ export default class Interface {
 
     this.cellInterfacesMap.forEach(cellInterface => cellInterface.initialize())
 
-    let playerText = new PIXI.Text(
-      getPlayerText(this.game.getPlayerOnTurn()),
-      {fill: 0xFFFFFF}
-    )
+    let playerText = new PIXI.Text('', {fill: 0xFFFFFF})
+    updatePlayerText(this.game.getPlayerOnTurn())
     self.pixiApp.stage.addChild(playerText)
-    this.game.events.listen('endTurn', function (data) {
-      playerText.text = getPlayerText(data.playerOnTurn)
-    })
+    this.game.events.listen('endTurn', data => updatePlayerText(data.playerOnTurn))
+    this.game.events.listen('addMana', data => updatePlayerText(data.player))
 
     this.menu.setActions(this.game.state.getActions())
     this.game.events.listen('newGameState', function (data) {
@@ -56,10 +53,9 @@ export default class Interface {
 
     /**
      * @param {Player} player
-     * @return {string}
      */
-    function getPlayerText (player) {
-      return 'On turn: ' + player.name
+    function updatePlayerText (player) {
+      playerText.text = 'On turn: ' + player.name + '\nMana: ' + player.mana
     }
   }
 }

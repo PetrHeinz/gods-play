@@ -12,5 +12,30 @@ export default class Player {
 
     /** @type {Unit|null} */
     this.mage = null
+
+    /** @type {number} */
+    this.mana = 5
+  }
+
+  /**
+   * @param {number} mana
+   */
+  addMana (mana) {
+    this.mana += mana
+
+    this.triggerMageEvent('addMana', {
+      player: this,
+      addedMana: mana
+    })
+  }
+
+  /**
+   * @param {string} name
+   * @param {*} data
+   */
+  triggerMageEvent (name, data) {
+    if (this.mage !== null) {
+      this.mage.events.trigger(name, data)
+    }
   }
 }

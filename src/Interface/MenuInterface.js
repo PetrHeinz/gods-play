@@ -29,7 +29,7 @@ export default class MenuInterface {
 
       text.interactive = true
       text.on('mouseup', action.callback)
-      text.y = 28 * (i + 1)
+      text.y = 30 * (i + 2)
 
       self.texts.push(text)
       self.stage.addChild(text)
