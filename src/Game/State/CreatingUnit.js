@@ -1,14 +1,11 @@
-import State from './State'
-import Range from '../Cell/Range/Range'
+import Casting from './Casting'
+import DistanceRange from '../Cell/Range/DistanceRange'
 import WithoutUnit from '../Cell/Range/WithoutUnit'
 import WithUnitConfig from '../Cell/Range/WithUnitConfig'
 
-export default class CreatingUnit extends State {
+export default class CreatingUnit extends Casting {
   constructor () {
-    super()
-
-    /** @type {Range} */
-    this.range = new WithUnitConfig(new WithoutUnit(new Range()))
+    super(new WithUnitConfig(new WithoutUnit(new DistanceRange(2))))
   }
 
   /**
@@ -18,13 +15,5 @@ export default class CreatingUnit extends State {
     cell.createChild(this.game.getPlayerOnTurn())
 
     super.cellClickAction(cell)
-  }
-
-  /**
-   * @param {Cell} cell
-   * @return {bool}
-   */
-  canClickCell (cell) {
-    return this.range.isInRange(cell)
   }
 }
