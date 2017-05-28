@@ -9,11 +9,11 @@ import { shuffle } from './function/array'
 
 export default class GodsPlay {
   /**
-   * @param {HTMLDocument} document
+   * @param {Window} window
    */
-  constructor (document) {
-    /** @type {HTMLDocument} */
-    this.document = document
+  constructor (window) {
+    /** @type {Window} */
+    this.window = window
 
     /** @type {Events} */
     this.events = new Events()
@@ -55,7 +55,7 @@ export default class GodsPlay {
     }
 
     this.game = new Game(board, players, this.events)
-    this.interface = new Interface(this.game, this.document)
+    this.interface = new Interface(this.game, this.window)
 
     this.interface.initialize()
   }

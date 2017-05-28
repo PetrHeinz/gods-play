@@ -5,14 +5,14 @@ import CellInterface from './CellInterface'
 export default class Interface {
   /**
    * @param {Game} game
-   * @param {HTMLDocument} document
+   * @param {window} window
    */
-  constructor (game, document) {
+  constructor (game, window) {
     /** @type {Game} */
     this.game = game
 
-    /** @type {HTMLDocument} */
-    this.document = document
+    /** @type {Window} */
+    this.window = window
 
     /** @type {PIXI.Application|null} */
     this.pixiApp = null
@@ -25,14 +25,15 @@ export default class Interface {
   }
 
   initialize () {
+    let document = this.window.document
     this.pixiApp = new PIXI.Application(
-      this.document.body.offsetWidth,
-      this.document.body.offsetHeight,
+      document.body.offsetWidth,
+      document.body.offsetHeight,
       {antialias: true}
     )
     this.menu = new MenuInterface(this.pixiApp.stage)
 
-    this.document.body.appendChild(this.pixiApp.view)
+    document.body.appendChild(this.pixiApp.view)
 
     let self = this
 
@@ -50,6 +51,10 @@ export default class Interface {
     this.menu.setActions(this.game.state.getActions())
     this.game.events.listen('gameStateChanged', function (data) {
       self.menu.setActions(data.state.getActions())
+    })
+
+    this.game.events.listen('playerLost', function (data) {
+      self.window.alert(data.player.name + ' has lost the match!')
     })
 
     /**
