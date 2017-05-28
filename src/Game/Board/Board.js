@@ -3,6 +3,8 @@ import Cell from '../Cell/Cell'
 import HashMap from 'hashmap'
 import Exception from '../../exceptions/Exception'
 import CellNotFoundException from '../../exceptions/CellNotFoundException'
+import Player from '../Player'
+import { typename } from '../../function/type'
 
 export default class Board extends GameObject {
   /**
@@ -35,6 +37,10 @@ export default class Board extends GameObject {
    * @return {Unit[]}
    */
   getUnitsOwnedBy (player) {
+    if (!(player instanceof Player)) {
+      throw new Exception('Argument must be instance of Player, ' + typename(player) + ' passed')
+    }
+
     return this.children
       .map(cell => cell.unit)
       .filter(unit => unit !== null && unit.owner === player)
