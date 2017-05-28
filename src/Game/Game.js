@@ -2,14 +2,16 @@ import StateFactory from './State/StateFactory'
 import StandingBy from './State/StandingBy'
 import State from './State/State'
 import Exception from '../exceptions/Exception'
+import GameOver from './State/GameOver'
 
 export default class Game {
   /**
    * @param {Board} board
    * @param {Player[]} players
    * @param {Events} events
+   * @param {Function} endGameCallback
    */
-  constructor (board, players, events) {
+  constructor (board, players, events, endGameCallback) {
     /** @type {Board} */
     this.board = board
 
@@ -27,6 +29,18 @@ export default class Game {
 
     /** @type {State} */
     this.state = this.stateFactory.create(StandingBy)
+
+    let self = this
+    this.events.listen('playerLost', function () {
+      let activePlayerCount = self.players.reduce(
+        (sum, player) => player.isActive() ? sum + 1 : sum,
+        0
+      )
+
+      if (activePlayerCount <= 1) {
+        self.changeState(GameOver, endGameCallback)
+      }
+    })
   }
 
   /**
@@ -75,7 +89,8 @@ export default class Game {
       throw new Exception('Invalid arguments: Passing parameters is not possible when instance of State is passed.')
     }
 
-    if (this.state !== state) {
+    let isGameOver = this.state instanceof GameOver
+    if (this.state !== state && !isGameOver) {
       this.state = state
 
       this.events.trigger('gameStateChanged', {

@@ -54,7 +54,7 @@ export default class GodsPlay {
       players.push(player)
     }
 
-    this.game = new Game(board, players, this.events)
+    this.game = new Game(board, players, this.events, () => this.window.location.reload())
     this.interface = new Interface(this.game, this.window)
 
     this.interface.initialize()
