@@ -1,6 +1,7 @@
 import GameObject from '../GameObject'
 import Unit from '../Unit/Unit'
 import Exception from '../../exceptions/Exception'
+import Mage from '../Unit/Mage'
 
 export default class Cell extends GameObject {
   /**
@@ -141,7 +142,7 @@ export default class Cell extends GameObject {
       throw new Exception('Mage cannot be created for a Player that already has a Mage')
     }
 
-    owner.mage = super.createChild(Unit, owner, this.parent.gameConfig.mageConfig)
+    owner.mage = super.createChild(Mage, owner, this.parent.gameConfig.mageConfig)
     owner.mage.refresh()
 
     this.events.trigger('unitCreated', {

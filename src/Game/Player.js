@@ -20,6 +20,13 @@ export default class Player {
   }
 
   /**
+   * @return {bool}
+   */
+  isActive () {
+    return this.mage !== null
+  }
+
+  /**
    * @param {number} mana
    */
   addMana (mana) {
