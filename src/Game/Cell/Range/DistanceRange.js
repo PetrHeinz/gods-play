@@ -1,5 +1,5 @@
 import Range from './Range'
-import CellNotFoundException from '../../../exceptions/CellNotFoundException'
+import { coordinateCircle } from '../function/collection'
 
 export default class DistanceRange extends Range {
   /**
@@ -17,21 +17,6 @@ export default class DistanceRange extends Range {
    * @return {Cell[]}
    */
   getCells (cell) {
-    let cells = [cell]
-
-    for (let i = 0; i < this.rangeRadius; i++) {
-      cell.coordinate.getRing(i + 1)
-        .forEach(function (coordinate) {
-          try {
-            cells.push(cell.parent.getCellByCoordinate(coordinate))
-          } catch (e) {
-            if (!(e instanceof CellNotFoundException)) {
-              throw e
-            }
-          }
-        })
-    }
-
-    return cells
+    return coordinateCircle(cell, this.rangeRadius)
   }
 }

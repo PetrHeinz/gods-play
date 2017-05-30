@@ -1,5 +1,5 @@
 import Range from './Range'
-import { difference, unique } from '../../../function/array'
+import { neighborCircle } from '../function/collection'
 
 export default class NeighborRange extends Range {
   /**
@@ -17,18 +17,6 @@ export default class NeighborRange extends Range {
    * @return {Cell[]}
    */
   getCells (cell) {
-    let cells = [cell]
-    let edge = [cell]
-
-    for (let i = 0; i < this.rangeRadius; i++) {
-      let neighbors = []
-      edge.forEach(function (cell) {
-        neighbors = neighbors.concat(cell.neighbors)
-      })
-      edge = difference(unique(neighbors), cells)
-      cells = cells.concat(edge)
-    }
-
-    return unique(cells)
+    return neighborCircle(cell, this.rangeRadius)
   }
 }
