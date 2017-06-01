@@ -13,8 +13,8 @@ export default class CreatingUnit extends Casting {
    */
   cellClickAction (cell) {
     let player = this.game.getPlayerOnTurn()
+    player.castSpell(cell.config.unitConfig.manaCost)
 
-    player.useMana(cell.config.unitConfig.manaCost)
     cell.createChild(player)
 
     super.cellClickAction(cell)

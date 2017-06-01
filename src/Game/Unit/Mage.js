@@ -14,4 +14,10 @@ export default class Mage extends Unit {
       player: this.owner
     })
   }
+
+  refresh () {
+    super.refresh()
+
+    this.owner.refresh()
+  }
 }

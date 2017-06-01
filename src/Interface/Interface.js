@@ -45,8 +45,9 @@ export default class Interface {
     updatePlayerText(this.game.getPlayerOnTurn())
     self.pixiApp.stage.addChild(playerText)
     this.game.events.listen('turnEnded', data => updatePlayerText(data.playerOnTurn))
-    this.game.events.listen('manaAdded', data => updatePlayerText(data.player))
-    this.game.events.listen('manaUsed', data => updatePlayerText(data.player))
+    this.game.events.listen('playerGainedMana', data => updatePlayerText(data.player))
+    this.game.events.listen('playerCastedSpell', data => updatePlayerText(data.player))
+    this.game.events.listen('playerRefreshed', data => updatePlayerText(data.player))
 
     this.menu.setActions(this.game.state.getActions())
     this.game.events.listen('gameStateChanged', function (data) {
@@ -61,7 +62,7 @@ export default class Interface {
      * @param {Player} player
      */
     function updatePlayerText (player) {
-      playerText.text = 'On turn: ' + player.name + '\nMana: ' + player.mana
+      playerText.text = 'On turn: ' + player.name + '\nMana: ' + player.mana + '\nAction pts: ' + player.actionPoints
     }
   }
 }

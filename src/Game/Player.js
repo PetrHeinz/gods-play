@@ -1,4 +1,5 @@
 import InsufficientManaException from '../exceptions/InsufficientManaException'
+import InsufficientActionPointsException from '../exceptions/InsufficientActionPointsException'
 
 export default class Player {
   /**
@@ -17,6 +18,9 @@ export default class Player {
 
     /** @type {number} */
     this.mana = 5
+
+    /** @type {number} */
+    this.actionPoints = 0
   }
 
   /**
@@ -32,7 +36,7 @@ export default class Player {
   addMana (mana) {
     this.mana += mana
 
-    this.triggerMageEvent('manaAdded', {
+    this.triggerMageEvent('playerGainedMana', {
       player: this,
       addedMana: mana
     })
@@ -41,16 +45,28 @@ export default class Player {
   /**
    * @param {number} mana
    */
-  useMana (mana) {
+  castSpell (mana) {
+    if (this.actionPoints <= 0) {
+      throw new InsufficientActionPointsException()
+    }
     if (mana > this.mana) {
       throw new InsufficientManaException()
     }
 
+    this.actionPoints--
     this.mana -= mana
 
-    this.triggerMageEvent('manaUsed', {
+    this.triggerMageEvent('playerCastedSpell', {
       player: this,
       usedMana: mana
+    })
+  }
+
+  refresh () {
+    this.actionPoints = 3
+
+    this.triggerMageEvent('playerRefreshed', {
+      player: this
     })
   }
 

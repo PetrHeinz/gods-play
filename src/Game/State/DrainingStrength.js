@@ -10,14 +10,15 @@ export default class DrainingStrength extends Casting {
    * @param {Cell} cell
    */
   cellClickAction (cell) {
-    let originalNeighbors = cell.neighbors.slice()
+    let player = this.game.getPlayerOnTurn()
+    player.castSpell(0)
 
+    let originalNeighbors = cell.neighbors.slice()
     let mana = cell.drainStrength(2)
     originalNeighbors.forEach(function (cell) {
       mana += cell.drainStrength(1)
     })
-
-    this.game.getPlayerOnTurn().addMana(mana)
+    player.addMana(mana)
 
     super.cellClickAction(cell)
   }
