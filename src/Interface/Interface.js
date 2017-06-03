@@ -31,7 +31,8 @@ export default class Interface {
       document.body.offsetHeight,
       {antialias: true}
     )
-    this.menu = new MenuInterface(this.pixiApp.stage)
+    this.menu = new MenuInterface(this.pixiApp.stage, this.game)
+    this.menu.initialize()
 
     document.body.appendChild(this.pixiApp.view)
 
@@ -48,11 +49,6 @@ export default class Interface {
     this.game.events.listen('playerGainedMana', data => updatePlayerText(data.player))
     this.game.events.listen('playerCastedSpell', data => updatePlayerText(data.player))
     this.game.events.listen('playerRefreshed', data => updatePlayerText(data.player))
-
-    this.menu.setActions(this.game.state.getActions())
-    this.game.events.listen('gameStateChanged', function (data) {
-      self.menu.setActions(data.state.getActions())
-    })
 
     this.game.events.listen('playerLost', function (data) {
       self.window.alert(data.player.name + ' has lost the match!')
