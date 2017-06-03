@@ -39,7 +39,13 @@ export default class MenuInterface {
    * @param {Player} player
    */
   updatePlayerText (player) {
-    this.playerText.text = 'On turn: ' + player.name + '\nMana: ' + player.mana + '\nAction pts: ' + player.actionPoints
+    let playerTextLines = [
+      'On turn: ' + player.name,
+      'Mana: ' + player.mana,
+      'Action pts: ' + player.actionPoints
+    ]
+
+    this.playerText.text = playerTextLines.join('\n')
   }
 
   /**
