@@ -61,7 +61,7 @@ export default class MenuInterface {
 
       text.interactive = true
       text.on('mouseup', action.callback)
-      text.y = 30 * (i + 3)
+      text.y = self.playerText.height + (text.height * i)
 
       self.actionTexts.push(text)
       self.stage.addChild(text)
