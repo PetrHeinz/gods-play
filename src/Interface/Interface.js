@@ -42,23 +42,8 @@ export default class Interface {
 
     this.cellInterfacesMap.forEach(cellInterface => cellInterface.initialize())
 
-    let playerText = new PIXI.Text('', {fill: 0xFFFFFF})
-    updatePlayerText(this.game.getPlayerOnTurn())
-    self.pixiApp.stage.addChild(playerText)
-    this.game.events.listen('turnEnded', data => updatePlayerText(data.playerOnTurn))
-    this.game.events.listen('playerGainedMana', data => updatePlayerText(data.player))
-    this.game.events.listen('playerCastedSpell', data => updatePlayerText(data.player))
-    this.game.events.listen('playerRefreshed', data => updatePlayerText(data.player))
-
     this.game.events.listen('playerLost', function (data) {
       self.window.alert(data.player.name + ' has lost the match!')
     })
-
-    /**
-     * @param {Player} player
-     */
-    function updatePlayerText (player) {
-      playerText.text = 'On turn: ' + player.name + '\nMana: ' + player.mana + '\nAction pts: ' + player.actionPoints
-    }
   }
 }

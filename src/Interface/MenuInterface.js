@@ -10,13 +10,36 @@ export default class MenuInterface {
     /** @type {Game} */
     this.game = game
 
+    /** @type {PIXI.Text|null} */
+    this.playerText = null
+
     /** @type {PIXI.Text[]} */
-    this.texts = []
+    this.actionTexts = []
   }
 
   initialize () {
+    this.createPlayerText()
+
+    this.updatePlayerText(this.game.getPlayerOnTurn())
+    this.game.events.listen('turnEnded', data => this.updatePlayerText(data.playerOnTurn))
+    this.game.events.listen('playerGainedMana', data => this.updatePlayerText(data.player))
+    this.game.events.listen('playerCastedSpell', data => this.updatePlayerText(data.player))
+    this.game.events.listen('playerRefreshed', data => this.updatePlayerText(data.player))
+
     this.setActions(this.game.state.getActions())
     this.game.events.listen('gameStateChanged', data => this.setActions(data.state.getActions()))
+  }
+
+  createPlayerText () {
+    this.playerText = new PIXI.Text('', {fill: 0xFFFFFF})
+    this.stage.addChild(this.playerText)
+  }
+
+  /**
+   * @param {Player} player
+   */
+  updatePlayerText (player) {
+    this.playerText.text = 'On turn: ' + player.name + '\nMana: ' + player.mana + '\nAction pts: ' + player.actionPoints
   }
 
   /**
@@ -25,11 +48,11 @@ export default class MenuInterface {
   setActions (actions) {
     let self = this
 
-    this.texts.forEach(function (text) {
+    this.actionTexts.forEach(function (text) {
       self.stage.removeChild(text)
     })
 
-    this.texts = []
+    this.actionTexts = []
     actions.forEach(function (action, i) {
       let text = new PIXI.Text(
         '▸' + action.label,
@@ -40,7 +63,7 @@ export default class MenuInterface {
       text.on('mouseup', action.callback)
       text.y = 30 * (i + 3)
 
-      self.texts.push(text)
+      self.actionTexts.push(text)
       self.stage.addChild(text)
     })
   }
