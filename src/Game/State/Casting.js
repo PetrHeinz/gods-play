@@ -1,7 +1,9 @@
 import State from './State'
 
 export default class Casting extends State {
-  /** @param {Range} range */
+  /**
+   * @param {Range} range
+   */
   constructor (range) {
     super()
 
