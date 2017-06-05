@@ -46,12 +46,8 @@ export default class State {
    * @return {Action[]}
    */
   getActions () {
-    let self = this
-
     return [
-      new Action('Cancel action', function () {
-        self.game.changeState()
-      })
+      new Action('Cancel action', () => this.game.changeState())
     ]
   }
 }

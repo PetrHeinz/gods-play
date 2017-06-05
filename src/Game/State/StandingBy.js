@@ -26,23 +26,15 @@ export default class StandingBy extends State {
    * @return {Action[]}
    */
   getActions () {
-    let self = this
-
     let actions = []
     if (this.game.getPlayerOnTurn().actionPoints > 0) {
       actions = [
-        new Action('Create unit', function () {
-          self.game.changeState(CreatingUnit)
-        }),
-        new Action('Drain strength', function () {
-          self.game.changeState(DrainingStrength)
-        })
+        new Action('Create unit', () => this.game.changeState(CreatingUnit)),
+        new Action('Drain strength', () => this.game.changeState(DrainingStrength))
       ]
     }
     actions.push(
-      new Action('End turn', function () {
-        self.game.endTurn()
-      })
+      new Action('End turn', () => this.game.endTurn())
     )
 
     return actions
