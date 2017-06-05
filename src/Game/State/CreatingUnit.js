@@ -22,7 +22,7 @@ export default class CreatingUnit extends Casting {
 
   /**
    * @param {Cell} cell
-   * @return {bool}
+   * @return {boolean}
    */
   canClickCell (cell) {
     let player = this.game.getPlayerOnTurn()

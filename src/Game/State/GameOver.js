@@ -14,7 +14,7 @@ export default class GameOver extends State {
 
   /**
    * @param {Cell} cell
-   * @return {bool}
+   * @return {boolean}
    */
   canClickCell (cell) {
     return false

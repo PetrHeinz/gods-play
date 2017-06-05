@@ -80,7 +80,7 @@ export default class Board extends GameObject {
 
   /**
    * @param {Cell} cell
-   * @return bool
+   * @return boolean
    */
   removeChild (cell) {
     super.removeChild(cell)

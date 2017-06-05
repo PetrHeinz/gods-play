@@ -1,6 +1,6 @@
 /**
  * @param {Cell} cell
- * @return {bool}
+ * @return {boolean}
  */
 export function hasUnit (cell) {
   return cell.unit !== null
@@ -8,7 +8,7 @@ export function hasUnit (cell) {
 
 /**
  * @param {Cell} cell
- * @return {bool}
+ * @return {boolean}
  */
 export function hasUnitConfig (cell) {
   return cell.config.unitConfig !== null

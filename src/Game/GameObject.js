@@ -38,7 +38,7 @@ export default class GameObject {
 
   /**
    * @param {GameObject} child
-   * @return bool
+   * @return boolean
    */
   hasChild (child) {
     return this.children.indexOf(child) > -1
@@ -46,7 +46,7 @@ export default class GameObject {
 
   /**
    * @param {GameObject} child
-   * @return bool
+   * @return boolean
    */
   removeChild (child) {
     if (!this.hasChild(child)) {

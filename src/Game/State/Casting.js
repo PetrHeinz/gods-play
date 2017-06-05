@@ -11,7 +11,7 @@ export default class Casting extends State {
 
   /**
    * @param {Cell} cell
-   * @return {bool}
+   * @return {boolean}
    */
   canClickCell (cell) {
     let playerOnTurn = this.game.getPlayerOnTurn()

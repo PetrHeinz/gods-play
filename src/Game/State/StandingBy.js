@@ -14,7 +14,7 @@ export default class StandingBy extends State {
 
   /**
    * @param {Cell} cell
-   * @return {bool}
+   * @return {boolean}
    */
   canClickCell (cell) {
     let unit = cell.unit

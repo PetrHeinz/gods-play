@@ -24,7 +24,7 @@ export default class Player {
   }
 
   /**
-   * @return {bool}
+   * @return {boolean}
    */
   isActive () {
     return this.mage !== null

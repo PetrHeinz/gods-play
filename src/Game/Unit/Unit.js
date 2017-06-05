@@ -15,13 +15,13 @@ export default class Unit extends GameObject {
     /** @type {UnitConfig} */
     this.config = config
 
-    /** @type {bool} */
+    /** @type {boolean} */
     this.tired = true
   }
 
   /**
    * @param {Cell} cell
-   * @return {bool}
+   * @return {boolean}
    */
   isInMoveRange (cell) {
     return this.config.movement.isCellInRange(cell, this)
@@ -29,7 +29,7 @@ export default class Unit extends GameObject {
 
   /**
    * @param {Cell} cell
-   * @return {bool}
+   * @return {boolean}
    */
   isInAttackRange (cell) {
     return this.config.attack.isCellInRange(cell, this)

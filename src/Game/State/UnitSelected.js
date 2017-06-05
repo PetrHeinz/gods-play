@@ -26,7 +26,7 @@ export default class UnitSelected extends State {
 
   /**
    * @param {Cell} cell
-   * @return {bool}
+   * @return {boolean}
    */
   canClickCell (cell) {
     return this.unit.isInMoveRange(cell) || this.unit.isInAttackRange(cell)

@@ -87,7 +87,7 @@ export default class Cell extends GameObject {
 
   /**
    * @param {Cell} cell
-   * @return bool
+   * @return boolean
    */
   hasNeighbor (cell) {
     return this.neighbors.indexOf(cell) > -1

@@ -12,7 +12,7 @@ export default class UnitAction {
   /**
    * @param {Cell} cell
    * @param {Unit} unit
-   * @return {bool}
+   * @return {boolean}
    */
   isCellInRange (cell, unit) {
     return this.range.isInRange(cell, unit.parent)
