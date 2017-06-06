@@ -42,15 +42,15 @@ export default class CellInterface {
     this.parent.game.events.listen('unitMoved', function (data) {
       if (self.cell === data.unit.parent) {
         self.hex.symbol.text = data.unit.config.symbol
-        self.hex.symbol.style.stroke = data.unit.owner.color
-        self.hex.symbol.style.fill = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
+        self.hex.symbol.style.fill = data.unit.owner.color
+        self.hex.symbol.style.stroke = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
       } else if (self.cell === data.fromCell) {
         self.hex.symbol.text = ''
       }
     })
     this.parent.game.events.listen('unitAttacked', function (data) {
       if (self.cell === data.unit.parent) {
-        self.hex.symbol.style.fill = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
+        self.hex.symbol.style.stroke = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
       }
     })
     this.parent.game.events.listen('unitDied', function (data) {
@@ -61,13 +61,13 @@ export default class CellInterface {
     this.parent.game.events.listen('unitCreated', function (data) {
       if (self.cell === data.unit.parent) {
         self.hex.symbol.text = data.unit.config.symbol
-        self.hex.symbol.style.stroke = data.unit.owner.color
-        self.hex.symbol.style.fill = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
+        self.hex.symbol.style.fill = data.unit.owner.color
+        self.hex.symbol.style.stroke = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
       }
     })
     this.parent.game.events.listen('turnEnded', function () {
       if (self.cell.unit !== null) {
-        self.hex.symbol.style.fill = self.cell.unit.tired ? 0xAAAAAA : 0xFFFFFF
+        self.hex.symbol.style.stroke = self.cell.unit.tired ? 0xAAAAAA : 0xFFFFFF
       }
     })
     this.parent.game.events.listen('gameStateChanged', function (data) {
@@ -118,12 +118,13 @@ export default class CellInterface {
     hex.addChild(hex.strength)
 
     hex.symbol = new PIXI.Text(cell.unit !== null ? cell.unit.config.symbol : '', {
-      fill: cell.unit !== null && cell.unit.tired ? 0xAAAAAA : 0xFFFFFF,
-      stroke: cell.unit !== null ? cell.unit.owner.color : 0xFFFFFF,
-      strokeThickness: HEX_SYMBOL_SIZE / 10,
+      fill: cell.unit !== null ? cell.unit.owner.color : 0xFFFFFF,
+      stroke: cell.unit !== null && cell.unit.tired ? 0xAAAAAA : 0xFFFFFF,
+      strokeThickness: HEX_SYMBOL_SIZE / 15,
       fontSize: HEX_SYMBOL_SIZE,
+      fontWeight: 800,
       dropShadow: true,
-      dropShadowBlur: HEX_SYMBOL_SIZE / 2
+      dropShadowBlur: HEX_SYMBOL_SIZE / 5
     })
     hex.symbol.x = HEX_WIDTH / 2
     hex.symbol.y = HEX_HEIGHT / 2
