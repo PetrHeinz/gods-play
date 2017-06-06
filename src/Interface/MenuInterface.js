@@ -1,3 +1,5 @@
+const MENU_OFFSET = 10
+
 export default class MenuInterface {
   /**
    * @param {PIXI.Container} stage
@@ -32,6 +34,9 @@ export default class MenuInterface {
 
   createPlayerText () {
     this.playerText = new PIXI.Text('', {fill: 0xFFFFFF})
+    this.playerText.x = MENU_OFFSET
+    this.playerText.y = MENU_OFFSET
+
     this.stage.addChild(this.playerText)
   }
 
@@ -67,7 +72,8 @@ export default class MenuInterface {
 
       text.interactive = true
       text.on('mouseup', action.callback)
-      text.y = self.playerText.height + (text.height * i)
+      text.x = MENU_OFFSET
+      text.y = self.playerText.height + (text.height * i) + MENU_OFFSET
 
       self.actionTexts.push(text)
       self.stage.addChild(text)
