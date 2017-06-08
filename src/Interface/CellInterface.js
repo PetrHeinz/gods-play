@@ -5,6 +5,11 @@ const HEX_OFFSET_WIDTH = HEX_OFFSET_RATIO * 3 / 4 * HEX_WIDTH
 const HEX_OFFSET_HEIGHT = HEX_OFFSET_RATIO * HEX_HEIGHT
 const HEX_SYMBOL_SIZE = 0.75 * HEX_HEIGHT
 
+const COLOR_UNIT_RESTED = 0xFFFFFF
+const COLOR_UNIT_TIRED = 0xAAAAAA
+const COLOR_HEX_ACTIVE = 0xFFFFFF
+const COLOR_HEX_INACTIVE = 0xCCCCCC
+
 export default class CellInterface {
   /**
    * @param {Interface} parent
@@ -43,14 +48,14 @@ export default class CellInterface {
       if (self.cell === data.unit.parent) {
         self.hex.symbol.text = data.unit.config.symbol
         self.hex.symbol.style.fill = data.unit.owner.color
-        self.hex.symbol.style.stroke = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
+        self.hex.symbol.style.stroke = data.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
       } else if (self.cell === data.fromCell) {
         self.hex.symbol.text = ''
       }
     })
     this.parent.game.events.listen('unitAttacked', function (data) {
       if (self.cell === data.unit.parent) {
-        self.hex.symbol.style.stroke = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
+        self.hex.symbol.style.stroke = data.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
       }
     })
     this.parent.game.events.listen('unitDied', function (data) {
@@ -62,16 +67,16 @@ export default class CellInterface {
       if (self.cell === data.unit.parent) {
         self.hex.symbol.text = data.unit.config.symbol
         self.hex.symbol.style.fill = data.unit.owner.color
-        self.hex.symbol.style.stroke = data.unit.tired ? 0xAAAAAA : 0xFFFFFF
+        self.hex.symbol.style.stroke = data.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
       }
     })
     this.parent.game.events.listen('turnEnded', function () {
       if (self.cell.unit !== null) {
-        self.hex.symbol.style.stroke = self.cell.unit.tired ? 0xAAAAAA : 0xFFFFFF
+        self.hex.symbol.style.stroke = self.cell.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
       }
     })
     this.parent.game.events.listen('gameStateChanged', function (data) {
-      self.hex.tint = data.state.canClickCell(self.cell) ? 0xFFFFFF : 0xCCCCCC
+      self.hex.tint = data.state.canClickCell(self.cell) ? COLOR_HEX_ACTIVE : COLOR_HEX_INACTIVE
       self.hex.strength.style.stroke = self.hex.tint
     })
   }
@@ -83,7 +88,7 @@ export default class CellInterface {
   createHex (cell) {
     let hex = new PIXI.Graphics()
 
-    hex.lineStyle(10, 0xFFFFFF, 1)
+    hex.lineStyle(10, COLOR_HEX_ACTIVE, 1)
     hex.beginFill(cell.config.color)
     hex.drawPolygon(
       new PIXI.Point(0, HEX_HEIGHT / 2),
@@ -96,6 +101,7 @@ export default class CellInterface {
     )
     hex.endFill()
     hex.pivot = new PIXI.Point(HEX_WIDTH / 2, HEX_HEIGHT / 2)
+    hex.tint = this.parent.game.state.canClickCell(this.cell) ? COLOR_HEX_ACTIVE : COLOR_HEX_INACTIVE
 
     let size = this.calculateSize()
 
@@ -107,7 +113,7 @@ export default class CellInterface {
     hex.y = size * HEX_OFFSET_HEIGHT * (coordinate.z + coordinate.x / 2) + this.parent.pixiApp.renderer.height / 2
 
     hex.strength = new PIXI.Text(cell.strength, {
-      stroke: 0xFFFFFF,
+      stroke: hex.tint,
       strokeThickness: HEX_SYMBOL_SIZE / 10,
       fontSize: HEX_SYMBOL_SIZE / 3,
       fontWeight: 900
@@ -118,8 +124,8 @@ export default class CellInterface {
     hex.addChild(hex.strength)
 
     hex.symbol = new PIXI.Text(cell.unit !== null ? cell.unit.config.symbol : '', {
-      fill: cell.unit !== null ? cell.unit.owner.color : 0xFFFFFF,
-      stroke: cell.unit !== null && cell.unit.tired ? 0xAAAAAA : 0xFFFFFF,
+      fill: cell.unit !== null ? cell.unit.owner.color : null,
+      stroke: cell.unit !== null && cell.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED,
       strokeThickness: HEX_SYMBOL_SIZE / 15,
       fontSize: HEX_SYMBOL_SIZE,
       fontWeight: 800,
@@ -136,9 +142,6 @@ export default class CellInterface {
     hex.on('mouseup', function () {
       self.parent.game.cellClick(cell)
     })
-
-    hex.tint = this.parent.game.state.canClickCell(cell) ? 0xFFFFFF : 0xCCCCCC
-    hex.strength.style.stroke = hex.tint
 
     return hex
   }
