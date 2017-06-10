@@ -35,7 +35,7 @@ export default class CellInterface {
 
     this.parent.game.events.listen('cellDrained', function (data) {
       if (self.cell === data.cell) {
-        self.hex.strength.text = self.cell.strength
+        self.hex.strength.text = self.cell.strength !== 0 ? self.cell.strength : ''
       }
     })
     this.parent.game.events.listen('cellDestroyed', function (data) {
@@ -112,7 +112,7 @@ export default class CellInterface {
     hex.x = size * HEX_OFFSET_WIDTH * coordinate.x + this.parent.pixiApp.renderer.width / 2
     hex.y = size * HEX_OFFSET_HEIGHT * (coordinate.z + coordinate.x / 2) + this.parent.pixiApp.renderer.height / 2
 
-    hex.strength = new PIXI.Text(cell.strength, {
+    hex.strength = new PIXI.Text(cell.strength !== 0 ? cell.strength : '', {
       stroke: hex.tint,
       strokeThickness: HEX_SYMBOL_SIZE / 10,
       fontSize: HEX_SYMBOL_SIZE / 3,
