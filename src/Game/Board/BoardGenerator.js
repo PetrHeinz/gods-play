@@ -35,8 +35,11 @@ export default class BoardGenerator {
      */
     function createCellOnBoard (board, coordinate, config) {
       let distance = Math.max(Math.abs(coordinate.x), Math.abs(coordinate.y), Math.abs(coordinate.z))
-      let strength = Math.ceil(Math.random() * (config.boardSize - distance + 3))
       let cellConfig = random(config.cellConfigs)
+      let strength = 0
+      if (cellConfig.destructible) {
+        strength = Math.ceil(Math.random() * (config.boardSize - distance + 3))
+      }
 
       board.createChild(coordinate, strength, cellConfig)
     }
