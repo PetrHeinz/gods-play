@@ -56,7 +56,7 @@ export default class Cell extends GameObject {
       originalStrength: originalStrength
     })
 
-    if (this.strength === 0) {
+    if (this.strength === 0 && this.config.destructible) {
       this.destroy()
     }
 
