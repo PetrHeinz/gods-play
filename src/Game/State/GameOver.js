@@ -28,4 +28,13 @@ export default class GameOver extends State {
       new Action('GAME OVER', this.endGameCallback)
     ]
   }
+
+  /**
+   * @return {string}
+   */
+  getInfoText () {
+    let activePlayers = this.game.players.filter(player => player.isActive())
+
+    return activePlayers.length > 0 ? (activePlayers[0].name + ' wins the game!') : 'Game ended in mutual destruction!'
+  }
 }

@@ -50,4 +50,11 @@ export default class State {
       new Action('Cancel action', () => this.game.changeState())
     ]
   }
+
+  /**
+   * @return {string}
+   */
+  getInfoText () {
+    return ''
+  }
 }

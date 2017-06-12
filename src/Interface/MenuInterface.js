@@ -1,4 +1,5 @@
 const MENU_OFFSET = 10
+const MENU_INFO_TEXT_WIDTH = 400
 
 export default class MenuInterface {
   /**
@@ -15,12 +16,16 @@ export default class MenuInterface {
     /** @type {PIXI.Text|null} */
     this.playerText = null
 
+    /** @type {PIXI.Text|null} */
+    this.statusInfoText = null
+
     /** @type {PIXI.Text[]} */
     this.actionTexts = []
   }
 
   initialize () {
     this.createPlayerText()
+    this.createStatusInfoText()
 
     this.updatePlayerText(this.game.getPlayerOnTurn())
     this.game.events.listen('turnEnded', data => this.updatePlayerText(data.playerOnTurn))
@@ -38,6 +43,17 @@ export default class MenuInterface {
     this.playerText.y = MENU_OFFSET
 
     this.stage.addChild(this.playerText)
+  }
+
+  createStatusInfoText () {
+    this.statusInfoText = new PIXI.Text('', {
+      fill: 0xAAAAAA,
+      wordWrap: true,
+      wordWrapWidth: MENU_INFO_TEXT_WIDTH
+    })
+    this.statusInfoText.x = MENU_OFFSET
+
+    this.stage.addChild(this.statusInfoText)
   }
 
   /**
@@ -80,5 +96,8 @@ export default class MenuInterface {
       self.actionTexts.push(text)
       self.stage.addChild(text)
     })
+
+    this.statusInfoText.y = this.playerText.height + actionTextsHeight + MENU_OFFSET
+    this.statusInfoText.text = state.getInfoText()
   }
 }
