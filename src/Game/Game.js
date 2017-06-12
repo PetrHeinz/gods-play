@@ -92,7 +92,8 @@ export default class Game {
     }
 
     let isGameOver = this.state instanceof GameOver
-    if (this.state !== state && !isGameOver) {
+    let canChangeState = !isGameOver || state instanceof GameOver
+    if (this.state !== state && canChangeState) {
       this.state = state
 
       this.events.trigger('gameStateChanged', {
