@@ -64,7 +64,8 @@ export default class MenuInterface {
     })
 
     this.actionTexts = []
-    actions.forEach(function (action, i) {
+    let actionTextsHeight = 0
+    actions.forEach(function (action) {
       let text = new PIXI.Text(
         '▸' + action.label,
         {fill: 0xFFFFFF}
@@ -73,7 +74,8 @@ export default class MenuInterface {
       text.interactive = true
       text.on('mouseup', action.callback)
       text.x = MENU_OFFSET
-      text.y = self.playerText.height + (text.height * i) + MENU_OFFSET
+      text.y = self.playerText.height + actionTextsHeight + MENU_OFFSET
+      actionTextsHeight += text.height
 
       self.actionTexts.push(text)
       self.stage.addChild(text)
