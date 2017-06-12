@@ -90,14 +90,14 @@ export default class MenuInterface {
       text.interactive = true
       text.on('mouseup', action.callback)
       text.x = MENU_OFFSET
-      text.y = self.playerText.height + actionTextsHeight + MENU_OFFSET
+      text.y = self.playerText.height + actionTextsHeight + 2 * MENU_OFFSET
       actionTextsHeight += text.height
 
       self.actionTexts.push(text)
       self.stage.addChild(text)
     })
 
-    this.statusInfoText.y = this.playerText.height + actionTextsHeight + MENU_OFFSET
+    this.statusInfoText.y = this.playerText.height + actionTextsHeight + 3 * MENU_OFFSET
     this.statusInfoText.text = state.getInfoText()
   }
 }
