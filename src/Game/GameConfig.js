@@ -16,11 +16,11 @@ export default class GameConfig {
     this.playerColors = [0xAA0000, 0x0000AA, 0x00AA00, 0xAAAA00, 0x00AAAA, 0xAA00AA]
 
     /** @type {UnitConfig} */
-    this.mageConfig = new UnitConfig('Mage', '♕', 0, new Movement(), new RangedAttack())
+    this.mageConfig = new UnitConfig('Mage', '♛', 0, new Movement(), new RangedAttack())
 
     /** @type {CellConfig[]} */
     this.cellConfigs = [
-      new CellConfig(0xEE3333, true, new UnitConfig('Trooper', '♝', 3, new Movement(), new MeleeAttack())),
+      new CellConfig(0xEE3333, true, new UnitConfig('Trooper', '♟', 3, new Movement(), new MeleeAttack())),
       new CellConfig(0x33EE33, true, new UnitConfig('Keep', '♜', 4, new Movement(0), new RangedAttack(2))),
       new CellConfig(0x3333EE, true, new UnitConfig('Raider', '♞', 5, new Movement(2), new MeleeAttack(2))),
       new CellConfig(0x666666)

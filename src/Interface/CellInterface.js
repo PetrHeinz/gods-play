@@ -126,9 +126,9 @@ export default class CellInterface {
     hex.symbol = new PIXI.Text(cell.unit !== null ? cell.unit.config.symbol : '', {
       fill: cell.unit !== null ? cell.unit.owner.color : null,
       stroke: cell.unit !== null && cell.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED,
-      strokeThickness: HEX_SYMBOL_SIZE / 15,
+      strokeThickness: HEX_SYMBOL_SIZE / 10,
       fontSize: HEX_SYMBOL_SIZE,
-      fontWeight: 800,
+      miterLimit: 5,
       dropShadow: true,
       dropShadowBlur: HEX_SYMBOL_SIZE / 5
     })
