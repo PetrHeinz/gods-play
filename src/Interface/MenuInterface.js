@@ -28,8 +28,8 @@ export default class MenuInterface {
     this.game.events.listen('playerCastedSpell', data => this.updatePlayerText(data.player))
     this.game.events.listen('playerRefreshed', data => this.updatePlayerText(data.player))
 
-    this.setActions(this.game.state.getActions())
-    this.game.events.listen('gameStateChanged', data => this.setActions(data.state.getActions()))
+    this.updateGameState(this.game.state)
+    this.game.events.listen('gameStateChanged', data => this.updateGameState(data.state))
   }
 
   createPlayerText () {
@@ -54,9 +54,9 @@ export default class MenuInterface {
   }
 
   /**
-   * @param {Action[]} actions
+   * @param {State} state
    */
-  setActions (actions) {
+  updateGameState (state) {
     let self = this
 
     this.actionTexts.forEach(function (text) {
@@ -65,7 +65,7 @@ export default class MenuInterface {
 
     this.actionTexts = []
     let actionTextsHeight = 0
-    actions.forEach(function (action) {
+    state.getActions().forEach(function (action) {
       let text = new PIXI.Text(
         '▸' + action.label,
         {fill: 0xFFFFFF}
