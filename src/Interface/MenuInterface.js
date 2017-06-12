@@ -1,4 +1,5 @@
 const MENU_OFFSET = 10
+const MENU_INFO_TEXT_WIDTH = 400
 
 export default class MenuInterface {
   /**
@@ -15,12 +16,16 @@ export default class MenuInterface {
     /** @type {PIXI.Text|null} */
     this.playerText = null
 
+    /** @type {PIXI.Text|null} */
+    this.statusInfoText = null
+
     /** @type {PIXI.Text[]} */
     this.actionTexts = []
   }
 
   initialize () {
     this.createPlayerText()
+    this.createStatusInfoText()
 
     this.updatePlayerText(this.game.getPlayerOnTurn())
     this.game.events.listen('turnEnded', data => this.updatePlayerText(data.playerOnTurn))
@@ -28,8 +33,8 @@ export default class MenuInterface {
     this.game.events.listen('playerCastedSpell', data => this.updatePlayerText(data.player))
     this.game.events.listen('playerRefreshed', data => this.updatePlayerText(data.player))
 
-    this.setActions(this.game.state.getActions())
-    this.game.events.listen('gameStateChanged', data => this.setActions(data.state.getActions()))
+    this.updateGameState(this.game.state)
+    this.game.events.listen('gameStateChanged', data => this.updateGameState(data.state))
   }
 
   createPlayerText () {
@@ -38,6 +43,17 @@ export default class MenuInterface {
     this.playerText.y = MENU_OFFSET
 
     this.stage.addChild(this.playerText)
+  }
+
+  createStatusInfoText () {
+    this.statusInfoText = new PIXI.Text('', {
+      fill: 0xAAAAAA,
+      wordWrap: true,
+      wordWrapWidth: MENU_INFO_TEXT_WIDTH
+    })
+    this.statusInfoText.x = MENU_OFFSET
+
+    this.stage.addChild(this.statusInfoText)
   }
 
   /**
@@ -54,9 +70,9 @@ export default class MenuInterface {
   }
 
   /**
-   * @param {Action[]} actions
+   * @param {State} state
    */
-  setActions (actions) {
+  updateGameState (state) {
     let self = this
 
     this.actionTexts.forEach(function (text) {
@@ -64,7 +80,8 @@ export default class MenuInterface {
     })
 
     this.actionTexts = []
-    actions.forEach(function (action, i) {
+    let actionTextsHeight = 0
+    state.getActions().forEach(function (action) {
       let text = new PIXI.Text(
         '▸' + action.label,
         {fill: 0xFFFFFF}
@@ -73,10 +90,14 @@ export default class MenuInterface {
       text.interactive = true
       text.on('mouseup', action.callback)
       text.x = MENU_OFFSET
-      text.y = self.playerText.height + (text.height * i) + MENU_OFFSET
+      text.y = self.playerText.height + actionTextsHeight + 2 * MENU_OFFSET
+      actionTextsHeight += text.height
 
       self.actionTexts.push(text)
       self.stage.addChild(text)
     })
+
+    this.statusInfoText.y = this.playerText.height + actionTextsHeight + 3 * MENU_OFFSET
+    this.statusInfoText.text = state.getInfoText()
   }
 }
