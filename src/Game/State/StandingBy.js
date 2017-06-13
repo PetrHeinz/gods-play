@@ -2,6 +2,7 @@ import State from './State'
 import Action from './Action'
 import UnitSelected from './UnitSelected'
 import CreatingUnit from './CreatingUnit'
+import TransportingUnitSelection from './TransportingUnitSelection'
 import DrainingStrength from './DrainingStrength'
 
 export default class StandingBy extends State {
@@ -30,6 +31,7 @@ export default class StandingBy extends State {
     if (this.game.getPlayerOnTurn().actionPoints > 0) {
       actions = [
         new Action('Create unit', () => this.game.changeState(CreatingUnit)),
+        new Action('Transport unit', () => this.game.changeState(TransportingUnitSelection)),
         new Action('Drain strength', () => this.game.changeState(DrainingStrength))
       ]
     }
