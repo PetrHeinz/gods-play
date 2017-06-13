@@ -28,13 +28,15 @@ export default class TransportingUnitSelection extends Casting {
   }
 
   /**
-   * @return {string}
+   * @return {string[]}
    */
-  getInfoText () {
-    return 'By this spell a mage can move himself or a neighboring unit over a distance.\n' +
+  getInfoTexts () {
+    return [
+      'By this spell a mage can move himself or a neighboring unit over a distance.',
       'Mana-cost: 5\n' +
-      '(or 10 for mage or keep)\n' +
+      '(or 10 for mage or keep)',
       'Unit gets tired by the transport but does not have to be rested.\n' +
       'You can, for instance, transport unit that has already attacked.'
+    ]
   }
 }

@@ -25,13 +25,15 @@ export default class DrainingStrength extends Casting {
   }
 
   /**
-   * @return {string}
+   * @return {string[]}
    */
-  getInfoText () {
-    return 'This spell is used by a mage to gain mana for spell-casting.\n' +
+  getInfoTexts () {
+    return [
+      'This spell is used by a mage to gain mana for spell-casting.\n' +
       'Range: 3\n' +
       'It costs only an action point and can lower strength of target hex by 3 and all neighboring by 1, ' +
-      'converting the total strength into mana.\n' +
+      'converting the total strength into mana.',
       'Beware of destroying hexes with low strength!'
+    ]
   }
 }

@@ -46,15 +46,17 @@ export default class TransportingUnit extends Casting {
   }
 
   /**
-   * @return {string}
+   * @return {string[]}
    */
-  getInfoText () {
+  getInfoTexts () {
     let basicManaCost = TransportingUnit.getBasicManaCost(this.unit)
 
-    return 'Select target hex to transport your ' + this.unit.config.name + '.\n' +
+    return [
+      'Select target hex to transport your ' + this.unit.config.name + '.',
       'Range: 3\n' +
-      'Mana-cost: ' + basicManaCost + '\n' +
+      'Mana-cost: ' + basicManaCost,
       'Range can be increased by 1 for additional ' + basicManaCost + ' mana.'
+    ]
   }
 
   /**

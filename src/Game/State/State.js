@@ -52,9 +52,9 @@ export default class State {
   }
 
   /**
-   * @return {string}
+   * @return {string[]}
    */
-  getInfoText () {
-    return ''
+  getInfoTexts () {
+    return []
   }
 }

@@ -32,9 +32,11 @@ export default class GameOver extends State {
   /**
    * @return {string}
    */
-  getInfoText () {
+  getInfoTexts () {
     let activePlayers = this.game.players.filter(player => player.isActive())
 
-    return activePlayers.length > 0 ? (activePlayers[0].name + ' wins the game!') : 'Game ended in mutual destruction!'
+    return [
+      activePlayers.length > 0 ? (activePlayers[0].name + ' wins the game!') : 'Game ended in mutual destruction!'
+    ]
   }
 }
