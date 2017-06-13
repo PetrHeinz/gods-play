@@ -43,11 +43,13 @@ export default class StandingBy extends State {
   }
 
   /**
-   * @return {string}
+   * @return {string[]}
    */
-  getInfoText () {
-    return 'Your goal in this game is to kill your opponent.\n' +
-      'Each turn, you can cast up to 3 spells.\n' +
+  getInfoTexts () {
+    return [
+      'Your goal in this game is to kill your opponent.',
+      'Each turn, you can cast up to 3 spells.',
       'You can also control all your units - move them or attack on enemy at range.'
+    ]
   }
 }

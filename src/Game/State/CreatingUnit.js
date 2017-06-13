@@ -31,17 +31,19 @@ export default class CreatingUnit extends Casting {
   }
 
   /**
-   * @return {string}
+   * @return {string[]}
    */
-  getInfoText () {
-    return 'This spell is used by a mage to build an army, one unit at a time.\n' +
-      'Range: 2\n' +
-      'Unit that can be created depends on the hex type:\n' +
+  getInfoTexts () {
+    return [
+      'This spell is used by a mage to build an army, one unit at a time.',
+      'Range: 2',
+      'Unit that can be created depends on the hex type:',
       'Red: Trooper (3 mana)\n' +
-      ' - cheap melee unit\n' +
+      ' - cheap melee unit',
       'Green: Keep (4 mana)\n' +
-      ' - immovable ranged unit\n' +
+      ' - immovable ranged unit',
       'Blue: Raider (5 mana)\n' +
       ' - melee unit with longer range'
+    ]
   }
 }

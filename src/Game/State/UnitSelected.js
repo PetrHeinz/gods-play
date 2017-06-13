@@ -35,7 +35,7 @@ export default class UnitSelected extends State {
   /**
    * @return {string}
    */
-  getInfoText () {
+  getInfoTexts () {
     let unitDescription = 'unknown unit'
     switch (this.unit.config.name) {
       case 'Mage':
@@ -54,6 +54,9 @@ export default class UnitSelected extends State {
         break
     }
 
-    return 'Selected: ' + this.unit.config.name + '\n' + unitDescription
+    return [
+      'Selected: ' + this.unit.config.name,
+      unitDescription
+    ]
   }
 }
