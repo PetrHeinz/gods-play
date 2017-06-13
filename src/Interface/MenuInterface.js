@@ -19,6 +19,9 @@ export default class MenuInterface {
 
     /** @type {PIXI.Text[]} */
     this.statusTexts = []
+
+    /** @type {number} */
+    this.textOffset = 0
   }
 
   initialize () {
@@ -66,39 +69,50 @@ export default class MenuInterface {
     })
 
     this.statusTexts = []
-    let textsHeight = MENU_OFFSET + self.playerText.height + MENU_OFFSET
+    this.textOffset = MENU_OFFSET + self.playerText.height
 
-    state.getActions().forEach(function (action) {
-      let text = new PIXI.Text(
-        '▸' + action.label,
-        {fill: 0xFFFFFF}
-      )
+    this.textOffset += MENU_OFFSET
+    state.getActions().forEach(action => this.addStateAction(action))
 
-      text.interactive = true
-      text.on('mouseup', action.callback)
-      text.x = MENU_OFFSET
-      text.y = textsHeight
-      textsHeight += text.height
+    this.textOffset += MENU_OFFSET
+    state.getInfoTexts().forEach(infoText => this.addStateInfoText(infoText))
+  }
 
-      self.statusTexts.push(text)
-      self.stage.addChild(text)
+  /**
+   * @param {Action} action
+   */
+  addStateAction (action) {
+    let labelText = '▸' + action.label
+    let text = new PIXI.Text(labelText, {
+      fill: 0xFFFFFF
     })
 
-    textsHeight += MENU_OFFSET
+    text.interactive = true
+    text.on('mouseup', action.callback)
 
-    state.getInfoTexts().forEach(function (statusInfoText) {
-      let text = new PIXI.Text(statusInfoText, {
-        fill: 0xAAAAAA,
-        wordWrap: true,
-        wordWrapWidth: MENU_INFO_TEXT_WIDTH
-      })
+    text.x = MENU_OFFSET
+    text.y = this.textOffset
+    this.textOffset += text.height
 
-      text.x = MENU_OFFSET
-      text.y = textsHeight
-      textsHeight += text.height + MENU_INFO_TEXT_MARGIN
+    this.statusTexts.push(text)
+    this.stage.addChild(text)
+  }
 
-      self.statusTexts.push(text)
-      self.stage.addChild(text)
+  /**
+   * @param {string} infoText
+   */
+  addStateInfoText (infoText) {
+    let text = new PIXI.Text(infoText, {
+      fill: 0xAAAAAA,
+      wordWrap: true,
+      wordWrapWidth: MENU_INFO_TEXT_WIDTH
     })
+
+    text.x = MENU_OFFSET
+    text.y = this.textOffset
+    this.textOffset += text.height + MENU_INFO_TEXT_MARGIN
+
+    this.statusTexts.push(text)
+    this.stage.addChild(text)
   }
 }
