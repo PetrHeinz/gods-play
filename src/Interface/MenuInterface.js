@@ -18,10 +18,7 @@ export default class MenuInterface {
     this.playerText = null
 
     /** @type {PIXI.Text[]} */
-    this.statusInfoTexts = []
-
-    /** @type {PIXI.Text[]} */
-    this.actionTexts = []
+    this.statusTexts = []
   }
 
   initialize () {
@@ -64,16 +61,13 @@ export default class MenuInterface {
   updateGameState (state) {
     let self = this
 
-    this.actionTexts.forEach(function (text) {
-      self.stage.removeChild(text)
-    })
-    this.statusInfoTexts.forEach(function (text) {
+    this.statusTexts.forEach(function (text) {
       self.stage.removeChild(text)
     })
 
     let textsHeight = 0
 
-    this.actionTexts = []
+    this.statusTexts = []
     state.getActions().forEach(function (action) {
       let text = new PIXI.Text(
         '▸' + action.label,
@@ -86,7 +80,7 @@ export default class MenuInterface {
       text.y = self.playerText.height + textsHeight + 2 * MENU_OFFSET
       textsHeight += text.height
 
-      self.actionTexts.push(text)
+      self.statusTexts.push(text)
       self.stage.addChild(text)
     })
 
@@ -101,7 +95,7 @@ export default class MenuInterface {
       text.y = self.playerText.height + textsHeight + 3 * MENU_OFFSET + MENU_INFO_TEXT_MARGIN
       textsHeight += text.height + MENU_INFO_TEXT_MARGIN
 
-      self.statusInfoTexts.push(text)
+      self.statusTexts.push(text)
       self.stage.addChild(text)
     })
   }
