@@ -5,7 +5,7 @@
 God's Play is a multiplayer turn-based tactical game about mages trying to destroy each other.
 As they fight they spread havoc and destruction around themselves without considering consequences.
 
-This game is created as a pet project to try out ES6 features, [PIXI.js](http://www.pixijs.com/), and practice programming the way I want, without the pressure of deadlines and clients.
+This game is created as a pet project to try out [ES6 features](http://es6-features.org/), [PIXI.js](http://www.pixijs.com/), and practice programming the way I want, without the pressure of deadlines and clients.
 A big inspiration for this game was a great multiplayer game [Greed Corp](http://store.steampowered.com/app/48950/Greed_Corp/).
 
 **The game is deployed live on [http://puzzle.php5.cz/gods-play/](http://puzzle.php5.cz/gods-play/).**  
