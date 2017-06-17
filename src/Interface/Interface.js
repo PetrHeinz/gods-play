@@ -17,9 +17,6 @@ export default class Interface {
     /** @type {PIXI.Application|null} */
     this.pixiApp = null
 
-    /** @type {MenuInterface|null} */
-    this.menu = null
-
     /** @type {HashMap} */
     this.cellInterfacesMap = new HashMap()
   }
@@ -31,8 +28,8 @@ export default class Interface {
       document.body.offsetHeight,
       {antialias: true}
     )
-    this.menu = new MenuInterface(this.pixiApp.stage, this.game)
-    this.menu.initialize()
+    let menuInterface = new MenuInterface(this.pixiApp.stage, this.game)
+    menuInterface.initialize()
 
     document.body.appendChild(this.pixiApp.view)
 
