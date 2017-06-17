@@ -12,12 +12,16 @@ const COLOR_HEX_INACTIVE = 0x999999
 
 export default class CellInterface {
   /**
-   * @param {Interface} parent
    * @param {Cell} cell
+   * @param {PIXI.Application} pixiApp
+   * @param {Game} game
    */
-  constructor (parent, cell) {
-    /** @type {Interface} */
-    this.parent = parent
+  constructor (cell, pixiApp, game) {
+    /** @type {PIXI.Container} */
+    this.pixiApp = pixiApp
+
+    /** @type {Game} */
+    this.game = game
 
     /** @type {Cell} */
     this.cell = cell
@@ -29,22 +33,16 @@ export default class CellInterface {
   initialize () {
     let self = this
 
-    this.hex = self.createHex(this.cell)
+    this.hex = this.createHex(this.cell)
 
-    this.parent.pixiApp.stage.addChild(this.hex)
+    this.pixiApp.stage.addChild(this.hex)
 
-    this.parent.game.events.listen('cellDrained', function (data) {
+    this.game.events.listen('cellDrained', function (data) {
       if (self.cell === data.cell) {
         self.hex.strength.text = self.cell.strength !== 0 ? self.cell.strength : ''
       }
     })
-    this.parent.game.events.listen('cellDestroyed', function (data) {
-      if (self.cell === data.cell) {
-        self.parent.pixiApp.stage.removeChild(self.hex)
-        self.parent.cellInterfacesMap.remove(self.cell)
-      }
-    })
-    this.parent.game.events.listen('unitMoved', function (data) {
+    this.game.events.listen('unitMoved', function (data) {
       if (self.cell === data.unit.parent) {
         self.hex.symbol.text = data.unit.config.symbol
         self.hex.symbol.style.fill = data.unit.owner.color
@@ -53,29 +51,29 @@ export default class CellInterface {
         self.hex.symbol.text = ''
       }
     })
-    this.parent.game.events.listen('unitAttacked', function (data) {
+    this.game.events.listen('unitAttacked', function (data) {
       if (self.cell === data.unit.parent) {
         self.hex.symbol.style.stroke = data.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
       }
     })
-    this.parent.game.events.listen('unitDied', function (data) {
+    this.game.events.listen('unitDied', function (data) {
       if (self.cell === data.onCell) {
         self.hex.symbol.text = ''
       }
     })
-    this.parent.game.events.listen('unitCreated', function (data) {
+    this.game.events.listen('unitCreated', function (data) {
       if (self.cell === data.unit.parent) {
         self.hex.symbol.text = data.unit.config.symbol
         self.hex.symbol.style.fill = data.unit.owner.color
         self.hex.symbol.style.stroke = data.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
       }
     })
-    this.parent.game.events.listen('turnEnded', function () {
+    this.game.events.listen('turnEnded', function () {
       if (self.cell.unit !== null) {
         self.hex.symbol.style.stroke = self.cell.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
       }
     })
-    this.parent.game.events.listen('gameStateChanged', function (data) {
+    this.game.events.listen('gameStateChanged', function (data) {
       self.hex.tint = data.state.canClickCell(self.cell) ? COLOR_HEX_ACTIVE : COLOR_HEX_INACTIVE
       self.hex.strength.style.stroke = self.hex.tint
     })
@@ -101,7 +99,7 @@ export default class CellInterface {
     )
     hex.endFill()
     hex.pivot = new PIXI.Point(HEX_WIDTH / 2, HEX_HEIGHT / 2)
-    hex.tint = this.parent.game.state.canClickCell(this.cell) ? COLOR_HEX_ACTIVE : COLOR_HEX_INACTIVE
+    hex.tint = this.game.state.canClickCell(this.cell) ? COLOR_HEX_ACTIVE : COLOR_HEX_INACTIVE
 
     let size = this.calculateSize()
 
@@ -109,8 +107,8 @@ export default class CellInterface {
     hex.height = size * HEX_HEIGHT
 
     let coordinate = cell.coordinate
-    hex.x = size * HEX_OFFSET_WIDTH * coordinate.x + this.parent.pixiApp.renderer.width / 2
-    hex.y = size * HEX_OFFSET_HEIGHT * (coordinate.z + coordinate.x / 2) + this.parent.pixiApp.renderer.height / 2
+    hex.x = size * HEX_OFFSET_WIDTH * coordinate.x + this.pixiApp.renderer.width / 2
+    hex.y = size * HEX_OFFSET_HEIGHT * (coordinate.z + coordinate.x / 2) + this.pixiApp.renderer.height / 2
 
     hex.strength = new PIXI.Text(cell.strength !== 0 ? cell.strength : '', {
       stroke: hex.tint,
@@ -138,10 +136,7 @@ export default class CellInterface {
     hex.addChild(hex.symbol)
 
     hex.interactive = true
-    let self = this
-    hex.on('mouseup', function () {
-      self.parent.game.cellClick(cell)
-    })
+    hex.on('mouseup', () => this.game.cellClick(cell))
 
     return hex
   }
@@ -150,10 +145,10 @@ export default class CellInterface {
    * @return {number}
    */
   calculateSize () {
-    let boardSize = this.parent.game.board.gameConfig.boardSize
+    let boardSize = this.game.board.gameConfig.boardSize
 
-    let xSize = this.parent.pixiApp.renderer.width / HEX_OFFSET_WIDTH / (boardSize * 2 + 1)
-    let ySize = this.parent.pixiApp.renderer.height / HEX_OFFSET_HEIGHT / (boardSize * 2 + 1)
+    let xSize = this.pixiApp.renderer.width / HEX_OFFSET_WIDTH / (boardSize * 2 + 1)
+    let ySize = this.pixiApp.renderer.height / HEX_OFFSET_HEIGHT / (boardSize * 2 + 1)
 
     return Math.min(xSize, ySize)
   }

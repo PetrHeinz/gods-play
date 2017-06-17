@@ -1,6 +1,6 @@
 import HashMap from 'hashmap'
 import MenuInterface from './MenuInterface'
-import CellInterface from './CellInterface'
+import BoardInterface from './BoardInterface'
 
 export default class Interface {
   /**
@@ -28,19 +28,14 @@ export default class Interface {
       document.body.offsetHeight,
       {antialias: true}
     )
+    document.body.appendChild(this.pixiApp.view)
+
     let menuInterface = new MenuInterface(this.pixiApp.stage, this.game)
     menuInterface.initialize()
 
-    document.body.appendChild(this.pixiApp.view)
+    let boardInterface = new BoardInterface(this.pixiApp, this.game)
+    boardInterface.initialize()
 
-    let self = this
-
-    this.game.board.children.forEach(cell => this.cellInterfacesMap.set(cell, new CellInterface(this, cell)))
-
-    this.cellInterfacesMap.forEach(cellInterface => cellInterface.initialize())
-
-    this.game.events.listen('playerLost', function (data) {
-      self.window.alert(data.player.name + ' has lost the match!')
-    })
+    this.game.events.listen('playerLost', data => this.window.alert(data.player.name + ' has lost the match!'))
   }
 }
