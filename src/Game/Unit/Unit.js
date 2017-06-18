@@ -78,6 +78,14 @@ export default class Unit extends GameObject {
     })
   }
 
+  strengthen () {
+    this.health = Math.min(this.health + this.config.healthIncrease, this.config.maxHealth)
+
+    this.events.trigger('unitStrengthened', {
+      unit: this
+    })
+  }
+
   refresh () {
     this.tired = false
   }

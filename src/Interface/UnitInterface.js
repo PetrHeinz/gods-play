@@ -88,6 +88,13 @@ export default class UnitInterface {
     health.y = HEALTH_OFFSET_RATIO * symbol.height / 2
     symbol.addChild(health)
 
+    let self = this
+    this.game.events.listen('unitStrengthened', function (data) {
+      if (self.unit === data.unit) {
+        health.text = data.unit.health
+      }
+    })
+
     return symbol
   }
 
