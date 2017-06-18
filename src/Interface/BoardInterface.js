@@ -31,7 +31,7 @@ export default class BoardInterface {
     this.game.events.listen('cellDestroyed', function (data) {
       let cellInterface = self.findCellInterface(data.cell)
       if (cellInterface !== null) {
-        self.pixiApp.stage.removeChild(cellInterface.hex)
+        cellInterface.remove()
         self.interfacesMap.remove(data.cell)
       }
     })
@@ -43,7 +43,7 @@ export default class BoardInterface {
     this.game.events.listen('unitDied', function (data) {
       let unitInterface = self.findUnitInterface(data.unit)
       if (unitInterface !== null) {
-        self.findCellInterface(data.onCell).hex.removeChild(unitInterface.symbol)
+        unitInterface.remove()
         self.interfacesMap.remove(data.unit)
       }
     })

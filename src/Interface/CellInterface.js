@@ -105,4 +105,8 @@ export default class CellInterface {
 
     return Math.min(xSize, ySize)
   }
+
+  remove () {
+    this.pixiApp.stage.removeChild(this.hex)
+  }
 }
