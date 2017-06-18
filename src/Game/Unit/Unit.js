@@ -15,6 +15,9 @@ export default class Unit extends GameObject {
     /** @type {UnitConfig} */
     this.config = config
 
+    /** @type {number} */
+    this.health = config.healthIncrease
+
     /** @type {boolean} */
     this.tired = true
   }
@@ -43,15 +46,11 @@ export default class Unit extends GameObject {
       throw new Exception('Tired Unit cannot move')
     }
 
-    let previousParent = this.parent
-
     this.config.movement.onCell(cell, this)
-
     this.tired = true
 
     this.events.trigger('unitMoved', {
-      unit: this,
-      fromCell: previousParent
+      unit: this
     })
   }
 
@@ -64,7 +63,6 @@ export default class Unit extends GameObject {
     }
 
     this.config.attack.onCell(cell, this)
-
     this.tired = true
 
     this.events.trigger('unitAttacked', {
@@ -72,14 +70,31 @@ export default class Unit extends GameObject {
     })
   }
 
-  die () {
-    let cell = this.parent
+  inflictDamage (damage) {
+    if (damage < this.health) {
+      this.health -= damage
 
+      this.events.trigger('unitDamaged', {
+        unit: this
+      })
+    } else {
+      this.die()
+    }
+  }
+
+  die () {
     this.parent.removeChild(this)
 
     this.events.trigger('unitDied', {
-      unit: this,
-      onCell: cell
+      unit: this
+    })
+  }
+
+  strengthen () {
+    this.health = Math.min(this.health + this.config.healthIncrease, this.config.maxHealth)
+
+    this.events.trigger('unitStrengthened', {
+      unit: this
     })
   }
 

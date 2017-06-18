@@ -18,6 +18,6 @@ export default class Attack extends UnitAction {
   onCell (cell, unit) {
     super.onCell(cell, unit)
 
-    cell.unit.die()
+    cell.unit.inflictDamage(unit.health)
   }
 }
