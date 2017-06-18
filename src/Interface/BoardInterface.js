@@ -29,19 +29,21 @@ export default class BoardInterface {
     })
 
     this.game.events.listen('cellDestroyed', function (data) {
-      if (self.interfacesMap.has(data.cell)) {
-        self.pixiApp.stage.removeChild(self.interfacesMap.get(data.cell).hex)
+      let cellInterface = self.findCellInterface(data.cell)
+      if (cellInterface !== null) {
+        self.pixiApp.stage.removeChild(cellInterface.hex)
         self.interfacesMap.remove(data.cell)
       }
     })
     this.game.events.listen('unitCreated', function (data) {
-      if (self.interfacesMap.has(data.unit.parent)) {
+      if (self.findCellInterface(data.unit.parent) !== null) {
         self.createUnitInterface(data.unit)
       }
     })
     this.game.events.listen('unitDied', function (data) {
-      if (self.interfacesMap.has(data.unit)) {
-        self.interfacesMap.get(data.unit.parent).removeChild(self.interfacesMap.get(data.unit).symbol)
+      let unitInterface = self.findUnitInterface(data.unit)
+      if (unitInterface !== null) {
+        self.findCellInterface(data.onCell).hex.removeChild(unitInterface.symbol)
         self.interfacesMap.remove(data.unit)
       }
     })
@@ -63,5 +65,25 @@ export default class BoardInterface {
     let unitInterface = new UnitInterface(unit, this, this.game)
     this.interfacesMap.set(unit, unitInterface)
     unitInterface.initialize()
+  }
+
+  /**
+   * @param cell
+   * @return {CellInterface|null}
+   */
+  findCellInterface (cell) {
+    let cellInterface = this.interfacesMap.get(cell)
+
+    return cellInterface instanceof CellInterface ? cellInterface : null
+  }
+
+  /**
+   * @param unit
+   * @return {UnitInterface|null}
+   */
+  findUnitInterface (unit) {
+    let unitInterface = this.interfacesMap.get(unit)
+
+    return unitInterface instanceof UnitInterface ? unitInterface : null
   }
 }

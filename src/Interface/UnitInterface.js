@@ -30,10 +30,10 @@ export default class UnitInterface {
     let self = this
     this.game.events.listen('unitMoved', function (data) {
       if (self.unit === data.unit) {
-        let previousHex = self.boardInterface.interfacesMap.get(data.fromCell).hex
+        let previousHex = self.getHex(data.fromCell)
         previousHex.removeChild(self.symbol)
 
-        let currentHex = self.boardInterface.interfacesMap.get(self.unit.parent).hex
+        let currentHex = self.getHex(self.unit.parent)
         currentHex.addChild(self.symbol)
 
         self.updateTired()
@@ -50,7 +50,7 @@ export default class UnitInterface {
   }
 
   createSymbol () {
-    let hex = this.boardInterface.interfacesMap.get(this.unit.parent).hex
+    let hex = this.getHex(this.unit.parent)
 
     this.symbol = new PIXI.Text(this.unit.config.symbol, {
       fill: this.unit.owner.color,
@@ -70,5 +70,13 @@ export default class UnitInterface {
 
   updateTired () {
     this.symbol.style.stroke = this.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
+  }
+
+  /**
+   * @param {Cell} cell
+   * @return {PIXI.Graphics}
+   */
+  getHex (cell) {
+    return this.boardInterface.findCellInterface(cell).hex
   }
 }
