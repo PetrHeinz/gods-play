@@ -31,7 +31,7 @@ export default class CellInterface {
   initialize () {
     let self = this
 
-    this.hex = this.createHex(this.cell)
+    this.hex = this.createHex()
 
     this.pixiApp.stage.addChild(this.hex)
 
@@ -47,14 +47,13 @@ export default class CellInterface {
   }
 
   /**
-   * @param {Cell} cell
    * @return {PIXI.Sprite}
    */
-  createHex (cell) {
+  createHex () {
     let hex = new PIXI.Graphics()
 
     hex.lineStyle(10, COLOR_HEX_ACTIVE, 1)
-    hex.beginFill(cell.config.color)
+    hex.beginFill(this.cell.config.color)
     hex.drawPolygon(
       new PIXI.Point(0, HEX_HEIGHT / 2),
       new PIXI.Point(HEX_WIDTH / 4, 0),
@@ -73,11 +72,11 @@ export default class CellInterface {
     hex.width = size * HEX_WIDTH
     hex.height = size * HEX_HEIGHT
 
-    let coordinate = cell.coordinate
+    let coordinate = this.cell.coordinate
     hex.x = size * HEX_OFFSET_WIDTH * coordinate.x + this.pixiApp.renderer.width / 2
     hex.y = size * HEX_OFFSET_HEIGHT * (coordinate.z + coordinate.x / 2) + this.pixiApp.renderer.height / 2
 
-    hex.strength = new PIXI.Text(cell.strength !== 0 ? cell.strength : '', {
+    hex.strength = new PIXI.Text(this.cell.strength !== 0 ? this.cell.strength : '', {
       stroke: hex.tint,
       strokeThickness: HEX_STRENGTH_SIZE / 3,
       fontSize: HEX_STRENGTH_SIZE,
@@ -89,7 +88,7 @@ export default class CellInterface {
     hex.addChild(hex.strength)
 
     hex.interactive = true
-    hex.on('mouseup', () => this.game.cellClick(cell))
+    hex.on('mouseup', () => this.game.cellClick(this.cell))
 
     return hex
   }
