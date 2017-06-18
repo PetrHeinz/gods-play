@@ -94,6 +94,11 @@ export default class UnitInterface {
         health.text = data.unit.health
       }
     })
+    this.game.events.listen('unitDamaged', function (data) {
+      if (self.unit === data.unit) {
+        health.text = data.unit.health
+      }
+    })
 
     return symbol
   }

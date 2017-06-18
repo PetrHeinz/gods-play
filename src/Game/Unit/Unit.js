@@ -70,6 +70,18 @@ export default class Unit extends GameObject {
     })
   }
 
+  inflictDamage (damage) {
+    if (damage < this.health) {
+      this.health -= damage
+
+      this.events.trigger('unitDamaged', {
+        unit: this
+      })
+    } else {
+      this.die()
+    }
+  }
+
   die () {
     this.parent.removeChild(this)
 
