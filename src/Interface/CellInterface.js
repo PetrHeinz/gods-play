@@ -1,12 +1,10 @@
-const HEX_WIDTH = 100
-const HEX_HEIGHT = Math.sqrt(3) / 2 * HEX_WIDTH
+export const HEX_WIDTH = 100
+export const HEX_HEIGHT = Math.sqrt(3) / 2 * HEX_WIDTH
 const HEX_OFFSET_RATIO = 1.1
 const HEX_OFFSET_WIDTH = HEX_OFFSET_RATIO * 3 / 4 * HEX_WIDTH
 const HEX_OFFSET_HEIGHT = HEX_OFFSET_RATIO * HEX_HEIGHT
-const HEX_SYMBOL_SIZE = 0.75 * HEX_HEIGHT
+const HEX_STRENGTH_SIZE = 0.25 * HEX_HEIGHT
 
-const COLOR_UNIT_RESTED = 0xFFFFFF
-const COLOR_UNIT_TIRED = 0x666666
 const COLOR_HEX_ACTIVE = 0xFFFFFF
 const COLOR_HEX_INACTIVE = 0x999999
 
@@ -40,37 +38,6 @@ export default class CellInterface {
     this.game.events.listen('cellDrained', function (data) {
       if (self.cell === data.cell) {
         self.hex.strength.text = self.cell.strength !== 0 ? self.cell.strength : ''
-      }
-    })
-    this.game.events.listen('unitMoved', function (data) {
-      if (self.cell === data.unit.parent) {
-        self.hex.symbol.text = data.unit.config.symbol
-        self.hex.symbol.style.fill = data.unit.owner.color
-        self.hex.symbol.style.stroke = data.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
-      } else if (self.cell === data.fromCell) {
-        self.hex.symbol.text = ''
-      }
-    })
-    this.game.events.listen('unitAttacked', function (data) {
-      if (self.cell === data.unit.parent) {
-        self.hex.symbol.style.stroke = data.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
-      }
-    })
-    this.game.events.listen('unitDied', function (data) {
-      if (self.cell === data.onCell) {
-        self.hex.symbol.text = ''
-      }
-    })
-    this.game.events.listen('unitCreated', function (data) {
-      if (self.cell === data.unit.parent) {
-        self.hex.symbol.text = data.unit.config.symbol
-        self.hex.symbol.style.fill = data.unit.owner.color
-        self.hex.symbol.style.stroke = data.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
-      }
-    })
-    this.game.events.listen('turnEnded', function () {
-      if (self.cell.unit !== null) {
-        self.hex.symbol.style.stroke = self.cell.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
       }
     })
     this.game.events.listen('gameStateChanged', function (data) {
@@ -112,28 +79,14 @@ export default class CellInterface {
 
     hex.strength = new PIXI.Text(cell.strength !== 0 ? cell.strength : '', {
       stroke: hex.tint,
-      strokeThickness: HEX_SYMBOL_SIZE / 10,
-      fontSize: HEX_SYMBOL_SIZE / 3,
+      strokeThickness: HEX_STRENGTH_SIZE / 3,
+      fontSize: HEX_STRENGTH_SIZE,
       fontWeight: 900
     })
     hex.strength.x = HEX_WIDTH / 4
     hex.strength.y = 0
     hex.strength.anchor = new PIXI.Point(0.25, 0.25)
     hex.addChild(hex.strength)
-
-    hex.symbol = new PIXI.Text(cell.unit !== null ? cell.unit.config.symbol : '', {
-      fill: cell.unit !== null ? cell.unit.owner.color : null,
-      stroke: cell.unit !== null && cell.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED,
-      strokeThickness: HEX_SYMBOL_SIZE / 10,
-      fontSize: HEX_SYMBOL_SIZE,
-      miterLimit: 5,
-      dropShadow: true,
-      dropShadowBlur: HEX_SYMBOL_SIZE / 5
-    })
-    hex.symbol.x = HEX_WIDTH / 2
-    hex.symbol.y = HEX_HEIGHT / 2
-    hex.symbol.anchor = new PIXI.Point(0.5, 0.5)
-    hex.addChild(hex.symbol)
 
     hex.interactive = true
     hex.on('mouseup', () => this.game.cellClick(cell))
