@@ -1,5 +1,6 @@
 import { HEX_HEIGHT, HEX_WIDTH } from './CellInterface'
 const SYMBOL_SIZE = 0.75 * HEX_HEIGHT
+const HEALTH_OFFSET_RATIO = 0.9
 
 const COLOR_UNIT_RESTED = 0xFFFFFF
 const COLOR_UNIT_TIRED = 0x666666
@@ -22,6 +23,9 @@ export default class UnitInterface {
 
     /** @type {PIXI.Text|null} */
     this.symbol = null
+
+    /** @type {function[]} */
+    this.updateTiredCallbacks = []
 
     /** @type {PIXI.Graphics|null} */
     this.onHex = null
@@ -64,12 +68,50 @@ export default class UnitInterface {
     symbol.x = HEX_WIDTH / 2
     symbol.y = HEX_HEIGHT / 2
     symbol.anchor = new PIXI.Point(0.5, 0.5)
+    this.updateTiredCallbacks.push(() => {
+      symbol.style.stroke = this.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
+    })
+
+    let maxHealth = this.createHealthText(this.unit.config.maxHealth)
+    maxHealth.x = HEALTH_OFFSET_RATIO * symbol.width / 2
+    maxHealth.y = HEALTH_OFFSET_RATIO * symbol.height / 2
+    symbol.addChild(maxHealth)
+
+    let separator = this.createHealthText('/')
+    separator.x = HEALTH_OFFSET_RATIO * (symbol.width / 2 - maxHealth.width)
+    separator.y = HEALTH_OFFSET_RATIO * symbol.height / 2
+    symbol.addChild(separator)
+
+    let health = this.createHealthText(this.unit.health)
+    health.style.fill = this.unit.owner.color
+    health.x = HEALTH_OFFSET_RATIO * (symbol.width / 2 - maxHealth.width - separator.width)
+    health.y = HEALTH_OFFSET_RATIO * symbol.height / 2
+    symbol.addChild(health)
 
     return symbol
   }
 
+  /**
+   * @param {string} text
+   * @return {PIXI.Text}
+   */
+  createHealthText (text) {
+    let healthText = new PIXI.Text(text, {
+      stroke: this.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED,
+      strokeThickness: SYMBOL_SIZE / 10,
+      fontSize: SYMBOL_SIZE / 4,
+      fontWeight: 'bold'
+    })
+    healthText.anchor = new PIXI.Point(1, 1)
+    this.updateTiredCallbacks.push(() => {
+      healthText.style.stroke = this.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
+    })
+
+    return healthText
+  }
+
   updateTired () {
-    this.symbol.style.stroke = this.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED
+    this.updateTiredCallbacks.forEach(updateTiredCallback => updateTiredCallback())
   }
 
   updateParent () {

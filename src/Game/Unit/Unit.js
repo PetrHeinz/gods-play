@@ -15,6 +15,9 @@ export default class Unit extends GameObject {
     /** @type {UnitConfig} */
     this.config = config
 
+    /** @type {number} */
+    this.health = config.healthIncrease
+
     /** @type {boolean} */
     this.tired = true
   }
