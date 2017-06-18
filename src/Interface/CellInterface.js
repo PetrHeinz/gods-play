@@ -18,7 +18,7 @@ export default class CellInterface {
     /** @type {Cell} */
     this.cell = cell
 
-    /** @type {PIXI.Container} */
+    /** @type {PIXI.Application} */
     this.pixiApp = pixiApp
 
     /** @type {Game} */

@@ -8,7 +8,7 @@ export default class BoardInterface {
    * @param {Game} game
    */
   constructor (pixiApp, game) {
-    /** @type {PIXI.Container} */
+    /** @type {PIXI.Application} */
     this.pixiApp = pixiApp
 
     /** @type {Game} */
