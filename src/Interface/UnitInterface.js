@@ -28,7 +28,8 @@ export default class UnitInterface {
   }
 
   initialize () {
-    this.createSymbol()
+    this.symbol = this.createSymbol()
+    this.updateParent()
 
     let self = this
     this.game.events.listen('unitMoved', function (data) {
@@ -47,8 +48,11 @@ export default class UnitInterface {
     })
   }
 
+  /**
+   * @return {PIXI.Text}
+   */
   createSymbol () {
-    this.symbol = new PIXI.Text(this.unit.config.symbol, {
+    let symbol = new PIXI.Text(this.unit.config.symbol, {
       fill: this.unit.owner.color,
       stroke: this.unit.tired ? COLOR_UNIT_TIRED : COLOR_UNIT_RESTED,
       strokeThickness: SYMBOL_SIZE / 10,
@@ -57,11 +61,11 @@ export default class UnitInterface {
       dropShadow: true,
       dropShadowBlur: SYMBOL_SIZE / 5
     })
-    this.symbol.x = HEX_WIDTH / 2
-    this.symbol.y = HEX_HEIGHT / 2
-    this.symbol.anchor = new PIXI.Point(0.5, 0.5)
+    symbol.x = HEX_WIDTH / 2
+    symbol.y = HEX_HEIGHT / 2
+    symbol.anchor = new PIXI.Point(0.5, 0.5)
 
-    this.updateParent()
+    return symbol
   }
 
   updateTired () {
