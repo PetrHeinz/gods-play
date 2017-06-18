@@ -21,15 +21,11 @@ export default class TransportingUnit extends Casting {
     let player = this.game.getPlayerOnTurn()
     player.castSpell(this.getManaCost(cell))
 
-    let previousParent = this.unit.parent
-
     this.unit.setParent(cell)
-
     this.unit.tired = true
 
     this.game.events.trigger('unitMoved', {
-      unit: this.unit,
-      fromCell: previousParent
+      unit: this.unit
     })
 
     super.cellClickAction(cell)

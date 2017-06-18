@@ -43,15 +43,11 @@ export default class Unit extends GameObject {
       throw new Exception('Tired Unit cannot move')
     }
 
-    let previousParent = this.parent
-
     this.config.movement.onCell(cell, this)
-
     this.tired = true
 
     this.events.trigger('unitMoved', {
-      unit: this,
-      fromCell: previousParent
+      unit: this
     })
   }
 
@@ -64,7 +60,6 @@ export default class Unit extends GameObject {
     }
 
     this.config.attack.onCell(cell, this)
-
     this.tired = true
 
     this.events.trigger('unitAttacked', {
@@ -73,13 +68,10 @@ export default class Unit extends GameObject {
   }
 
   die () {
-    let cell = this.parent
-
     this.parent.removeChild(this)
 
     this.events.trigger('unitDied', {
-      unit: this,
-      onCell: cell
+      unit: this
     })
   }
 

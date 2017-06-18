@@ -37,8 +37,7 @@ export default class Player {
     this.mana += mana
 
     this.triggerMageEvent('playerGainedMana', {
-      player: this,
-      addedMana: mana
+      player: this
     })
   }
 
@@ -57,8 +56,7 @@ export default class Player {
     this.mana -= mana
 
     this.triggerMageEvent('playerCastedSpell', {
-      player: this,
-      usedMana: mana
+      player: this
     })
   }
 

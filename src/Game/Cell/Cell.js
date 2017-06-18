@@ -51,9 +51,7 @@ export default class Cell extends GameObject {
     this.strength -= drainedStrength
 
     this.events.trigger('cellDrained', {
-      cell: this,
-      drainedStrength: drainedStrength,
-      originalStrength: originalStrength
+      cell: this
     })
 
     if (this.strength === 0 && this.config.destructible) {
@@ -68,13 +66,10 @@ export default class Cell extends GameObject {
       this.unit.die()
     }
 
-    let board = this.parent
-
     this.parent.removeChild(this)
 
     this.events.trigger('cellDestroyed', {
-      cell: this,
-      onBoard: board
+      cell: this
     })
   }
 
