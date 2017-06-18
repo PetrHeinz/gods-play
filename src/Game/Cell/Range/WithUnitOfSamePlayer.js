@@ -1,7 +1,7 @@
 import Range from './Range'
 import Exception from '../../../exceptions/Exception'
 
-export default class WithUnitOfOtherPlayer extends Range {
+export default class WithUnitOfSamePlayer extends Range {
   /**
    * @param {Range} range
    */
