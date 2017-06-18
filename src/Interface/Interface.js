@@ -1,4 +1,3 @@
-import HashMap from 'hashmap'
 import MenuInterface from './MenuInterface'
 import BoardInterface from './BoardInterface'
 
@@ -16,9 +15,6 @@ export default class Interface {
 
     /** @type {PIXI.Application|null} */
     this.pixiApp = null
-
-    /** @type {HashMap} */
-    this.cellInterfacesMap = new HashMap()
   }
 
   initialize () {
