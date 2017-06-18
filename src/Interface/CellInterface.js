@@ -17,14 +17,14 @@ export default class CellInterface {
    * @param {Game} game
    */
   constructor (cell, pixiApp, game) {
+    /** @type {Cell} */
+    this.cell = cell
+
     /** @type {PIXI.Container} */
     this.pixiApp = pixiApp
 
     /** @type {Game} */
     this.game = game
-
-    /** @type {Cell} */
-    this.cell = cell
 
     /** @type {PIXI.Graphics|null} */
     this.hex = null
