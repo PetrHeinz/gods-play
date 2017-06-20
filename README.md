@@ -15,8 +15,9 @@ There are in-game descriptions of the rules.
 
 ## Installation
 
-Installation on a local machine can be done via npm command: 
+Installation on a local machine can be done via npm commands: 
 ```
+npm install
 npm run build
 ```
 
