@@ -15,20 +15,27 @@ There are in-game descriptions of the rules.
 
 ## Installation
 
-Installation on a local machine can be done via npm commands: 
+Installation on a local machine can be done via [Yarn](https://yarnpkg.com/) commands: 
+```
+yarn install
+yarn run build
+```
+
+That compiles and builds ES6 modules into JS executable in a browser via [Babel](https://babeljs.io/) and [Browserify](http://browserify.org/).
+ 
+If you do not have Yarn installed on your machine you can use [npm](https://www.npmjs.com/) in pretty much the same way: 
 ```
 npm install
 npm run build
 ```
 
-That compiles and builds ES6 modules into JS executable in a browser via [Babel](https://babeljs.io/) and [Browserify](http://browserify.org/). 
 
 ## Coding Standards
 
 The code is [JavaScript Standard Style](https://standardjs.com/) compliant which can be checked and automatically fixed by:
 ```
-npm run test
-npm run fix
+yarn run test
+yarn run fix
 ```
 
 There are no automatic tests at the moment.
