@@ -21,7 +21,7 @@ yarn install
 yarn run build
 ```
 
-That compiles and builds ES6 modules into JS executable in a browser via [Babel](https://babeljs.io/) and [Browserify](http://browserify.org/).
+That compiles and builds ES6 modules into JS executable in a browser via [Webpack](https://webpack.github.io/).
  
 If you do not have Yarn installed on your machine you can use [npm](https://www.npmjs.com/) in pretty much the same way: 
 ```
