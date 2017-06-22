@@ -24,6 +24,7 @@ export default class CreatingUnit extends Casting {
     let player = this.game.getPlayerOnTurn()
     player.castSpell(cell.config.unitConfig.manaCost)
 
+    cell.drainStrength(1)
     if (cell.unit === null) {
       cell.createChild(player)
     } else {
@@ -40,7 +41,7 @@ export default class CreatingUnit extends Casting {
   canClickCell (cell) {
     let player = this.game.getPlayerOnTurn()
 
-    return super.canClickCell(cell) && cell.config.unitConfig.manaCost <= player.mana
+    return super.canClickCell(cell) && cell.config.unitConfig.manaCost <= player.mana && cell.strength > 1
   }
 
   /**
@@ -48,7 +49,7 @@ export default class CreatingUnit extends Casting {
    */
   getInfoTexts () {
     return [
-      'This spell is used by a mage to build an army, one unit at a time.',
+      'This spell is used by a mage to build an army, one unit at a time. Drains 1 strength from the target hex.',
       'Range: 2',
       'Unit that can be created depends on the hex type:',
       'Red: Trooper (3 mana)\n' +
