@@ -1,22 +1,34 @@
-import Attack from './Attack'
-import NeighborRange from '../../Cell/Range/NeighborRange'
+import UnitAction from './UnitAction'
+import { neighborDistance } from '../../Cell/function/distance'
 
-export default class MeleeAttack extends Attack {
+export default class MeleeAttack extends UnitAction {
   /**
    * @param {number} [rangeRadius]
    */
   constructor (rangeRadius = 1) {
-    let range = new NeighborRange(rangeRadius)
+    super()
 
-    super(range)
+    /** @type {number} */
+    this.rangeRadius = rangeRadius
+  }
+
+  /**
+   * @param {Cell} cell
+   * @param {Unit} unit
+   * @return {boolean}
+   */
+  isCellInRange (cell, unit) {
+    return cell.unit !== null &&
+      cell.unit.owner !== unit.owner &&
+      neighborDistance(unit.parent, cell) <= this.rangeRadius
   }
 
   /**
    * @param {Cell} cell
    * @param {Unit} unit
    */
-  onCell (cell, unit) {
-    super.onCell(cell, unit)
+  onCellAction (cell, unit) {
+    cell.unit.inflictDamage(unit.health)
 
     if (unit.isInMoveRange(cell)) {
       unit.moveTo(cell)

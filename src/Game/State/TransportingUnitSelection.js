@@ -1,13 +1,8 @@
-import Casting from './Casting'
-import NeighborRange from '../Cell/Range/NeighborRange'
-import WithUnitOfSamePlayer from '../Cell/Range/WithUnitOfSamePlayer'
+import State from './State'
 import TransportingUnit from './TransportingUnit'
+import { neighborDistance } from '../Cell/function/distance'
 
-export default class TransportingUnitSelection extends Casting {
-  constructor () {
-    super(new WithUnitOfSamePlayer(new NeighborRange(1)))
-  }
-
+export default class TransportingUnitSelection extends State {
   /**
    * @param {Cell} cell
    */
@@ -22,9 +17,10 @@ export default class TransportingUnitSelection extends Casting {
    * @return {boolean}
    */
   canClickCell (cell) {
-    let player = this.game.getPlayerOnTurn()
-
-    return super.canClickCell(cell) && player.mana >= TransportingUnit.getBasicManaCost(cell.unit)
+    return cell.unit !== null &&
+      this.player.mana >= TransportingUnit.getBasicManaCost(cell.unit) &&
+      cell.unit.owner === this.player &&
+      neighborDistance(this.mage.parent, cell) <= 1
   }
 
   /**

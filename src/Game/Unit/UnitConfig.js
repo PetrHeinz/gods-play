@@ -5,8 +5,8 @@ export default class UnitConfig {
    * @param {number} manaCost
    * @param {number} maxHealth
    * @param {number} healthIncrease
-   * @param {Movement} movement
-   * @param {Attack} attack
+   * @param {UnitAction} movement
+   * @param {UnitAction} attack
    */
   constructor (name, symbol, manaCost, maxHealth, healthIncrease, movement, attack) {
     /** @type {string} */
@@ -24,10 +24,10 @@ export default class UnitConfig {
     /** @type {number} */
     this.healthIncrease = healthIncrease
 
-    /** @type {Movement} */
+    /** @type {UnitAction} */
     this.movement = movement
 
-    /** @type {Attack} */
+    /** @type {UnitAction} */
     this.attack = attack
   }
 }

@@ -1,14 +1,12 @@
-import Casting from './Casting'
-import Range from '../Cell/Range/Range'
-import WithoutUnit from '../Cell/Range/WithoutUnit'
+import State from './State'
 import { coordinateDistance } from '../Cell/function/distance'
 
-export default class TransportingUnit extends Casting {
+export default class TransportingUnit extends State {
   /**
    * @param {Unit} unit
    */
   constructor (unit) {
-    super(new WithoutUnit(new Range()))
+    super()
 
     /** @member {Unit} */
     this.unit = unit
@@ -36,9 +34,8 @@ export default class TransportingUnit extends Casting {
    * @return {boolean}
    */
   canClickCell (cell) {
-    let player = this.game.getPlayerOnTurn()
-
-    return super.canClickCell(cell) && player.mana >= this.getManaCost(cell)
+    return cell.unit === null &&
+      this.player.mana >= this.getManaCost(cell)
   }
 
   /**

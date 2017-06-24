@@ -1,32 +1,16 @@
-import Casting from './Casting'
-import DistanceRange from '../Cell/Range/DistanceRange'
-import Filter from '../Cell/Range/Filter'
+import State from './State'
+import { coordinateDistance } from '../Cell/function/distance'
 
-export default class CreatingUnit extends Casting {
-  constructor () {
-    let filter = cell => {
-      if (cell.unit === null) {
-        return cell.config.unitConfig !== null
-      } else {
-        let notMaxHealth = cell.unit.health < cell.unit.config.maxHealth
-        let unitOwnedByPlayer = cell.unit.owner === this.game.getPlayerOnTurn()
-
-        return cell.config.unitConfig === cell.unit.config && unitOwnedByPlayer && notMaxHealth
-      }
-    }
-    super(new Filter(new DistanceRange(2), filter))
-  }
-
+export default class CreatingUnit extends State {
   /**
    * @param {Cell} cell
    */
   cellClickAction (cell) {
-    let player = this.game.getPlayerOnTurn()
-    player.castSpell(cell.config.unitConfig.manaCost)
+    this.player.castSpell(cell.config.unitConfig.manaCost)
 
     cell.drainStrength(1)
     if (cell.unit === null) {
-      cell.createChild(player)
+      cell.createChild(this.player)
     } else {
       cell.unit.strengthen()
     }
@@ -39,9 +23,11 @@ export default class CreatingUnit extends Casting {
    * @return {boolean}
    */
   canClickCell (cell) {
-    let player = this.game.getPlayerOnTurn()
-
-    return super.canClickCell(cell) && cell.config.unitConfig.manaCost <= player.mana && cell.strength > 1
+    return cell.config.unitConfig !== null &&
+      this.player.mana >= cell.config.unitConfig.manaCost &&
+      cell.strength > 1 &&
+      (cell.unit === null || (cell.unit.owner === this.player && cell.unit.health < cell.unit.config.maxHealth)) &&
+      coordinateDistance(this.mage.parent, cell) <= 2
   }
 
   /**

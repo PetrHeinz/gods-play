@@ -1,12 +1,7 @@
-import Casting from './Casting'
-import DistanceRange from '../Cell/Range/DistanceRange'
-import WithoutUnit from '../Cell/Range/WithoutUnit'
+import State from './State'
+import { coordinateDistance } from '../Cell/function/distance'
 
-export default class DrainingStrength extends Casting {
-  constructor () {
-    super(new WithoutUnit(new DistanceRange(3)))
-  }
-
+export default class DrainingStrength extends State {
   /**
    * @param {Cell} cell
    */
@@ -22,6 +17,15 @@ export default class DrainingStrength extends Casting {
     player.addMana(mana)
 
     super.cellClickAction(cell)
+  }
+
+  /**
+   * @param {Cell} cell
+   * @return {boolean}
+   */
+  canClickCell (cell) {
+    return cell.unit === null &&
+      coordinateDistance(this.mage.parent, cell) <= 3
   }
 
   /**

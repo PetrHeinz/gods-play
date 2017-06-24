@@ -2,20 +2,12 @@ import CellOutOfRangeException from '../../../exceptions/CellOutOfRangeException
 
 export default class UnitAction {
   /**
-   * @param {Range} range
-   */
-  constructor (range) {
-    /** @type {Range} */
-    this.range = range
-  }
-
-  /**
    * @param {Cell} cell
    * @param {Unit} unit
    * @return {boolean}
    */
   isCellInRange (cell, unit) {
-    return this.range.isInRange(cell, unit.parent)
+    return true
   }
 
   /**
@@ -26,5 +18,13 @@ export default class UnitAction {
     if (!this.isCellInRange(cell, unit)) {
       throw new CellOutOfRangeException()
     }
+
+    this.onCellAction(cell, unit)
   }
+
+  /**
+   * @param {Cell} cell
+   * @param {Unit} unit
+   */
+  onCellAction (cell, unit) {}
 }

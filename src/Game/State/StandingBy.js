@@ -21,7 +21,7 @@ export default class StandingBy extends State {
   canClickCell (cell) {
     let unit = cell.unit
 
-    return unit !== null && unit.owner === this.game.getPlayerOnTurn() && !unit.tired
+    return unit !== null && unit.owner === this.player && !unit.tired
   }
 
   /**
@@ -29,7 +29,7 @@ export default class StandingBy extends State {
    */
   getActions () {
     let actions = []
-    if (this.game.getPlayerOnTurn().actionPoints > 0) {
+    if (this.player.actionPoints > 0) {
       actions = [
         new Action('Create unit', () => this.game.changeState(CreatingUnit)),
         new Action('Mana bolt', () => this.game.changeState(FiringManaBolt)),

@@ -1,12 +1,7 @@
-import Casting from './Casting'
-import DistanceRange from '../Cell/Range/DistanceRange'
-import WithUnitOfOtherPlayer from '../Cell/Range/WithUnitOfOtherPlayer'
+import State from './State'
+import { coordinateDistance } from '../Cell/function/distance'
 
-export default class FiringManaBolt extends Casting {
-  constructor () {
-    super(new WithUnitOfOtherPlayer(new DistanceRange(5)))
-  }
-
+export default class FiringManaBolt extends State {
   /**
    * @param {Cell} cell
    */
@@ -24,9 +19,10 @@ export default class FiringManaBolt extends Casting {
    * @return {boolean}
    */
   canClickCell (cell) {
-    let player = this.game.getPlayerOnTurn()
-
-    return super.canClickCell(cell) && player.mana >= 1
+    return cell.unit !== null &&
+      this.player.mana >= 1 &&
+      cell.unit.owner !== this.player &&
+      coordinateDistance(this.mage.parent, cell) <= 5
   }
 
   /**

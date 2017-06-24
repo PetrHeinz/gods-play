@@ -1,4 +1,5 @@
 import Action from './Action'
+import InaccessibleMageException from '../../exceptions/InaccessibleMageException'
 
 export default class State {
   constructor () {
@@ -56,5 +57,23 @@ export default class State {
    */
   getInfoTexts () {
     return []
+  }
+
+  /**
+   * @return {Player}
+   */
+  get player () {
+    return this.game.getPlayerOnTurn()
+  }
+
+  /**
+   * @return {Mage}
+   */
+  get mage () {
+    if (this.player.mage === null) {
+      throw new InaccessibleMageException()
+    }
+
+    return this.player.mage
   }
 }

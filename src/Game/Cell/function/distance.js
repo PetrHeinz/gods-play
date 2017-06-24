@@ -18,6 +18,35 @@ export function coordinateDistance (origin, target) {
 /**
  * @param {Cell} origin
  * @param {Cell} target
+ * @return {number}
+ */
+export function neighborDistance (origin, target) {
+  let searchedCells = new Set()
+  let edge = new Set([origin])
+
+  for (let distance = 0; edge.size > 0; distance++) {
+    if (edge.has(target)) {
+      return distance
+    }
+
+    let newEdge = new Set()
+    edge.forEach(edgeCell => {
+      edgeCell.neighbors.forEach(neighbor => {
+        if (!searchedCells.has(neighbor)) {
+          newEdge.add(neighbor)
+          searchedCells.add(neighbor)
+        }
+      })
+    })
+    edge = newEdge
+  }
+
+  return Infinity
+}
+
+/**
+ * @param {Cell} origin
+ * @param {Cell} target
  * @return {boolean}
  */
 export function isOnSameBoard (origin, target) {

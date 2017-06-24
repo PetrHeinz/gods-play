@@ -1,24 +1,32 @@
 import UnitAction from './UnitAction'
-import NeighborRange from '../../Cell/Range/NeighborRange'
-import WithoutUnit from '../../Cell/Range/WithoutUnit'
+import { neighborDistance } from '../../Cell/function/distance'
 
 export default class Movement extends UnitAction {
   /**
    * @param {number} rangeRadius
    */
   constructor (rangeRadius = 1) {
-    let range = new WithoutUnit(new NeighborRange(rangeRadius))
+    super()
 
-    super(range)
+    /** @type {number} */
+    this.rangeRadius = rangeRadius
+  }
+
+  /**
+   * @param {Cell} cell
+   * @param {Unit} unit
+   * @return {boolean}
+   */
+  isCellInRange (cell, unit) {
+    return cell.unit === null &&
+      neighborDistance(unit.parent, cell) <= this.rangeRadius
   }
 
   /**
    * @param {Cell} cell
    * @param {Unit} unit
    */
-  onCell (cell, unit) {
-    super.onCell(cell, unit)
-
+  onCellAction (cell, unit) {
     unit.setParent(cell)
   }
 }
