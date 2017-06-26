@@ -15,18 +15,19 @@ There are in-game descriptions of the rules.
 
 ## Installation
 
-Installation on a local machine can be done via [Yarn](https://yarnpkg.com/) commands: 
+You can install and run the application on a local machine via [Yarn](https://yarnpkg.com/) commands: 
 ```
 yarn install
-yarn run build
+yarn start
 ```
 
-That compiles and builds ES6 modules into JS executable in a browser via [Webpack](https://webpack.github.io/).
+That compiles and builds ES6 modules into JS executable in a browser via [Webpack](https://webpack.github.io/) and starts the application in your default browser.
+The application runs in watch mode - when any source file is modified it is automatically rebuilt and the browser page refreshes.
  
 If you do not have Yarn installed on your machine you can use [npm](https://www.npmjs.com/) in pretty much the same way: 
 ```
 npm install
-npm run build
+npm start
 ```
 
 

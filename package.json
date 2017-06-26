@@ -21,7 +21,8 @@
     "download-cli": "^1.0.1",
     "plato": "^1.7.0",
     "standard": "^10.0.2",
-    "webpack": "^3.0.0"
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "2.5.0"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "url": "https://github.com/PetrHeinz/gods-play/issues"
   },
   "scripts": {
+    "start": "webpack-dev-server --open",
     "test": "standard --global PIXI src/**/*.js",
     "fix": "standard --fix --global PIXI src/**/*.js",
     "build": "webpack",
