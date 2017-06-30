@@ -43,6 +43,10 @@ export default class State {
     this.game.changeState()
   }
 
+  rightClickAction () {
+    this.game.changeState()
+  }
+
   /**
    * @return {Action[]}
    */

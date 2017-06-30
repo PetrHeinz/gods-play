@@ -1,6 +1,8 @@
 import MenuInterface from './MenuInterface'
 import BoardInterface from './BoardInterface'
 
+const MOUSE_BUTTON_RIGHT = 2
+
 export default class Interface {
   /**
    * @param {Game} game
@@ -25,6 +27,16 @@ export default class Interface {
       {antialias: true}
     )
     document.body.appendChild(this.pixiApp.view)
+
+    let game = this.game
+    document.onmouseup = (event) => {
+      if (event.button === MOUSE_BUTTON_RIGHT) {
+        game.state.rightClickAction()
+
+        return false
+      }
+    }
+    document.oncontextmenu = () => false
 
     let menuInterface = new MenuInterface(this.pixiApp.stage, this.game)
     menuInterface.initialize()
