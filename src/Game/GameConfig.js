@@ -7,7 +7,7 @@ import Movement from './Unit/Action/Movement'
 export default class GameConfig {
   constructor () {
     /** @type {number} */
-    this.boardSize = 5
+    this.boardSize = 4
 
     /** @type {number} */
     this.playerCount = 2
