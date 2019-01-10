@@ -6,6 +6,7 @@ import GameObjectFactory from './Game/GameObjectFactory'
 import Player from './Game/Player'
 import GameConfig from './Game/GameConfig'
 import { shuffle } from './function/array'
+import { coordinateDistance } from './Game/Cell/function/distance'
 
 export default class GodsPlay {
   /**
@@ -47,10 +48,10 @@ export default class GodsPlay {
     })
 
     let players = []
+    let mageCells = pickFurthest(shuffledCells, config.playerCount)
     for (let i = 0; i < config.playerCount; i++) {
       let player = new Player('Player #' + (i + 1), config.playerColors[i])
-
-      shuffledCells.pop().createMageChild(player)
+      mageCells.pop().createMageChild(player)
       players.push(player)
     }
 
@@ -58,5 +59,33 @@ export default class GodsPlay {
     this.interface = new Interface(this.game, this.window)
 
     this.interface.initialize()
+
+    /**
+     * @param {Cell[]} cells
+     * @param {number} cellNumber
+     * @returns {Cell[]}
+     */
+    function pickFurthest (cells, cellNumber) {
+      let furthestCells = cells.slice(0, cellNumber)
+      let newCell, previousCell
+      do {
+        let furthestDistance = 0
+        newCell = null
+        previousCell = furthestCells.pop()
+        cells.forEach(function (cell) {
+          let distance = 0
+          furthestCells.forEach(function (furthestCell) {
+            distance += coordinateDistance(cell, furthestCell)
+          })
+          if (distance > furthestDistance || newCell === null) {
+            newCell = cell
+            furthestDistance = distance
+          }
+        })
+        furthestCells.unshift(newCell)
+      } while (newCell !== previousCell)
+
+      return furthestCells
+    }
   }
 }
