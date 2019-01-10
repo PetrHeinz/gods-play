@@ -24,8 +24,8 @@ export default class DrainingStrength extends State {
    * @return {boolean}
    */
   canClickCell (cell) {
-    return cell.unit === null &&
-      coordinateDistance(this.mage.parent, cell) <= 3
+    return (cell.unit === null || cell.unit === this.mage) &&
+      coordinateDistance(this.mage.parent, cell) <= 1
   }
 
   /**
@@ -34,7 +34,7 @@ export default class DrainingStrength extends State {
   getInfoTexts () {
     return [
       'This spell is used by a mage to gain mana for spell-casting.\n' +
-      'Range: 3\n' +
+      'Range: 1\n' +
       'It costs only an action point and can lower strength of target hex by 3 and all neighboring by 1, ' +
       'converting the total strength into mana.',
       'Beware of destroying hexes with low strength!'
