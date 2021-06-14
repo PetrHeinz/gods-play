@@ -24,3 +24,7 @@ yarn build-all
 yarn ts-node <filename>
 yarn esbuild-browser
 ```
+
+## Deploy
+
+The project is deployed automatically to GitHub pages: http://petrheinz.github.io/gods-play/
