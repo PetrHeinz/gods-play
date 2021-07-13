@@ -1,6 +1,7 @@
 /node_modules/
 /build/
 /lib/
+/deploy/
 /dist/
 /docs/
 .idea/*
