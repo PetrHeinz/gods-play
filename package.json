@@ -34,6 +34,7 @@
     "test": "jest",
     "clean": "rm -rf dist build package",
     "ts-node": "ts-node",
+    "deploy": "mkdir -p deploy/dist/esbuild && cp -r dist/esbuild/* deploy/dist/esbuild && cp index.html deploy/index.html && touch deploy/.nojekyll",
     "docs": "typedoc --entryPoints src/main.ts",
     "build": "tsc -p tsconfig.json",
     "build-all": "yarn clean && yarn build && yarn esbuild-node && yarn esbuild-browser",
