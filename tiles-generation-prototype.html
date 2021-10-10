@@ -86,6 +86,10 @@
     isLinkedTo(tile) {
       return this.linkedTiles.indexOf(tile) !== -1
     }
+    move(vector) {
+      this.position = this.position.add(vector)
+      this.updateDOM()
+    }
     appendDOM(element) {
       element.appendChild(this.element)
       this.links.forEach(link => link.appendDOM(element))
@@ -180,14 +184,11 @@
       }
       movements.push(movement)
     }
-    for (let i = 0; i < tiles.length; i++) {
-      tiles[i].position = tiles[i].position.add(movements[i])
-      tiles[i].updateDOM()
-    }
+
+    tiles.forEach((tile, i) => tile.move(movements[i]))
   }
 
   const tiles = getTiles()
-
   window.setInterval(() => moveTiles(tiles), 10)
 </script>
 </body>
