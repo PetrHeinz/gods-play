@@ -76,21 +76,9 @@
       if (this === tile || this.isLinkedTo(tile)) {
         return
       }
-      const link = {
-        tileA: this,
-        tileB: tile,
-        other: function (tile) {
-          return tile === this ? tile : this
-        },
-        element: document.createElement('div')
-      }
+      const link = new Link(this, tile)
       this.links.push(link)
       tile.links.push(link)
-
-      link.element.textContent = '﹡'
-      link.element.className = 'link'
-      link.element.style.left = (this.position.x + tile.position.x)/2+'px'
-      link.element.style.top = (this.position.y + tile.position.y)/2+'px'
     }
     get linkedTiles() {
       return this.links.map(link => link.other(this))
@@ -100,18 +88,35 @@
     }
     appendDOM(element) {
       element.appendChild(this.element)
-      this.links.forEach(link => element.appendChild(link.element))
+      this.links.forEach(link => link.appendDOM(element))
     }
     updateDOM() {
       this.element.textContent = this.name
       this.element.style.left = this.position.x+'px'
       this.element.style.top = this.position.y+'px'
+      this.links.forEach(link => link.updateDOM())
+    }
+  }
 
-      for (let i = 0; i < this.links.length; i++) {
-        const link = this.links[i]
-        link.element.style.left = (link.tileA.position.x + link.tileB.position.x)/2+'px'
-        link.element.style.top = (link.tileA.position.y + link.tileB.position.y)/2+'px'
-      }
+  class Link {
+    constructor(tileA,tileB) {
+      this.tileA = tileA
+      this.tileB = tileB
+      this.element = document.createElement('div')
+      this.element.textContent = '﹡'
+      this.element.className = 'link'
+      this.element.style.left = (this.tileA.position.x + this.tileB.position.x)/2+'px'
+      this.element.style.top = (this.tileA.position.y + this.tileB.position.y)/2+'px'
+    }
+    other(tile) {
+      return tile === this.tileA ? this.tileB : this.tileA
+    }
+    appendDOM(element) {
+      element.appendChild(this.element)
+    }
+    updateDOM() {
+      this.element.style.left = (this.tileA.position.x + this.tileB.position.x)/2+'px'
+      this.element.style.top = (this.tileA.position.y + this.tileB.position.y)/2+'px'
     }
   }
 
