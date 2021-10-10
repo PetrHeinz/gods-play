@@ -70,7 +70,7 @@
       this.links = []
       this.element = document.createElement('div')
       this.element.className = 'tile'
-      this.updateElement()
+      this.updateDOM()
     }
     link(tile) {
       if (this === tile || this.isLinkedTo(tile)) {
@@ -98,10 +98,20 @@
     isLinkedTo(tile) {
       return this.linkedTiles.indexOf(tile) !== -1
     }
-    updateElement() {
+    appendDOM(element) {
+      element.appendChild(this.element)
+      this.links.forEach(link => element.appendChild(link.element))
+    }
+    updateDOM() {
       this.element.textContent = this.name
       this.element.style.left = this.position.x+'px'
       this.element.style.top = this.position.y+'px'
+
+      for (let i = 0; i < this.links.length; i++) {
+        const link = this.links[i]
+        link.element.style.left = (link.tileA.position.x + link.tileB.position.x)/2+'px'
+        link.element.style.top = (link.tileA.position.y + link.tileB.position.y)/2+'px'
+      }
     }
   }
 
@@ -138,12 +148,7 @@
         }
       }
     }
-    for (let i = 0; i < tileCount; i++) {
-      document.body.appendChild(tiles[i].element)
-      for (let n = 0; n < tiles[i].links.length; n++) {
-        document.body.appendChild(tiles[i].links[n].element)
-      }
-    }
+    tiles.forEach(tile => tile.appendDOM(document.body))
     return tiles
   }
 
@@ -172,14 +177,7 @@
     }
     for (let i = 0; i < tiles.length; i++) {
       tiles[i].position = tiles[i].position.add(movements[i])
-      tiles[i].updateElement()
-    }
-    for (let i = 0; i < tiles.length; i++) {
-      for (let n = 0; n < tiles[i].links.length; n++) {
-        const link = tiles[i].links[n]
-        link.element.style.left = (link.tileA.position.x + link.tileB.position.x)/2+'px'
-        link.element.style.top = (link.tileA.position.y + link.tileB.position.y)/2+'px'
-      }
+      tiles[i].updateDOM()
     }
   }
 
