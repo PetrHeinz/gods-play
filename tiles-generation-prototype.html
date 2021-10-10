@@ -3,6 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Tile Generation Prototype</title>
+  <style>
+    .tile {
+      position: absolute;
+      background: rgba(27, 126, 60, 0.3);
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      border-radius: 100%;
+      color: white;
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 0.75em;
+      width: 1.25em;
+      height: 1.25em;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <script>
@@ -43,7 +58,7 @@
         linked: []
       }
       tile.element.textContent = tile.name
-      tile.element.style.position = 'absolute'
+      tile.element.className = 'tile'
       tile.element.style.left = tile.x+'px'
       tile.element.style.top = tile.y+'px'
 
