@@ -63,18 +63,20 @@
       tile.element.style.top = tile.y+'px'
 
       tiles.push(tile)
-      document.body.appendChild(tile.element)
     }
     for (let i = 0; i < tileCount; i++) {
       let n = 0
       while(tiles[i].linked.length < linkCount) {
         if (n++ > 100) throw "too many retries"
-        //const tileToLink = tiles[Math.floor(Math.random()*tileCount)]
-        const tileToLink = tiles[n]
+        const tileToLink = tiles[Math.floor(Math.random()*tileCount)]
+        //const tileToLink = tiles[n]
         if (tileToLink.linked.length < linkCount) {
           tryToLinkTiles(tiles[i], tileToLink)
         }
       }
+    }
+    for (let i = 0; i < tileCount; i++) {
+      document.body.appendChild(tiles[i].element)
     }
     return tiles
   }
