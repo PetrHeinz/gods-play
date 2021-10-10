@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tile Generation Prototype</title>
+</head>
+<body>
+<script>
+  const MIN_X = 50
+  const MAX_X = 600
+  const MIN_Y = 50
+  const MAX_Y = 300
+  const TILES = 40
+  const LINKS = 4
+  const STEPS = 5000
+  const RETRIES = 10
+  const REPELLING = 100
+  const BASIC_PULLING = 1
+  const LINKED_PULLING_FRACTION = 10
+
+  function getTiles() {
+    for (let i = 0; i <= RETRIES; i++) {
+      try {
+        let tiles = createTiles(TILES, LINKS)
+        console.log(
+          tiles.map(tile => ({name: tile.name, linked: tile.linked.map(tile => tile.name)}))
+        )
+        return tiles
+      } catch (error) {
+        console.log('error during creation: ' + error)
+      }
+    }
+    throw 'unable to get tiles'
+  }
+
+  function createTiles(tileCount, linkCount) {
+    const tiles = []
+    for (let i = 0; i < tileCount; i++) {
+      tiles.push({name: i, x: MIN_X + Math.random()*(MAX_X-MIN_X), y: MIN_Y + Math.random()*(MAX_Y-MIN_Y), linked: []})
+    }
+    for (let i = 0; i < tileCount; i++) {
+      let n = 0
+      while(tiles[i].linked.length < linkCount) {
+        if (n++ > 100) throw "too many retries"
+        //const tileToLink = tiles[Math.floor(Math.random()*tileCount)]
+        const tileToLink = tiles[n]
+        if (tileToLink.linked.length < linkCount) {
+          tryToLinkTiles(tiles[i], tileToLink)
+        }
+      }
+    }
+    return tiles
+  }
+  function tryToLinkTiles(tileA, tileB) {
+    if (tileA === tileB || tileA.linked.indexOf(tileB) !== -1) {
+      return
+    }
+    tileA.linked.push(tileB)
+    tileB.linked.push(tileA)
+  }
+  function displayTiles(tiles, color='black') {
+    for (let i = 0; i < tiles.length; i++) {
+      const tile = tiles[i]
+      document.write('<div style="position: absolute; left: '+Math.round(tile.x)+'px; top: '+Math.round(tile.y)+'px; color: '+color+'">'+tile.name+'</div>')
+    }
+  }
+
+  function addVectors(vectorA, vectorB) {
+    return {x: vectorA.x+vectorB.x, y: vectorA.y+vectorB.y}
+  }
+  function subtractVectors(vectorA, vectorB) {
+    return {x: vectorA.x-vectorB.x, y: vectorA.y-vectorB.y}
+  }
+  function multiplyVector(vector, number) {
+    return {x: vector.x*number, y: vector.y*number}
+  }
+  function getVectorLength(vector) {
+    return Math.sqrt(vector.x * vector.x + vector.y * vector.y)
+  }
+
+  function moveTiles(tiles) {
+    const movements = []
+    for (let i = 0; i < tiles.length; i++) {
+      let movement = {x: 0, y: 0}
+      const tile = tiles[i]
+      for (let n = 0; n < tiles.length; n++) {
+        const otherTile = tiles[n]
+        if (tile === otherTile) {
+          continue
+        }
+        const repellingVector = subtractVectors(tile, otherTile)
+        const repellingForce = REPELLING / Math.pow(getVectorLength(repellingVector), 2)
+        movement = addVectors(movement, multiplyVector(repellingVector, repellingForce))
+
+        const pullingVector = subtractVectors(otherTile, tile)
+        let pullingForce = BASIC_PULLING / getVectorLength(pullingVector)
+        if (tile.linked.indexOf(otherTile) !== -1) {
+          pullingForce += 1 / LINKED_PULLING_FRACTION
+        }
+        movement = addVectors(movement, multiplyVector(pullingVector, pullingForce))
+      }
+      movements.push(movement)
+    }
+    for (let i = 0; i < tiles.length; i++) {
+      tiles[i].x += movements[i].x
+      tiles[i].y += movements[i].y
+    }
+  }
+
+  const tiles = getTiles()
+
+
+
+  displayTiles(tiles, 'gray')
+
+  moveTiles(tiles)
+  displayTiles(tiles, 'silver')
+  for (let i = 1; i <= STEPS  / 2; i++) {
+    moveTiles(tiles)
+  }
+  displayTiles(tiles, 'orange')
+  for (let i = 1; i < STEPS / 2; i++) {
+    moveTiles(tiles)
+  }
+  displayTiles(tiles, 'red')
+</script>
+</body>
+</html>
