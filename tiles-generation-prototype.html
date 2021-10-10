@@ -72,10 +72,10 @@
         )
         return tiles
       } catch (error) {
-        console.log('error during creation: ' + error)
+        console.log('Error during creation: ' + error)
       }
     }
-    throw 'unable to get tiles'
+    throw new Error('Unable to create tiles')
   }
 
   function createTiles(tileCount, linkCount) {
@@ -97,7 +97,7 @@
     for (let i = 0; i < tileCount; i++) {
       let n = 0
       while(tiles[i].links.length < linkCount) {
-        if (n++ > 100) throw "too many retries"
+        if (n++ > 100) throw new Error('Unable to create a link')
         const tileToLink = tiles[Math.floor(Math.random()*tileCount)]
         //const tileToLink = tiles[n]
         if (tileToLink.links.length < linkCount) {
