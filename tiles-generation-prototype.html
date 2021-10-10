@@ -38,6 +38,31 @@
   const BASIC_PULLING = 1
   const LINKED_PULLING_FRACTION = 10
 
+  class Vector {
+    constructor(x,y) {
+      if (typeof x !== 'number' || typeof y !== 'number') {
+        throw new Error('Vector must be created from numbers')
+      }
+      if (!isFinite(x) || !isFinite(y)) {
+        throw new Error('Vector must be created from finite numbers')
+      }
+      this.x = x
+      this.y = y
+    }
+    add(vector) {
+      return new Vector(this.x + vector.x, this.y + vector.y)
+    }
+    subtract(vector) {
+      return new Vector(this.x - vector.x, this.y - vector.y)
+    }
+    scale(scale) {
+      return new Vector(this.x * scale, this.y * scale)
+    }
+    get size() {
+      return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
+    }
+  }
+
   function getTiles() {
     for (let i = 0; i <= RETRIES; i++) {
       try {
@@ -59,14 +84,13 @@
       const tile = {
         name: i,
         element: document.createElement('div'),
-        x: MIN_X + Math.random()*(MAX_X-MIN_X),
-        y: MIN_Y + Math.random()*(MAX_Y-MIN_Y),
+        position: new Vector(Math.random()*(MAX_X-MIN_X), Math.random()*(MAX_Y-MIN_Y)),
         links: []
       }
       tile.element.textContent = tile.name
       tile.element.className = 'tile'
-      tile.element.style.left = tile.x+'px'
-      tile.element.style.top = tile.y+'px'
+      tile.element.style.left = tile.position.x+'px'
+      tile.element.style.top = tile.position.y+'px'
 
       tiles.push(tile)
     }
@@ -108,53 +132,40 @@
     link.element.style.top = (tileA.y + tileB.y)/2+'px'
   }
 
-  function addVectors(vectorA, vectorB) {
-    return {x: vectorA.x+vectorB.x, y: vectorA.y+vectorB.y}
-  }
-  function subtractVectors(vectorA, vectorB) {
-    return {x: vectorA.x-vectorB.x, y: vectorA.y-vectorB.y}
-  }
-  function multiplyVector(vector, number) {
-    return {x: vector.x*number, y: vector.y*number}
-  }
-  function getVectorLength(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y)
-  }
-
   function moveTiles(tiles) {
     const movements = []
     for (let i = 0; i < tiles.length; i++) {
-      let movement = {x: 0, y: 0}
+      let movement = new Vector(0, 0)
       const tile = tiles[i]
       for (let n = 0; n < tiles.length; n++) {
         const otherTile = tiles[n]
         if (tile === otherTile) {
           continue
         }
-        const repellingVector = subtractVectors(tile, otherTile)
-        const repellingForce = REPELLING / Math.pow(getVectorLength(repellingVector), 2)
-        movement = addVectors(movement, multiplyVector(repellingVector, repellingForce))
+        const repellingVector = tile.position.subtract(otherTile.position)
+        const repellingForce = REPELLING / Math.pow(repellingVector.size, 2)
+        movement = movement.add(repellingVector.scale(repellingForce))
 
-        const pullingVector = subtractVectors(otherTile, tile)
-        let pullingForce = BASIC_PULLING / getVectorLength(pullingVector)
+        const pullingVector = otherTile.position.subtract(tile.position)
+        let pullingForce = BASIC_PULLING / pullingVector.size
         if (tile.links.map(link => link.other(tile)).indexOf(otherTile) !== -1) {
           pullingForce += 1 / LINKED_PULLING_FRACTION
         }
-        movement = addVectors(movement, multiplyVector(pullingVector, pullingForce))
+        movement = movement.add(pullingVector.scale(pullingForce))
       }
       movements.push(movement)
     }
     for (let i = 0; i < tiles.length; i++) {
-      tiles[i].x += movements[i].x
-      tiles[i].y += movements[i].y
-      tiles[i].element.style.left = tiles[i].x+'px'
-      tiles[i].element.style.top = tiles[i].y+'px'
+      const tile = tiles[i]
+      tile.position = tile.position.add(movements[i])
+      tile.element.style.left = tile.position.x+'px'
+      tile.element.style.top = tile.position.y+'px'
     }
     for (let i = 0; i < tiles.length; i++) {
       for (let n = 0; n < tiles[i].links.length; n++) {
         const link = tiles[i].links[n]
-        link.element.style.left = (link.tileA.x + link.tileB.x)/2+'px'
-        link.element.style.top = (link.tileA.y + link.tileB.y)/2+'px'
+        link.element.style.left = (link.tileA.position.x + link.tileB.position.x)/2+'px'
+        link.element.style.top = (link.tileA.position.y + link.tileB.position.y)/2+'px'
       }
     }
   }
