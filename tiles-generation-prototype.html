@@ -4,18 +4,24 @@
   <meta charset="UTF-8">
   <title>Tile Generation Prototype</title>
   <style>
-    .tile {
+    .tile, .link {
+      box-sizing: border-box;
       position: absolute;
-      background: rgba(27, 126, 60, 0.3);
-      border: 2px solid rgba(0, 0, 0, 0.1);
       border-radius: 100%;
       color: white;
       font-family: sans-serif;
       font-weight: bold;
       font-size: 0.75em;
-      width: 1.25em;
-      height: 1.25em;
+      width: 1.5em;
+      height: 1.5em;
       text-align: center;
+    }
+    .tile {
+      background: rgba(27, 126, 60, 0.3);
+      border: 2px solid rgba(0, 0, 0, 0.1);
+    }
+    .link {
+      color: rgba(27, 52, 126, 0.3);
     }
   </style>
 </head>
@@ -37,7 +43,7 @@
       try {
         let tiles = createTiles(TILES, LINKS)
         console.log(
-          tiles.map(tile => ({name: tile.name, linked: tile.linked.map(tile => tile.name)}))
+          tiles.map(tile => ({name: tile.name, linked: tile.links.map(link => link.other(tile).name)}))
         )
         return tiles
       } catch (error) {
@@ -55,7 +61,7 @@
         element: document.createElement('div'),
         x: MIN_X + Math.random()*(MAX_X-MIN_X),
         y: MIN_Y + Math.random()*(MAX_Y-MIN_Y),
-        linked: []
+        links: []
       }
       tile.element.textContent = tile.name
       tile.element.className = 'tile'
@@ -66,26 +72,40 @@
     }
     for (let i = 0; i < tileCount; i++) {
       let n = 0
-      while(tiles[i].linked.length < linkCount) {
+      while(tiles[i].links.length < linkCount) {
         if (n++ > 100) throw "too many retries"
         const tileToLink = tiles[Math.floor(Math.random()*tileCount)]
         //const tileToLink = tiles[n]
-        if (tileToLink.linked.length < linkCount) {
+        if (tileToLink.links.length < linkCount) {
           tryToLinkTiles(tiles[i], tileToLink)
         }
       }
     }
     for (let i = 0; i < tileCount; i++) {
       document.body.appendChild(tiles[i].element)
+      for (let n = 0; n < tiles[i].links.length; n++) {
+        document.body.appendChild(tiles[i].links[n].element)
+      }
     }
     return tiles
   }
   function tryToLinkTiles(tileA, tileB) {
-    if (tileA === tileB || tileA.linked.indexOf(tileB) !== -1) {
+    if (tileA === tileB || tileA.links.map(link => link.other(tileA)).indexOf(tileB) !== -1) {
       return
     }
-    tileA.linked.push(tileB)
-    tileB.linked.push(tileA)
+    const link = {
+      tileA: tileA,
+      tileB: tileB,
+      other: (tile) => tile === tileA ? tileB : tileA,
+      element: document.createElement('div')
+    }
+    tileA.links.push(link)
+    tileB.links.push(link)
+
+    link.element.textContent = '﹡'
+    link.element.className = 'link'
+    link.element.style.left = (tileA.x + tileB.x)/2+'px'
+    link.element.style.top = (tileA.y + tileB.y)/2+'px'
   }
 
   function addVectors(vectorA, vectorB) {
@@ -117,7 +137,7 @@
 
         const pullingVector = subtractVectors(otherTile, tile)
         let pullingForce = BASIC_PULLING / getVectorLength(pullingVector)
-        if (tile.linked.indexOf(otherTile) !== -1) {
+        if (tile.links.map(link => link.other(tile)).indexOf(otherTile) !== -1) {
           pullingForce += 1 / LINKED_PULLING_FRACTION
         }
         movement = addVectors(movement, multiplyVector(pullingVector, pullingForce))
@@ -129,6 +149,13 @@
       tiles[i].y += movements[i].y
       tiles[i].element.style.left = tiles[i].x+'px'
       tiles[i].element.style.top = tiles[i].y+'px'
+    }
+    for (let i = 0; i < tiles.length; i++) {
+      for (let n = 0; n < tiles[i].links.length; n++) {
+        const link = tiles[i].links[n]
+        link.element.style.left = (link.tileA.x + link.tileB.x)/2+'px'
+        link.element.style.top = (link.tileA.y + link.tileB.y)/2+'px'
+      }
     }
   }
 
