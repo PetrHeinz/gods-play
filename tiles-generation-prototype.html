@@ -63,6 +63,22 @@
     }
   }
 
+  class Tile {
+    constructor(name,position) {
+      this.name = name
+      this.position = position
+      this.links = []
+      this.element = document.createElement('div')
+      this.element.className = 'tile'
+      this.updateElement()
+    }
+    updateElement() {
+      this.element.textContent = this.name
+      this.element.style.left = this.position.x+'px'
+      this.element.style.top = this.position.y+'px'
+    }
+  }
+
   function getTiles() {
     for (let i = 0; i <= RETRIES; i++) {
       try {
@@ -81,17 +97,8 @@
   function createTiles(tileCount, linkCount) {
     const tiles = []
     for (let i = 0; i < tileCount; i++) {
-      const tile = {
-        name: i,
-        element: document.createElement('div'),
-        position: new Vector(Math.random()*(MAX_X-MIN_X), Math.random()*(MAX_Y-MIN_Y)),
-        links: []
-      }
-      tile.element.textContent = tile.name
-      tile.element.className = 'tile'
-      tile.element.style.left = tile.position.x+'px'
-      tile.element.style.top = tile.position.y+'px'
-
+      const position = new Vector(Math.random()*(MAX_X-MIN_X), Math.random()*(MAX_Y-MIN_Y))
+      const tile = new Tile(i, position)
       tiles.push(tile)
     }
     for (let i = 0; i < tileCount; i++) {
@@ -156,10 +163,8 @@
       movements.push(movement)
     }
     for (let i = 0; i < tiles.length; i++) {
-      const tile = tiles[i]
-      tile.position = tile.position.add(movements[i])
-      tile.element.style.left = tile.position.x+'px'
-      tile.element.style.top = tile.position.y+'px'
+      tiles[i].position = tiles[i].position.add(movements[i])
+      tiles[i].updateElement()
     }
     for (let i = 0; i < tiles.length; i++) {
       for (let n = 0; n < tiles[i].links.length; n++) {
