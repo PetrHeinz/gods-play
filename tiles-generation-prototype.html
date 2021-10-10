@@ -72,6 +72,32 @@
       this.element.className = 'tile'
       this.updateElement()
     }
+    link(tile) {
+      if (this === tile || this.isLinkedTo(tile)) {
+        return
+      }
+      const link = {
+        tileA: this,
+        tileB: tile,
+        other: function (tile) {
+          return tile === this ? tile : this
+        },
+        element: document.createElement('div')
+      }
+      this.links.push(link)
+      tile.links.push(link)
+
+      link.element.textContent = '﹡'
+      link.element.className = 'link'
+      link.element.style.left = (this.position.x + tile.position.x)/2+'px'
+      link.element.style.top = (this.position.y + tile.position.y)/2+'px'
+    }
+    get linkedTiles() {
+      return this.links.map(link => link.other(this))
+    }
+    isLinkedTo(tile) {
+      return this.linkedTiles.indexOf(tile) !== -1
+    }
     updateElement() {
       this.element.textContent = this.name
       this.element.style.left = this.position.x+'px'
@@ -84,7 +110,7 @@
       try {
         let tiles = createTiles(TILES, LINKS)
         console.log(
-          tiles.map(tile => ({name: tile.name, linked: tile.links.map(link => link.other(tile).name)}))
+          tiles.map(tile => ({name: tile.name, linked: tile.linkedTiles.map(tile => tile.name)}))
         )
         return tiles
       } catch (error) {
@@ -108,7 +134,7 @@
         const tileToLink = tiles[Math.floor(Math.random()*tileCount)]
         //const tileToLink = tiles[n]
         if (tileToLink.links.length < linkCount) {
-          tryToLinkTiles(tiles[i], tileToLink)
+          tiles[i].link(tileToLink)
         }
       }
     }
@@ -119,24 +145,6 @@
       }
     }
     return tiles
-  }
-  function tryToLinkTiles(tileA, tileB) {
-    if (tileA === tileB || tileA.links.map(link => link.other(tileA)).indexOf(tileB) !== -1) {
-      return
-    }
-    const link = {
-      tileA: tileA,
-      tileB: tileB,
-      other: (tile) => tile === tileA ? tileB : tileA,
-      element: document.createElement('div')
-    }
-    tileA.links.push(link)
-    tileB.links.push(link)
-
-    link.element.textContent = '﹡'
-    link.element.className = 'link'
-    link.element.style.left = (tileA.x + tileB.x)/2+'px'
-    link.element.style.top = (tileA.y + tileB.y)/2+'px'
   }
 
   function moveTiles(tiles) {
@@ -155,7 +163,7 @@
 
         const pullingVector = otherTile.position.subtract(tile.position)
         let pullingForce = BASIC_PULLING / pullingVector.size
-        if (tile.links.map(link => link.other(tile)).indexOf(otherTile) !== -1) {
+        if (tile.isLinkedTo(otherTile)) {
           pullingForce += 1 / LINKED_PULLING_FRACTION
         }
         movement = movement.add(pullingVector.scale(pullingForce))
