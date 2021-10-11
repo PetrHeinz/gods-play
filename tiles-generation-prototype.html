@@ -27,16 +27,16 @@
 </head>
 <body>
 <script>
-  const MIN_X = 50
-  const MAX_X = 600
-  const MIN_Y = 50
-  const MAX_Y = 300
-  const TILES = 40
-  const LINKS = 4
-  const RETRIES = 10
-  const REPELLING = 100
-  const BASIC_PULLING = 1
-  const LINKED_PULLING_FRACTION = 10
+    const MIN_X = 50
+    const MAX_X = 600
+    const MIN_Y = 50
+    const MAX_Y = 300
+    const TILES = 40
+    const LINKS = 4
+    const RETRIES = 10
+    const REPELLING = 100
+    const BASIC_PULLING = 1
+    const LINKED_PULLING_FRACTION = 10
 
   class Vector {
     constructor(x,y) {
@@ -142,7 +142,7 @@
   function createTiles(tileCount, linkCount) {
     const tiles = []
     for (let i = 0; i < tileCount; i++) {
-      const position = new Vector(Math.random()*(MAX_X-MIN_X), Math.random()*(MAX_Y-MIN_Y))
+      const position = new Vector(Math.random()*(MAX_X-MIN_X)+MIN_X, Math.random()*(MAX_Y-MIN_Y)+MIN_Y)
       const tile = new Tile(i, position)
       tiles.push(tile)
     }
