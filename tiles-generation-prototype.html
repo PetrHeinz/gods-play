@@ -16,10 +16,12 @@
       height: 1.5em;
       text-align: center;
     }
+
     .tile {
       background: rgba(27, 126, 60, 0.3);
       border: 2px solid rgba(0, 0, 0, 0.1);
     }
+
     .link {
       color: rgba(27, 52, 126, 0.3);
     }
@@ -27,19 +29,19 @@
 </head>
 <body>
 <script>
-    const MIN_X = 50
-    const MAX_X = 600
-    const MIN_Y = 50
-    const MAX_Y = 300
-    const TILES = 40
-    const LINKS = 4
-    const RETRIES = 10
-    const REPELLING = 100
-    const BASIC_PULLING = 1
-    const LINKED_PULLING_FRACTION = 10
+  const MIN_X = 50
+  const MAX_X = 600
+  const MIN_Y = 50
+  const MAX_Y = 300
+  const TILES = 40
+  const LINKS = 4
+  const RETRIES = 10
+  const REPELLING = 100
+  const BASIC_PULLING = 1
+  const LINKED_PULLING_FRACTION = 10
 
   class Vector {
-    constructor(x,y) {
+    constructor(x, y) {
       if (typeof x !== 'number' || typeof y !== 'number') {
         throw new Error('Vector must be created from numbers')
       }
@@ -49,22 +51,26 @@
       this.x = x
       this.y = y
     }
+
     add(vector) {
       return new Vector(this.x + vector.x, this.y + vector.y)
     }
+
     subtract(vector) {
       return new Vector(this.x - vector.x, this.y - vector.y)
     }
+
     scale(scale) {
       return new Vector(this.x * scale, this.y * scale)
     }
+
     get size() {
       return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
     }
   }
 
   class Tile {
-    constructor(name,position) {
+    constructor(name, position) {
       this.name = name
       this.position = position
       this.links = []
@@ -72,6 +78,7 @@
       this.element.className = 'tile'
       this.updateDOM()
     }
+
     link(tile) {
       if (this === tile || this.isLinkedTo(tile)) {
         return
@@ -80,47 +87,55 @@
       this.links.push(link)
       tile.links.push(link)
     }
+
     get linkedTiles() {
       return this.links.map(link => link.other(this))
     }
+
     isLinkedTo(tile) {
       return this.linkedTiles.indexOf(tile) !== -1
     }
+
     move(vector) {
       this.position = this.position.add(vector)
       this.updateDOM()
     }
+
     appendDOM(element) {
       element.appendChild(this.element)
       this.links.forEach(link => link.appendDOM(element))
     }
+
     updateDOM() {
       this.element.textContent = this.name
-      this.element.style.left = this.position.x+'px'
-      this.element.style.top = this.position.y+'px'
+      this.element.style.left = this.position.x + 'px'
+      this.element.style.top = this.position.y + 'px'
       this.links.forEach(link => link.updateDOM())
     }
   }
 
   class Link {
-    constructor(tileA,tileB) {
+    constructor(tileA, tileB) {
       this.tileA = tileA
       this.tileB = tileB
       this.element = document.createElement('div')
       this.element.textContent = '﹡'
       this.element.className = 'link'
-      this.element.style.left = (this.tileA.position.x + this.tileB.position.x)/2+'px'
-      this.element.style.top = (this.tileA.position.y + this.tileB.position.y)/2+'px'
+      this.element.style.left = (this.tileA.position.x + this.tileB.position.x) / 2 + 'px'
+      this.element.style.top = (this.tileA.position.y + this.tileB.position.y) / 2 + 'px'
     }
+
     other(tile) {
       return tile === this.tileA ? this.tileB : this.tileA
     }
+
     appendDOM(element) {
       element.appendChild(this.element)
     }
+
     updateDOM() {
-      this.element.style.left = (this.tileA.position.x + this.tileB.position.x)/2+'px'
-      this.element.style.top = (this.tileA.position.y + this.tileB.position.y)/2+'px'
+      this.element.style.left = (this.tileA.position.x + this.tileB.position.x) / 2 + 'px'
+      this.element.style.top = (this.tileA.position.y + this.tileB.position.y) / 2 + 'px'
     }
   }
 
@@ -142,15 +157,15 @@
   function createTiles(tileCount, linkCount) {
     const tiles = []
     for (let i = 0; i < tileCount; i++) {
-      const position = new Vector(Math.random()*(MAX_X-MIN_X)+MIN_X, Math.random()*(MAX_Y-MIN_Y)+MIN_Y)
+      const position = new Vector(Math.random() * (MAX_X - MIN_X) + MIN_X, Math.random() * (MAX_Y - MIN_Y) + MIN_Y)
       const tile = new Tile(i, position)
       tiles.push(tile)
     }
     for (let i = 0; i < tileCount; i++) {
       let n = 0
-      while(tiles[i].links.length < linkCount) {
+      while (tiles[i].links.length < linkCount) {
         if (n++ > 100) throw new Error('Unable to create a link')
-        const tileToLink = tiles[Math.floor(Math.random()*tileCount)]
+        const tileToLink = tiles[Math.floor(Math.random() * tileCount)]
         //const tileToLink = tiles[n]
         if (tileToLink.links.length < linkCount) {
           tiles[i].link(tileToLink)
