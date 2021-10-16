@@ -39,6 +39,9 @@
   const REPELLING = 100
   const BASIC_PULLING = 1
   const LINKED_PULLING_FRACTION = 10
+  const TICK = 5
+  const LINKING_AFTER = 60
+  const LINKING_EVERY = 10
 
   class Vector {
     constructor(x, y) {
@@ -210,10 +213,10 @@
   }
 
   const tiles = createTiles()
-  window.setInterval(() => moveTiles(tiles), 5)
+  window.setInterval(() => moveTiles(tiles), TICK)
   window.setTimeout(() => {
-    window.setInterval(() => linkPairOfTiles(tiles), 50)
-  }, 300)
+    window.setInterval(() => linkPairOfTiles(tiles), LINKING_EVERY * TICK)
+  }, LINKING_AFTER * TICK)
 </script>
 </body>
 </html>
