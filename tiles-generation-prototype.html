@@ -102,7 +102,7 @@
     }
 
     get linkedTiles() {
-      return this.links.map(link => link.other(this))
+      return this.links.map(link => link.getOther(this))
     }
 
     isLinkedTo(tile) {
@@ -145,12 +145,16 @@
       this.updateDOM()
     }
 
-    other(tile) {
+    getOther(tile) {
       return tile === this.tileA ? this.tileB : this.tileA
     }
 
     appendDOM(element) {
       element.appendChild(this.element)
+    }
+
+    get distance() {
+      return this.tileA.getDistanceFrom(this.tileB)
     }
 
     updateDOM() {
@@ -185,8 +189,8 @@
     const links = tiles.map(tile => tile.links)
     .reduce((previousLinks, currentLinks) => previousLinks.concat(currentLinks), [])
     .filter((link, index, allLinks) => allLinks.indexOf(link) === index)
-    const averageLinkSize = links.map(link => link.tileA.getDistanceFrom(link.tileB))
-    .reduce((previousSize, currentSize) => previousSize + currentSize, 0) / links.length
+    const averageLinkDistance = links.map(link => link.distance)
+    .reduce((previousDistance, currentDistance) => previousDistance + currentDistance, 0) / links.length
 
     const centerVector = tiles.map(tile => tile.position)
     .reduce((previousVector, currentVector) => previousVector.add(currentVector), new Vector(0, 0))
@@ -198,7 +202,7 @@
     while (eligibleTiles.length > 2) {
       const tileToLink = eligibleTiles.shift()
       const eligibleTilesToLink = eligibleTiles.filter(tile => !tile.isLinkedTo(tileToLink))
-      .filter(tile => isNaN(averageLinkSize) || tile.getDistanceFrom(tileToLink) <= averageLinkSize * MAX_LINK_LENGTH)
+      .filter(tile => isNaN(averageLinkDistance) || tile.getDistanceFrom(tileToLink) <= averageLinkDistance * MAX_LINK_LENGTH)
       .sort((tileA, tileB) => tileA.getDistanceFrom(tileToLink) - tileB.getDistanceFrom(tileToLink))
 
       if (eligibleTilesToLink.length > 0) {
