@@ -134,8 +134,7 @@
       this.element = document.createElement('div')
       this.element.textContent = '﹡'
       this.element.className = 'link'
-      this.element.style.left = (this.tileA.position.x + this.tileB.position.x) / 2 + 'px'
-      this.element.style.top = (this.tileA.position.y + this.tileB.position.y) / 2 + 'px'
+      this.updateDOM()
     }
 
     other(tile) {
