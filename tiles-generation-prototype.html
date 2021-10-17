@@ -8,6 +8,7 @@
       min-height: 100vh;
       margin: 0;
       padding: 0;
+      cursor: pointer;
     }
 
     .tile, .link {
@@ -21,15 +22,23 @@
       width: 1.5em;
       height: 1.5em;
       text-align: center;
+      cursor: crosshair;
     }
 
     .tile {
       background: rgba(27, 126, 60, 0.3);
       border: 2px solid rgba(0, 0, 0, 0.1);
     }
+    .tile:hover {
+      background: rgba(27, 126, 60, 1);
+      border: 2px solid rgba(0, 0, 0, 1);
+    }
 
     .link {
       color: rgba(27, 52, 126, 0.3);
+    }
+    .link:hover {
+      color: rgba(27, 52, 126, 1);
     }
   </style>
 </head>
@@ -106,6 +115,15 @@
       return link
     }
 
+    unlink(tile) {
+      if (!this.isLinkedTo(tile)) {
+        throw new Error('Tiles can unlink only linked tiles')
+      }
+
+      this.links.splice(this.linkedTiles.indexOf(tile), 1)
+      tile.links.splice(tile.linkedTiles.indexOf(this), 1)
+    }
+
     get linkedTiles() {
       return this.links.map(link => link.getOther(this))
     }
@@ -168,6 +186,11 @@
       this.tiles.push(tile)
     }
 
+    removeTile(tile) {
+      tile.linkedTiles.forEach(linkedTile => tile.unlink(linkedTile))
+      this.tiles.splice(this.tiles.indexOf(tile), 1)
+    }
+
     moveTiles() {
       this.tiles.forEach(tile => {
         const movement = this.tiles.filter(otherTile => tile !== otherTile)
@@ -194,6 +217,7 @@
       this.board.tiles.forEach(tile => {
         if (!this.elementMap.has(tile)) {
           const newTileElement = document.createElement('div')
+          newTileElement._tile = tile
           newTileElement.className = 'tile'
           this.rootElement.appendChild(newTileElement)
           this.elementMap.set(tile, newTileElement)
@@ -203,9 +227,11 @@
         tileElement.style.left = tile.position.x + 'px'
         tileElement.style.top = tile.position.y + 'px'
       })
+
       this.board.links.forEach(link => {
         if (!this.elementMap.has(link)) {
           const newLinkElement = document.createElement('div')
+          newLinkElement._link = link
           newLinkElement.textContent = '﹡'
           newLinkElement.className = 'link'
           this.rootElement.appendChild(newLinkElement)
@@ -214,6 +240,14 @@
         const linkElement = this.elementMap.get(link)
         linkElement.style.left = (link.tileA.position.x + link.tileB.position.x) / 2 + 'px'
         linkElement.style.top = (link.tileA.position.y + link.tileB.position.y) / 2 + 'px'
+      })
+
+      const allObjects = this.board.tiles.concat(this.board.links)
+      this.elementMap.forEach((value, key) => {
+        if (allObjects.indexOf(key) === -1) {
+          this.rootElement.removeChild(value)
+          this.elementMap.delete(key)
+        }
       })
     }
   }
@@ -249,7 +283,18 @@
   const renderer = new DomRenderer(board, document.body)
   window.setInterval(() => renderer.render(), TICK_RENDER)
 
-  document.body.addEventListener('mousedown', (event) => board.addTile(new Tile('#', new Vector(event.x, event.y))))
+  document.body.addEventListener('click', (event) => {
+    if (event.target._tile !== undefined) {
+      board.removeTile(event.target._tile)
+      return
+    }
+    if (event.target._link !== undefined) {
+      event.target._link.tileA.unlink(event.target._link.tileB)
+      return
+    }
+
+    board.addTile(new Tile('#', new Vector(event.x, event.y)))
+  })
 
 </script>
 </html>
