@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <title>Tile Generation Prototype</title>
   <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
     .tile, .link {
       box-sizing: border-box;
       position: absolute;
@@ -28,6 +34,7 @@
   </style>
 </head>
 <body>
+</body>
 <script>
   const MIN_X = 50
   const MAX_X = 600
@@ -165,9 +172,9 @@
 
   class Board {
     constructor(tiles, element) {
-      this.tiles = tiles
+      this.tiles = []
       this.element = element
-      tiles.forEach(tile => tile.appendDOM(element))
+      tiles.forEach(tile => this.addTile(tile))
     }
 
     get links() {
@@ -192,6 +199,11 @@
       link.appendDOM(this.element)
 
       return link
+    }
+
+    addTile(tile) {
+      this.tiles.push(tile)
+      tile.appendDOM(this.element)
     }
 
     moveTiles() {
@@ -239,6 +251,8 @@
   window.setTimeout(() => {
     window.setInterval(() => linkPairOfTiles(board), LINKING_EVERY * TICK)
   }, LINKING_AFTER * TICK)
+
+  document.body.addEventListener('mousedown', (event) => board.addTile(new Tile('#', new Vector(event.x, event.y))))
+
 </script>
-</body>
 </html>
