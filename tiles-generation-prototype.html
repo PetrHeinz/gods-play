@@ -152,6 +152,9 @@
     }
 
     getOther(tile) {
+      if (tile !== this.tileA && tile !== this.tileB) {
+        throw new Error('Provided tile is not part of this link')
+      }
       return tile === this.tileA ? this.tileB : this.tileA
     }
 
@@ -187,6 +190,9 @@
     }
 
     removeTile(tile) {
+      if (this.tiles.indexOf(tile) === -1) {
+        throw new Error('Provided tile is not part of this board')
+      }
       tile.linkedTiles.forEach(linkedTile => tile.unlink(linkedTile))
       this.tiles.splice(this.tiles.indexOf(tile), 1)
     }
