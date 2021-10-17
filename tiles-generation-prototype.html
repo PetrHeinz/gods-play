@@ -109,6 +109,14 @@
       return this.linkedTiles.indexOf(tile) !== -1
     }
 
+    getDistanceFrom(tile) {
+      return tile.position.subtract(this.position).size
+    }
+
+    getDirectionTo(tile) {
+      return tile.position.subtract(this.position).unit
+    }
+
     move(vector) {
       this.position = this.position.add(vector)
       this.updateDOM()
@@ -173,14 +181,10 @@
         if (tile === otherTile) {
           continue
         }
-        const vector = otherTile.position.subtract(tile.position)
-        const direction = vector.unit
-        const distance = vector.size
-
         const pullingForce = BASIC_PULLING + (tile.isLinkedTo(otherTile) ? LINKED_PULLING : 0)
-        const repellingForce = REPELLING / distance
+        const repellingForce = REPELLING / tile.getDistanceFrom(otherTile)
 
-        movement = movement.add(direction.scale(pullingForce - repellingForce))
+        movement = movement.add(tile.getDirectionTo(otherTile).scale(pullingForce - repellingForce))
       }
       movements.push(movement)
     }
@@ -192,7 +196,7 @@
     const links = tiles.map(tile => tile.links)
     .reduce((previousLinks, currentLinks) => previousLinks.concat(currentLinks), [])
     .filter((link, index, allLinks) => allLinks.indexOf(link) === index)
-    const averageLinkSize = links.map(link => link.tileA.position.subtract(link.tileB.position).size)
+    const averageLinkSize = links.map(link => link.tileA.getDistanceFrom(link.tileB))
     .reduce((previousSize, currentSize) => previousSize + currentSize, 0) / links.length
 
     const centerVector = tiles.map(tile => tile.position)
@@ -200,13 +204,13 @@
     .scale(1 / tiles.length)
 
     const eligibleTiles = tiles.filter(tile => tile.links.length < LINKS)
-    .sort((tileA, tileB) => tileA.position.subtract(centerVector).size - tileB.position.subtract(centerVector).size)
+    .sort((tileA, tileB) => centerVector.subtract(tileA.position).size - centerVector.subtract(tileB.position).size)
 
     while (eligibleTiles.length > 2) {
       const tileToLink = eligibleTiles.shift()
       const eligibleTilesToLink = eligibleTiles.filter(tile => !tile.isLinkedTo(tileToLink))
-      .filter(tile => isNaN(averageLinkSize) || tile.position.subtract(tileToLink.position).size <= averageLinkSize * MAX_LINK_LENGTH)
-      .sort((tileA, tileB) => tileA.position.subtract(tileToLink.position).size - tileB.position.subtract(tileToLink.position).size)
+      .filter(tile => isNaN(averageLinkSize) || tile.getDistanceFrom(tileToLink) <= averageLinkSize * MAX_LINK_LENGTH)
+      .sort((tileA, tileB) => tileA.getDistanceFrom(tileToLink) - tileB.getDistanceFrom(tileToLink))
 
       if (eligibleTilesToLink.length > 0) {
         tileToLink.link(eligibleTilesToLink.shift())
