@@ -163,61 +163,81 @@
     }
   }
 
+  class Board {
+    constructor(tiles, element) {
+      this.tiles = tiles
+      this.element = element
+      tiles.forEach(tile => tile.appendDOM(element))
+    }
+
+    get links() {
+      return this.tiles.map(tile => tile.links)
+      .reduce((previousLinks, currentLinks) => previousLinks.concat(currentLinks), [])
+      .filter((link, index, allLinks) => allLinks.indexOf(link) === index)
+    }
+
+    get averageLinkDistance() {
+      return this.links.map(link => link.distance)
+      .reduce((previousDistance, currentDistance) => previousDistance + currentDistance, 0) / this.links.length
+    }
+
+    get centerVector() {
+      return this.tiles.map(tile => tile.position)
+      .reduce((previousVector, currentVector) => previousVector.add(currentVector), new Vector(0, 0))
+      .scale(1 / this.tiles.length)
+    }
+
+    linkTiles(tileA, tileB) {
+      const link = tileA.link(tileB)
+      link.appendDOM(this.element)
+
+      return link
+    }
+
+    moveTiles() {
+      this.tiles.forEach(tile => {
+        const movement = this.tiles.filter(otherTile => tile !== otherTile)
+        .map(otherTile => {
+          const pullingForce = BASIC_PULLING + (tile.isLinkedTo(otherTile) ? LINKED_PULLING : 0)
+          const repellingForce = REPELLING / tile.getDistanceFrom(otherTile)
+
+          return tile.getDirectionTo(otherTile).scale(pullingForce - repellingForce)
+        }).reduce((previousVector, currentVector) => previousVector.add(currentVector), new Vector(0, 0))
+
+        tile.move(movement)
+      })
+    }
+  }
+
   function createTiles() {
     return Array(TILES).fill(undefined).map((value, index) => {
       const position = new Vector(Math.random() * (MAX_X - MIN_X) + MIN_X, Math.random() * (MAX_Y - MIN_Y) + MIN_Y)
-      const tile = new Tile(index, position)
-      tile.appendDOM(document.body)
 
-      return tile
+      return new Tile(index, position)
     })
   }
 
-  function moveTiles(tiles) {
-    tiles.map(tile => {
-      return tiles.filter(otherTile => tile !== otherTile)
-      .map(otherTile => {
-        const pullingForce = BASIC_PULLING + (tile.isLinkedTo(otherTile) ? LINKED_PULLING : 0)
-        const repellingForce = REPELLING / tile.getDistanceFrom(otherTile)
-
-        return tile.getDirectionTo(otherTile).scale(pullingForce - repellingForce)
-      }).reduce((previousVector, currentVector) => previousVector.add(currentVector), new Vector(0, 0))
-    }).forEach((movement, index) => tiles[index].move(movement))
-  }
-
-  function linkPairOfTiles(tiles) {
-    const links = tiles.map(tile => tile.links)
-    .reduce((previousLinks, currentLinks) => previousLinks.concat(currentLinks), [])
-    .filter((link, index, allLinks) => allLinks.indexOf(link) === index)
-    const averageLinkDistance = links.map(link => link.distance)
-    .reduce((previousDistance, currentDistance) => previousDistance + currentDistance, 0) / links.length
-
-    const centerVector = tiles.map(tile => tile.position)
-    .reduce((previousVector, currentVector) => previousVector.add(currentVector), new Vector(0, 0))
-    .scale(1 / tiles.length)
-
-    const eligibleTiles = tiles.filter(tile => tile.links.length < LINKS)
-    .sort((tileA, tileB) => centerVector.subtract(tileA.position).size - centerVector.subtract(tileB.position).size)
+  function linkPairOfTiles(board) {
+    const eligibleTiles = board.tiles.filter(tile => tile.links.length < LINKS)
+    .sort((tileA, tileB) => board.centerVector.subtract(tileA.position).size - board.centerVector.subtract(tileB.position).size)
 
     while (eligibleTiles.length > 2) {
       const tileToLink = eligibleTiles.shift()
       const eligibleTilesToLink = eligibleTiles.filter(tile => !tile.isLinkedTo(tileToLink))
-      .filter(tile => isNaN(averageLinkDistance) || tile.getDistanceFrom(tileToLink) <= averageLinkDistance * MAX_LINK_LENGTH)
+      .filter(tile => isNaN(board.averageLinkDistance) || tile.getDistanceFrom(tileToLink) <= board.averageLinkDistance * MAX_LINK_LENGTH)
       .sort((tileA, tileB) => tileA.getDistanceFrom(tileToLink) - tileB.getDistanceFrom(tileToLink))
 
       if (eligibleTilesToLink.length > 0) {
-        tileToLink.link(eligibleTilesToLink.shift())
-        .appendDOM(document.body)
-
-        return
+        return board.linkTiles(tileToLink, eligibleTilesToLink.shift())
       }
     }
   }
 
-  const tiles = createTiles()
-  window.setInterval(() => moveTiles(tiles), TICK)
+  const board = new Board(createTiles(), document.body)
+
+  window.setInterval(() => board.moveTiles(), TICK)
   window.setTimeout(() => {
-    window.setInterval(() => linkPairOfTiles(tiles), LINKING_EVERY * TICK)
+    window.setInterval(() => linkPairOfTiles(board), LINKING_EVERY * TICK)
   }, LINKING_AFTER * TICK)
 </script>
 </body>
