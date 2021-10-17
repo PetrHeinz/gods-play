@@ -98,8 +98,7 @@
   }
 
   class Tile {
-    constructor(name, position) {
-      this.name = name
+    constructor(position) {
       this.position = position
       this.links = []
     }
@@ -229,7 +228,6 @@
           this.elementMap.set(tile, newTileElement)
         }
         const tileElement = this.elementMap.get(tile)
-        tileElement.textContent = tile.name
         tileElement.style.left = tile.position.x + 'px'
         tileElement.style.top = tile.position.y + 'px'
       })
@@ -278,7 +276,7 @@
   for (let i = 1; i <= TILES; i++) {
     const position = new Vector(Math.random() * (MAX_X - MIN_X) + MIN_X, Math.random() * (MAX_Y - MIN_Y) + MIN_Y)
 
-    board.addTile(new Tile(i, position))
+    board.addTile(new Tile(position))
   }
 
   window.setInterval(() => board.moveTiles(), TICK)
@@ -299,7 +297,7 @@
       return
     }
 
-    board.addTile(new Tile('#', new Vector(event.x, event.y)))
+    board.addTile(new Tile(new Vector(event.x, event.y)))
   })
 
 </script>
