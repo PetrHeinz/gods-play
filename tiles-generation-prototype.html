@@ -160,36 +160,25 @@
   }
 
   function createTiles() {
-    const tiles = []
-    for (let i = 0; i < TILES; i++) {
+    return Array(TILES).fill(undefined).map((value, index) => {
       const position = new Vector(Math.random() * (MAX_X - MIN_X) + MIN_X, Math.random() * (MAX_Y - MIN_Y) + MIN_Y)
-      const tile = new Tile(i, position)
-      tiles.push(tile)
+      const tile = new Tile(index, position)
       tile.appendDOM(document.body)
-    }
 
-    return tiles
+      return tile
+    })
   }
 
   function moveTiles(tiles) {
-    const movements = []
-    for (let i = 0; i < tiles.length; i++) {
-      let movement = new Vector(0, 0)
-      const tile = tiles[i]
-      for (let n = 0; n < tiles.length; n++) {
-        const otherTile = tiles[n]
-        if (tile === otherTile) {
-          continue
-        }
+    tiles.map(tile => {
+      return tiles.filter(otherTile => tile !== otherTile)
+      .map(otherTile => {
         const pullingForce = BASIC_PULLING + (tile.isLinkedTo(otherTile) ? LINKED_PULLING : 0)
         const repellingForce = REPELLING / tile.getDistanceFrom(otherTile)
 
-        movement = movement.add(tile.getDirectionTo(otherTile).scale(pullingForce - repellingForce))
-      }
-      movements.push(movement)
-    }
-
-    tiles.forEach((tile, i) => tile.move(movements[i]))
+        return tile.getDirectionTo(otherTile).scale(pullingForce - repellingForce)
+      }).reduce((previousVector, currentVector) => previousVector.add(currentVector), new Vector(0, 0))
+    }).forEach((movement, index) => tiles[index].move(movement))
   }
 
   function linkPairOfTiles(tiles) {
