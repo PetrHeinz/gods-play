@@ -218,14 +218,6 @@
     }
   }
 
-  function createTiles() {
-    return Array(TILES).fill(undefined).map((value, index) => {
-      const position = new Vector(Math.random() * (MAX_X - MIN_X) + MIN_X, Math.random() * (MAX_Y - MIN_Y) + MIN_Y)
-
-      return new Tile(index, position)
-    })
-  }
-
   function linkPairOfTiles(board) {
     const eligibleTiles = board.tiles.filter(tile => tile.links.length < LINKS)
     .sort((tileA, tileB) => board.centerVector.subtract(tileA.position).size - board.centerVector.subtract(tileB.position).size)
@@ -243,7 +235,11 @@
   }
 
   const board = new Board()
-  createTiles().forEach(tile => board.addTile(tile))
+  for (let i = 1; i <= TILES; i++) {
+    const position = new Vector(Math.random() * (MAX_X - MIN_X) + MIN_X, Math.random() * (MAX_Y - MIN_Y) + MIN_Y)
+
+    board.addTile(new Tile(i, position))
+  }
 
   window.setInterval(() => board.moveTiles(), TICK)
   window.setTimeout(() => {
