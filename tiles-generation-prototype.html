@@ -49,6 +49,7 @@
   const TICK = 5
   const LINKING_AFTER = 60
   const LINKING_EVERY = 10
+  const TICK_RENDER = 20
 
   class Vector {
     constructor(x, y) {
@@ -92,9 +93,6 @@
       this.name = name
       this.position = position
       this.links = []
-      this.element = document.createElement('div')
-      this.element.className = 'tile'
-      this.updateDOM()
     }
 
     link(tile) {
@@ -126,19 +124,6 @@
 
     move(vector) {
       this.position = this.position.add(vector)
-      this.updateDOM()
-    }
-
-    appendDOM(element) {
-      element.appendChild(this.element)
-      this.links.forEach(link => link.appendDOM(element))
-    }
-
-    updateDOM() {
-      this.element.textContent = this.name
-      this.element.style.left = this.position.x + 'px'
-      this.element.style.top = this.position.y + 'px'
-      this.links.forEach(link => link.updateDOM())
     }
   }
 
@@ -146,35 +131,20 @@
     constructor(tileA, tileB) {
       this.tileA = tileA
       this.tileB = tileB
-      this.element = document.createElement('div')
-      this.element.textContent = '﹡'
-      this.element.className = 'link'
-      this.updateDOM()
     }
 
     getOther(tile) {
       return tile === this.tileA ? this.tileB : this.tileA
     }
 
-    appendDOM(element) {
-      element.appendChild(this.element)
-    }
-
     get distance() {
       return this.tileA.getDistanceFrom(this.tileB)
-    }
-
-    updateDOM() {
-      this.element.style.left = (this.tileA.position.x + this.tileB.position.x) / 2 + 'px'
-      this.element.style.top = (this.tileA.position.y + this.tileB.position.y) / 2 + 'px'
     }
   }
 
   class Board {
-    constructor(tiles, element) {
+    constructor() {
       this.tiles = []
-      this.element = element
-      tiles.forEach(tile => this.addTile(tile))
     }
 
     get links() {
@@ -194,16 +164,8 @@
       .scale(1 / this.tiles.length)
     }
 
-    linkTiles(tileA, tileB) {
-      const link = tileA.link(tileB)
-      link.appendDOM(this.element)
-
-      return link
-    }
-
     addTile(tile) {
       this.tiles.push(tile)
-      tile.appendDOM(this.element)
     }
 
     moveTiles() {
@@ -217,6 +179,41 @@
         }).reduce((previousVector, currentVector) => previousVector.add(currentVector), new Vector(0, 0))
 
         tile.move(movement)
+      })
+    }
+  }
+
+  class DomRenderer {
+    constructor(board, element) {
+      this.board = board
+      this.rootElement = element
+      this.elementMap = new Map()
+    }
+
+    render() {
+      this.board.tiles.forEach(tile => {
+        if (!this.elementMap.has(tile)) {
+          const newTileElement = document.createElement('div')
+          newTileElement.className = 'tile'
+          this.rootElement.appendChild(newTileElement)
+          this.elementMap.set(tile, newTileElement)
+        }
+        const tileElement = this.elementMap.get(tile)
+        tileElement.textContent = tile.name
+        tileElement.style.left = tile.position.x + 'px'
+        tileElement.style.top = tile.position.y + 'px'
+      })
+      this.board.links.forEach(link => {
+        if (!this.elementMap.has(link)) {
+          const newLinkElement = document.createElement('div')
+          newLinkElement.textContent = '﹡'
+          newLinkElement.className = 'link'
+          this.rootElement.appendChild(newLinkElement)
+          this.elementMap.set(link, newLinkElement)
+        }
+        const linkElement = this.elementMap.get(link)
+        linkElement.style.left = (link.tileA.position.x + link.tileB.position.x) / 2 + 'px'
+        linkElement.style.top = (link.tileA.position.y + link.tileB.position.y) / 2 + 'px'
       })
     }
   }
@@ -240,17 +237,21 @@
       .sort((tileA, tileB) => tileA.getDistanceFrom(tileToLink) - tileB.getDistanceFrom(tileToLink))
 
       if (eligibleTilesToLink.length > 0) {
-        return board.linkTiles(tileToLink, eligibleTilesToLink.shift())
+        return tileToLink.link(eligibleTilesToLink.shift())
       }
     }
   }
 
-  const board = new Board(createTiles(), document.body)
+  const board = new Board()
+  createTiles().forEach(tile => board.addTile(tile))
 
   window.setInterval(() => board.moveTiles(), TICK)
   window.setTimeout(() => {
     window.setInterval(() => linkPairOfTiles(board), LINKING_EVERY * TICK)
   }, LINKING_AFTER * TICK)
+
+  const renderer = new DomRenderer(board, document.body)
+  window.setInterval(() => renderer.render(), TICK_RENDER)
 
   document.body.addEventListener('mousedown', (event) => board.addTile(new Tile('#', new Vector(event.x, event.y))))
 
