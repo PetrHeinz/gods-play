@@ -46,10 +46,10 @@
   class Vector {
     constructor(x, y) {
       if (typeof x !== 'number' || typeof y !== 'number') {
-        throw new Error('Vector must be created from numbers')
+        throw new Error('Vectors must be created from numbers')
       }
       if (!isFinite(x) || !isFinite(y)) {
-        throw new Error('Vector must be created from finite numbers')
+        throw new Error('Vectors must be created from finite numbers')
       }
       this.x = x
       this.y = y
@@ -69,7 +69,7 @@
 
     get unit() {
       if (this.size === 0) {
-        return new Vector(1, 0)
+        throw new Error('Vectors with zero size have no unit vector')
       }
 
       return this.scale(1 / this.size)
@@ -92,7 +92,7 @@
 
     link(tile) {
       if (this === tile || this.isLinkedTo(tile)) {
-        return
+        throw new Error('Tiles can link only different tiles that are not linked already')
       }
       const link = new Link(this, tile)
       this.links.push(link)
