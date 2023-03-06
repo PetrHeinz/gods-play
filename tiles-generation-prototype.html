@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tile Generation Prototype</title>
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .tile, .link {
+      box-sizing: border-box;
+      position: absolute;
+      border-radius: 100%;
+      color: white;
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 0.75em;
+      width: 1.5em;
+      height: 1.5em;
+      text-align: center;
+      cursor: crosshair;
+    }
+
+    .tile {
+      background: rgba(27, 126, 60, 0.3);
+      border: 2px solid rgba(0, 0, 0, 0.1);
+    }
+    .tile:hover {
+      background: rgba(27, 126, 60, 1);
+      border: 2px solid rgba(0, 0, 0, 1);
+    }
+
+    .link {
+      color: rgba(27, 52, 126, 0.3);
+    }
+    .link:hover {
+      color: rgba(27, 52, 126, 1);
+    }
+  </style>
+</head>
+<body>
+</body>
+<script>
+  const MIN_X = 50
+  const MAX_X = 600
+  const MIN_Y = 50
+  const MAX_Y = 300
+  const TILES = 40
+  const LINKS = 4
+  const MAX_LINK_LENGTH = 1.75
+  const REPELLING = 100
+  const BASIC_PULLING = 1
+  const LINKED_PULLING = 1.5
+  const TICK = 5
+  const LINKING_AFTER = 60
+  const LINKING_EVERY = 10
+  const TICK_RENDER = 20
+
+  class Vector {
+    constructor(x, y) {
+      if (typeof x !== 'number' || typeof y !== 'number') {
+        throw new Error('Vectors must be created from numbers')
+      }
+      if (!isFinite(x) || !isFinite(y)) {
+        throw new Error('Vectors must be created from finite numbers')
+      }
+      this.x = x
+      this.y = y
+    }
+
+    add(vector) {
+      return new Vector(this.x + vector.x, this.y + vector.y)
+    }
+
+    subtract(vector) {
+      return new Vector(this.x - vector.x, this.y - vector.y)
+    }
+
+    scale(scale) {
+      return new Vector(this.x * scale, this.y * scale)
+    }
+
+    get unit() {
+      if (this.size === 0) {
+        throw new Error('Vectors with zero size have no unit vector')
+      }
+
+      return this.scale(1 / this.size)
+    }
+
+    get size() {
+      return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
+    }
+  }
+
+  class Tile {
+    constructor(position) {
+      this.position = position
+      this.links = []
+    }
+
+    link(tile) {
+      if (this === tile || this.isLinkedTo(tile)) {
+        throw new Error('Tiles can link only different tiles that are not linked already')
+      }
+      const link = new Link(this, tile)
+      this.links.push(link)
+      tile.links.push(link)
+
+      return link
+    }
+
+    unlink(tile) {
+      if (!this.isLinkedTo(tile)) {
+        throw new Error('Tiles can unlink only linked tiles')
+      }
+
+      this.links.splice(this.linkedTiles.indexOf(tile), 1)
+      tile.links.splice(tile.linkedTiles.indexOf(this), 1)
+    }
+
+    get linkedTiles() {
+      return this.links.map(link => link.getOther(this))
+    }
+
+    isLinkedTo(tile) {
+      return this.linkedTiles.indexOf(tile) !== -1
+    }
+
+    getDistanceFrom(tile) {
+      return tile.position.subtract(this.position).size
+    }
+
+    getDirectionTo(tile) {
+      return tile.position.subtract(this.position).unit
+    }
+
+    move(vector) {
+      this.position = this.position.add(vector)
+    }
+  }
+
+  class Link {
+    constructor(tileA, tileB) {
+      this.tileA = tileA
+      this.tileB = tileB
+    }
+
+    getOther(tile) {
+      if (tile !== this.tileA && tile !== this.tileB) {
+        throw new Error('Provided tile is not part of this link')
+      }
+      return tile === this.tileA ? this.tileB : this.tileA
+    }
+
+    get distance() {
+      return this.tileA.getDistanceFrom(this.tileB)
+    }
+  }
+
+  class Board {
+    constructor() {
+      this.tiles = []
+    }
+
+    get links() {
+      return this.tiles.map(tile => tile.links)
+      .reduce((previousLinks, currentLinks) => previousLinks.concat(currentLinks), [])
+      .filter((link, index, allLinks) => allLinks.indexOf(link) === index)
+    }
+
+    get averageLinkDistance() {
+      return this.links.map(link => link.distance)
+      .reduce((previousDistance, currentDistance) => previousDistance + currentDistance, 0) / this.links.length
+    }
+
+    get centerVector() {
+      return this.tiles.map(tile => tile.position)
+      .reduce((previousVector, currentVector) => previousVector.add(currentVector), new Vector(0, 0))
+      .scale(1 / this.tiles.length)
+    }
+
+    addTile(tile) {
+      this.tiles.push(tile)
+    }
+
+    removeTile(tile) {
+      if (this.tiles.indexOf(tile) === -1) {
+        throw new Error('Provided tile is not part of this board')
+      }
+      tile.linkedTiles.forEach(linkedTile => tile.unlink(linkedTile))
+      this.tiles.splice(this.tiles.indexOf(tile), 1)
+    }
+
+    moveTiles() {
+      this.tiles.forEach(tile => {
+        const movement = this.tiles.filter(otherTile => tile !== otherTile)
+        .map(otherTile => {
+          const pullingForce = BASIC_PULLING + (tile.isLinkedTo(otherTile) ? LINKED_PULLING : 0)
+          const repellingForce = REPELLING / tile.getDistanceFrom(otherTile)
+
+          return tile.getDirectionTo(otherTile).scale(pullingForce - repellingForce)
+        }).reduce((previousVector, currentVector) => previousVector.add(currentVector), new Vector(0, 0))
+
+        tile.move(movement)
+      })
+    }
+  }
+
+  class DomRenderer {
+    constructor(board, element) {
+      this.board = board
+      this.rootElement = element
+      this.elementMap = new Map()
+    }
+
+    render() {
+      this.board.tiles.forEach(tile => {
+        if (!this.elementMap.has(tile)) {
+          const newTileElement = document.createElement('div')
+          newTileElement._tile = tile
+          newTileElement.className = 'tile'
+          this.rootElement.appendChild(newTileElement)
+          this.elementMap.set(tile, newTileElement)
+        }
+        const tileElement = this.elementMap.get(tile)
+        tileElement.style.left = tile.position.x + 'px'
+        tileElement.style.top = tile.position.y + 'px'
+      })
+
+      this.board.links.forEach(link => {
+        if (!this.elementMap.has(link)) {
+          const newLinkElement = document.createElement('div')
+          newLinkElement._link = link
+          newLinkElement.textContent = '﹡'
+          newLinkElement.className = 'link'
+          this.rootElement.appendChild(newLinkElement)
+          this.elementMap.set(link, newLinkElement)
+        }
+        const linkElement = this.elementMap.get(link)
+        linkElement.style.left = (link.tileA.position.x + link.tileB.position.x) / 2 + 'px'
+        linkElement.style.top = (link.tileA.position.y + link.tileB.position.y) / 2 + 'px'
+      })
+
+      const allObjects = this.board.tiles.concat(this.board.links)
+      this.elementMap.forEach((value, key) => {
+        if (allObjects.indexOf(key) === -1) {
+          this.rootElement.removeChild(value)
+          this.elementMap.delete(key)
+        }
+      })
+    }
+  }
+
+  function linkPairOfTiles(board) {
+    const eligibleTiles = board.tiles.filter(tile => tile.links.length < LINKS)
+    .sort((tileA, tileB) => board.centerVector.subtract(tileA.position).size - board.centerVector.subtract(tileB.position).size)
+
+    while (eligibleTiles.length > 2) {
+      const tileToLink = eligibleTiles.shift()
+      const eligibleTilesToLink = eligibleTiles.filter(tile => !tile.isLinkedTo(tileToLink))
+      .filter(tile => isNaN(board.averageLinkDistance) || tile.getDistanceFrom(tileToLink) <= board.averageLinkDistance * MAX_LINK_LENGTH)
+      .sort((tileA, tileB) => tileA.getDistanceFrom(tileToLink) - tileB.getDistanceFrom(tileToLink))
+
+      if (eligibleTilesToLink.length > 0) {
+        return tileToLink.link(eligibleTilesToLink.shift())
+      }
+    }
+  }
+
+  const board = new Board()
+  for (let i = 1; i <= TILES; i++) {
+    const position = new Vector(Math.random() * (MAX_X - MIN_X) + MIN_X, Math.random() * (MAX_Y - MIN_Y) + MIN_Y)
+
+    board.addTile(new Tile(position))
+  }
+
+  window.setInterval(() => board.moveTiles(), TICK)
+  window.setTimeout(() => {
+    window.setInterval(() => linkPairOfTiles(board), LINKING_EVERY * TICK)
+  }, LINKING_AFTER * TICK)
+
+  const renderer = new DomRenderer(board, document.body)
+  window.setInterval(() => renderer.render(), TICK_RENDER)
+
+  document.body.addEventListener('click', (event) => {
+    if (event.target._tile !== undefined) {
+      board.removeTile(event.target._tile)
+      return
+    }
+    if (event.target._link !== undefined) {
+      event.target._link.tileA.unlink(event.target._link.tileB)
+      return
+    }
+
+    board.addTile(new Tile(new Vector(event.x, event.y)))
+  })
+
+</script>
+</html>
